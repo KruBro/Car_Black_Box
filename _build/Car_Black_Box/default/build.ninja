@@ -44,19 +44,9 @@ cmake_ninja_workdir = /home/krubro/MPLABProjects/Car_Black_Box/_build/Car_Black_
 
 build cmake_object_order_depends_target_Car_Black_Box_default_default_XC8_compile: phony || .
 
-build CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/adc.c.p1: C_COMPILER__Car_Black_Box_default_default_XC8_compile_unscanned_ /home/krubro/MPLABProjects/Car_Black_Box/adc.c || cmake_object_order_depends_target_Car_Black_Box_default_default_XC8_compile
+build CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.c.p1: C_COMPILER__Car_Black_Box_default_default_XC8_compile_unscanned_ /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.c || cmake_object_order_depends_target_Car_Black_Box_default_default_XC8_compile
   DEFINES = -DXPRJ_default=default -D__16F877A__ -D__DEBUG=1
-  DEP_FILE = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/adc.c.p1.d
-  FLAGS = -c -mcpu=16F877A -mdfp=/home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8 -fno-short-double -fno-short-float -O0 -maddrqual=ignore -mwarn=-3 -msummary=-psect,-class,+mem,-hex,-file -ginhx32 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall -mno-default-config-bits -std=c99 -gdwarf-3 -mstack=compiled:auto:auto
-  OBJECT_DIR = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir
-  OBJECT_FILE_DIR = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box
-  TARGET_COMPILE_PDB = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/
-  TARGET_PDB = ""
-  TARGET_SUPPORT_DIR = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir
-
-build CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/clcd.c.p1: C_COMPILER__Car_Black_Box_default_default_XC8_compile_unscanned_ /home/krubro/MPLABProjects/Car_Black_Box/clcd.c || cmake_object_order_depends_target_Car_Black_Box_default_default_XC8_compile
-  DEFINES = -DXPRJ_default=default -D__16F877A__ -D__DEBUG=1
-  DEP_FILE = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/clcd.c.p1.d
+  DEP_FILE = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.c.p1.d
   FLAGS = -c -mcpu=16F877A -mdfp=/home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8 -fno-short-double -fno-short-float -O0 -maddrqual=ignore -mwarn=-3 -msummary=-psect,-class,+mem,-hex,-file -ginhx32 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall -mno-default-config-bits -std=c99 -gdwarf-3 -mstack=compiled:auto:auto
   OBJECT_DIR = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir
   OBJECT_FILE_DIR = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box
@@ -74,29 +64,9 @@ build CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLAB
   TARGET_PDB = ""
   TARGET_SUPPORT_DIR = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir
 
-build CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/digital_keypad.c.p1: C_COMPILER__Car_Black_Box_default_default_XC8_compile_unscanned_ /home/krubro/MPLABProjects/Car_Black_Box/digital_keypad.c || cmake_object_order_depends_target_Car_Black_Box_default_default_XC8_compile
+build CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/login.c.p1: C_COMPILER__Car_Black_Box_default_default_XC8_compile_unscanned_ /home/krubro/MPLABProjects/Car_Black_Box/login.c || cmake_object_order_depends_target_Car_Black_Box_default_default_XC8_compile
   DEFINES = -DXPRJ_default=default -D__16F877A__ -D__DEBUG=1
-  DEP_FILE = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/digital_keypad.c.p1.d
-  FLAGS = -c -mcpu=16F877A -mdfp=/home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8 -fno-short-double -fno-short-float -O0 -maddrqual=ignore -mwarn=-3 -msummary=-psect,-class,+mem,-hex,-file -ginhx32 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall -mno-default-config-bits -std=c99 -gdwarf-3 -mstack=compiled:auto:auto
-  OBJECT_DIR = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir
-  OBJECT_FILE_DIR = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box
-  TARGET_COMPILE_PDB = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/
-  TARGET_PDB = ""
-  TARGET_SUPPORT_DIR = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir
-
-build CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/ds1307.c.p1: C_COMPILER__Car_Black_Box_default_default_XC8_compile_unscanned_ /home/krubro/MPLABProjects/Car_Black_Box/ds1307.c || cmake_object_order_depends_target_Car_Black_Box_default_default_XC8_compile
-  DEFINES = -DXPRJ_default=default -D__16F877A__ -D__DEBUG=1
-  DEP_FILE = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/ds1307.c.p1.d
-  FLAGS = -c -mcpu=16F877A -mdfp=/home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8 -fno-short-double -fno-short-float -O0 -maddrqual=ignore -mwarn=-3 -msummary=-psect,-class,+mem,-hex,-file -ginhx32 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall -mno-default-config-bits -std=c99 -gdwarf-3 -mstack=compiled:auto:auto
-  OBJECT_DIR = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir
-  OBJECT_FILE_DIR = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box
-  TARGET_COMPILE_PDB = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/
-  TARGET_PDB = ""
-  TARGET_SUPPORT_DIR = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir
-
-build CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/i2c.c.p1: C_COMPILER__Car_Black_Box_default_default_XC8_compile_unscanned_ /home/krubro/MPLABProjects/Car_Black_Box/i2c.c || cmake_object_order_depends_target_Car_Black_Box_default_default_XC8_compile
-  DEFINES = -DXPRJ_default=default -D__16F877A__ -D__DEBUG=1
-  DEP_FILE = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/i2c.c.p1.d
+  DEP_FILE = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/login.c.p1.d
   FLAGS = -c -mcpu=16F877A -mdfp=/home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8 -fno-short-double -fno-short-float -O0 -maddrqual=ignore -mwarn=-3 -msummary=-psect,-class,+mem,-hex,-file -ginhx32 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall -mno-default-config-bits -std=c99 -gdwarf-3 -mstack=compiled:auto:auto
   OBJECT_DIR = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir
   OBJECT_FILE_DIR = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box
@@ -114,9 +84,29 @@ build CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLAB
   TARGET_PDB = ""
   TARGET_SUPPORT_DIR = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir
 
-build CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/uart.c.p1: C_COMPILER__Car_Black_Box_default_default_XC8_compile_unscanned_ /home/krubro/MPLABProjects/Car_Black_Box/uart.c || cmake_object_order_depends_target_Car_Black_Box_default_default_XC8_compile
+build CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/menu.c.p1: C_COMPILER__Car_Black_Box_default_default_XC8_compile_unscanned_ /home/krubro/MPLABProjects/Car_Black_Box/menu.c || cmake_object_order_depends_target_Car_Black_Box_default_default_XC8_compile
   DEFINES = -DXPRJ_default=default -D__16F877A__ -D__DEBUG=1
-  DEP_FILE = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/uart.c.p1.d
+  DEP_FILE = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/menu.c.p1.d
+  FLAGS = -c -mcpu=16F877A -mdfp=/home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8 -fno-short-double -fno-short-float -O0 -maddrqual=ignore -mwarn=-3 -msummary=-psect,-class,+mem,-hex,-file -ginhx32 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall -mno-default-config-bits -std=c99 -gdwarf-3 -mstack=compiled:auto:auto
+  OBJECT_DIR = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir
+  OBJECT_FILE_DIR = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box
+  TARGET_COMPILE_PDB = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/
+  TARGET_PDB = ""
+  TARGET_SUPPORT_DIR = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir
+
+build CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/state.c.p1: C_COMPILER__Car_Black_Box_default_default_XC8_compile_unscanned_ /home/krubro/MPLABProjects/Car_Black_Box/state.c || cmake_object_order_depends_target_Car_Black_Box_default_default_XC8_compile
+  DEFINES = -DXPRJ_default=default -D__16F877A__ -D__DEBUG=1
+  DEP_FILE = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/state.c.p1.d
+  FLAGS = -c -mcpu=16F877A -mdfp=/home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8 -fno-short-double -fno-short-float -O0 -maddrqual=ignore -mwarn=-3 -msummary=-psect,-class,+mem,-hex,-file -ginhx32 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall -mno-default-config-bits -std=c99 -gdwarf-3 -mstack=compiled:auto:auto
+  OBJECT_DIR = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir
+  OBJECT_FILE_DIR = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box
+  TARGET_COMPILE_PDB = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/
+  TARGET_PDB = ""
+  TARGET_SUPPORT_DIR = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir
+
+build CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/timer.c.p1: C_COMPILER__Car_Black_Box_default_default_XC8_compile_unscanned_ /home/krubro/MPLABProjects/Car_Black_Box/timer.c || cmake_object_order_depends_target_Car_Black_Box_default_default_XC8_compile
+  DEFINES = -DXPRJ_default=default -D__16F877A__ -D__DEBUG=1
+  DEP_FILE = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/timer.c.p1.d
   FLAGS = -c -mcpu=16F877A -mdfp=/home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8 -fno-short-double -fno-short-float -O0 -maddrqual=ignore -mwarn=-3 -msummary=-psect,-class,+mem,-hex,-file -ginhx32 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall -mno-default-config-bits -std=c99 -gdwarf-3 -mstack=compiled:auto:auto
   OBJECT_DIR = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir
   OBJECT_FILE_DIR = CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box
@@ -129,7 +119,7 @@ build CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLAB
 #############################################
 # Object library Car_Black_Box_default_default_XC8_compile
 
-build Car_Black_Box_default_default_XC8_compile: phony CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/adc.c.p1 CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/clcd.c.p1 CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/dashboard.c.p1 CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/digital_keypad.c.p1 CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/ds1307.c.p1 CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/i2c.c.p1 CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/main.c.p1 CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/uart.c.p1
+build Car_Black_Box_default_default_XC8_compile: phony CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.c.p1 CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/dashboard.c.p1 CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/login.c.p1 CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/main.c.p1 CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/menu.c.p1 CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/state.c.p1 CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/timer.c.p1
 
 # =============================================================================
 # Object build statements for EXECUTABLE target Car_Black_Box_default_image_WXJPTfBy
@@ -148,7 +138,7 @@ build cmake_object_order_depends_target_Car_Black_Box_default_image_WXJPTfBy: ph
 #############################################
 # Link the executable /home/krubro/MPLABProjects/Car_Black_Box/out/Car_Black_Box/default.elf
 
-build /home/krubro/MPLABProjects/Car_Black_Box/out/Car_Black_Box/default.elf: C_EXECUTABLE_LINKER__Car_Black_Box_default_image_WXJPTfBy_ CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/adc.c.p1 CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/clcd.c.p1 CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/dashboard.c.p1 CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/digital_keypad.c.p1 CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/ds1307.c.p1 CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/i2c.c.p1 CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/main.c.p1 CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/uart.c.p1 || Car_Black_Box_default_default_XC8_compile
+build /home/krubro/MPLABProjects/Car_Black_Box/out/Car_Black_Box/default.elf: C_EXECUTABLE_LINKER__Car_Black_Box_default_image_WXJPTfBy_ CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.c.p1 CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/dashboard.c.p1 CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/login.c.p1 CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/main.c.p1 CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/menu.c.p1 CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/state.c.p1 CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/timer.c.p1 || Car_Black_Box_default_default_XC8_compile
   LINK_FLAGS = -Wl,-Map=mem.map -mcpu=16F877A -Wl,--defsym=__MPLAB_BUILD=1 -mdfp=/home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8 -fno-short-double -fno-short-float -O0 -maddrqual=ignore -mwarn=-3 -msummary=-psect,-class,+mem,-hex,-file -ginhx32 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall -mno-default-config-bits -std=c99 -gdwarf-3 -mstack=compiled:auto:auto -Wl,--memorysummary,memoryfile.xml
   OBJECT_DIR = CMakeFiles/Car_Black_Box_default_image_WXJPTfBy.dir
   POST_BUILD = :

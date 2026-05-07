@@ -1,34 +1,49 @@
 Version 4.0 HI-TECH Software Intermediate Code
-"71 /home/krubro/MPLABProjects/Car_Black_Box/clcd.h
+"88 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
 [v _init_clcd `(v ~T0 @X0 0 ef ]
-"62 /home/krubro/MPLABProjects/Car_Black_Box/digital_keypad.h
+"142
 [v _init_digital_keypad `(v ~T0 @X0 0 ef ]
-"34 /home/krubro/MPLABProjects/Car_Black_Box/uart.h
+"22
 [v _initUART `(v ~T0 @X0 0 ef1`ul ]
-"30 /home/krubro/MPLABProjects/Car_Black_Box/i2c.h
+"39
 [v _initI2C `(v ~T0 @X0 0 ef1`ul ]
-"42 /home/krubro/MPLABProjects/Car_Black_Box/ds1307.h
+"114
 [v _init_rtc `(v ~T0 @X0 0 ef ]
-"34 /home/krubro/MPLABProjects/Car_Black_Box/adc.h
+"156
 [v _initADC `(v ~T0 @X0 0 ef ]
+"21 /home/krubro/MPLABProjects/Car_Black_Box/timer.h
+[v _init_timers `(v ~T0 @X0 0 ef ]
 [p mainexit ]
-"75 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
-[v _clcd_dashboard `(v ~T0 @X0 0 ef ]
-"28 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
+"145 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
+[v _read_digital_keypad `(uc ~T0 @X0 0 ef1`uc ]
+"44 /home/krubro/MPLABProjects/Car_Black_Box/main.c
+[c E1047 0 1 2 3 4 5 6 7 .. ]
+[n E1047 . DASHBOARD LOGIN MENU VIEW_LOGS CLEAR_LOGS DOWNLOAD_LOGS SET_TIME CHANGE_PASSWORD  ]
+"16 /home/krubro/MPLABProjects/Car_Black_Box/state.h
+[v _set_status `(v ~T0 @X0 0 ef1`E1047 ]
+"48 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
+[v _clcd_dashboard `(v ~T0 @X0 0 ef1`uc ]
+"47
+[v _invalidate_dashboard_cache `(v ~T0 @X0 0 ef ]
+"8 /home/krubro/MPLABProjects/Car_Black_Box/login.h
+[v _show_login_screen `(v ~T0 @X0 0 ef1`uc ]
+"17 /home/krubro/MPLABProjects/Car_Black_Box/state.h
+[v _get_status `(E1047 ~T0 @X0 0 e? ]
+"15 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
 [p x FOSC    =  HS        ]
-"29
+"16
 [p x WDTE    =  OFF       ]
-"30
+"17
 [p x PWRTE  =  OFF       ]
-"31
+"18
 [p x BOREN  =  ON        ]
-"32
+"19
 [p x LVP      =  OFF       ]
-"33
+"20
 [p x CPD      =  OFF       ]
-"34
+"21
 [p x WRT      =  OFF       ]
-"35
+"22
 [p x CP        =  OFF       ]
 "38 /home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8/pic/include/proc/pic16f877a.h
 [; <" INDF equ 00h ;# ">
@@ -150,47 +165,143 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; <" EECON1 equ 018Ch ;# ">
 "2347
 [; <" EECON2 equ 018Dh ;# ">
-"36 /home/krubro/MPLABProjects/Car_Black_Box/main.c
+"15 /home/krubro/MPLABProjects/Car_Black_Box/main.c
 [v _init_config `(v ~T0 @X0 1 sf ]
-"37
+"16
 {
 [e :U _init_config ]
 [f ]
-"38
+"17
 [e ( _init_clcd ..  ]
-"39
+"18
 [e ( _init_digital_keypad ..  ]
-"40
+"19
 [e ( _initUART (1 -> 9600 `ul ]
-"41
+"20
 [e ( _initI2C (1 -> 100000 `ul ]
-"42
+"21
 [e ( _init_rtc ..  ]
-"43
+"22
 [e ( _initADC ..  ]
-"44
+"23
+[e ( _init_timers ..  ]
+"24
 [e :UE 99 ]
 }
 [v $root$_main `(v ~T0 @X0 0 e ]
-"53
+"29
 [v _main `(v ~T0 @X0 1 ef ]
-"54
+"30
 {
 [e :U _main ]
 [f ]
-"55
+"31
 [e ( _init_config ..  ]
-"57
+"33
+[v _key `uc ~T0 @X0 1 a ]
+"35
 [e :U 102 ]
-"58
+"36
 {
+"37
+[e = _key ( _read_digital_keypad (1 -> -> 0 `i `uc ]
+"39
+[e $U 105  ]
+"40
+{
+"41
+[e :U 106 ]
+"42
+[e $ ! == -> _key `ui -> 55 `ui 107  ]
+"43
+{
+"44
+[e ( _set_status (1 . `E1047 1 ]
+"45
+[e = _key -> -> 63 `ui `uc ]
+"46
+}
+[e $U 108  ]
+"47
+[e :U 107 ]
+"48
+{
+"49
+[e ( _clcd_dashboard (1 _key ]
+"50
+}
+[e :U 108 ]
+"51
+[e $U 104  ]
+"53
+[e :U 109 ]
+"54
+[e $ ! == -> _key `ui -> 62 `ui 110  ]
+"55
+{
+"56
+[e ( _invalidate_dashboard_cache ..  ]
+"57
+[e ( _set_status (1 . `E1047 0 ]
+"58
+[e = _key -> -> 63 `ui `uc ]
 "59
-[e ( _clcd_dashboard ..  ]
+}
+[e $U 111  ]
 "60
+[e :U 110 ]
+"61
+{
+"62
+[e ( _show_login_screen (1 _key ]
+"63
+}
+[e :U 111 ]
+"64
+[e $U 104  ]
+"66
+[e :U 112 ]
+"67
+[e $U 104  ]
+"69
+[e :U 113 ]
+"70
+[e $U 104  ]
+"72
+[e :U 114 ]
+"73
+[e $U 104  ]
+"75
+[e :U 115 ]
+"76
+[e $U 104  ]
+"78
+[e :U 116 ]
+"79
+[e $U 104  ]
+"81
+[e :U 117 ]
+"82
+[e $U 104  ]
+"83
+}
+[e $U 104  ]
+[e :U 105 ]
+[e [\ -> ( _get_status ..  `ui , $ -> . `E1047 0 `ui 106
+ , $ -> . `E1047 1 `ui 109
+ , $ -> . `E1047 2 `ui 112
+ , $ -> . `E1047 3 `ui 113
+ , $ -> . `E1047 4 `ui 114
+ , $ -> . `E1047 5 `ui 115
+ , $ -> . `E1047 6 `ui 116
+ , $ -> . `E1047 7 `ui 117
+ 104 ]
+[e :U 104 ]
+"84
 }
 [e :U 101 ]
 [e $U 102  ]
 [e :U 103 ]
-"61
+"85
 [e :UE 100 ]
 }

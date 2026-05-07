@@ -16,14 +16,13 @@ foreach(source_file ${Car_Black_Box_default_default_XC8_FILE_TYPE_assemblePrepro
 endforeach()
 
 set(Car_Black_Box_default_default_XC8_FILE_TYPE_compile
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../../adc.c"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../../clcd.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../../blackbox_drivers.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../dashboard.c"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../../digital_keypad.c"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../../ds1307.c"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../../i2c.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../../login.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../main.c"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../../uart.c")
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../../menu.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../../state.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../../timer.c")
 set_source_files_properties(${Car_Black_Box_default_default_XC8_FILE_TYPE_compile} PROPERTIES LANGUAGE C)
 set(Car_Black_Box_default_default_XC8_FILE_TYPE_link)
 set(Car_Black_Box_default_image_name "default.elf")

@@ -1,45 +1,43 @@
 Version 4.0 HI-TECH Software Intermediate Code
-"2800 /home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8/pic/include/proc/pic16f877a.h
-[v _SPEN `Vb ~T0 @X0 0 e@199 ]
-"2830
-[v _SYNC `Vb ~T0 @X0 0 e@1220 ]
-"2503
-[v _CREN `Vb ~T0 @X0 0 e@196 ]
-"2404
-[v _BRGH `Vb ~T0 @X0 0 e@1218 ]
-"2064
-[v _SPBRG `Vuc ~T0 @X0 0 e@153 ]
-"3019
-[v _TXEN `Vb ~T0 @X0 0 e@1221 ]
-"2602
-[v _OERR `Vb ~T0 @X0 0 e@193 ]
-"49 /home/krubro/MPLABProjects/Car_Black_Box/uart.h
-[v _uart_putchar `(v ~T0 @X0 0 ef1`uc ]
-"2551 /home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8/pic/include/proc/pic16f877a.h
-[v _FERR `Vb ~T0 @X0 0 e@194 ]
-"1050
-[v _RCREG `Vuc ~T0 @X0 0 e@26 ]
-"2731
-[v _RCIF `Vb ~T0 @X0 0 e@101 ]
-"3025
-[v _TXIF `Vb ~T0 @X0 0 e@100 ]
-"1043
-[v _TXREG `Vuc ~T0 @X0 0 e@25 ]
-"28 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
+"1239 /home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8/pic/include/proc/pic16f877a.h
+[v _OPTION_REG `Vuc ~T0 @X0 0 e@129 ]
+"43
+[v _TMR0 `Vuc ~T0 @X0 0 e@1 ]
+"2869
+[v _TMR0IF `Vb ~T0 @X0 0 e@90 ]
+"2866
+[v _TMR0IE `Vb ~T0 @X0 0 e@93 ]
+"639
+[v _T1CON `Vuc ~T0 @X0 0 e@16 ]
+"632
+[v _TMR1H `Vuc ~T0 @X0 0 e@15 ]
+"625
+[v _TMR1L `Vuc ~T0 @X0 0 e@14 ]
+"2878
+[v _TMR1IF `Vb ~T0 @X0 0 e@96 ]
+"2875
+[v _TMR1IE `Vb ~T0 @X0 0 e@1120 ]
+"2617
+[v _PEIE `Vb ~T0 @X0 0 e@94 ]
+"2557
+[v _GIE `Vb ~T0 @X0 0 e@95 ]
+[t ~ __interrupt . k ]
+[t T1 __interrupt ]
+"15 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
 [p x FOSC    =  HS        ]
-"29
+"16
 [p x WDTE    =  OFF       ]
-"30
+"17
 [p x PWRTE  =  OFF       ]
-"31
+"18
 [p x BOREN  =  ON        ]
-"32
+"19
 [p x LVP      =  OFF       ]
-"33
+"20
 [p x CPD      =  OFF       ]
-"34
+"21
 [p x WRT      =  OFF       ]
-"35
+"22
 [p x CP        =  OFF       ]
 "38 /home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8/pic/include/proc/pic16f877a.h
 [; <" INDF equ 00h ;# ">
@@ -161,119 +159,100 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; <" EECON1 equ 018Ch ;# ">
 "2347
 [; <" EECON2 equ 018Dh ;# ">
-"41 /home/krubro/MPLABProjects/Car_Black_Box/uart.c
-[v _initUART `(v ~T0 @X0 1 ef1`ul ]
-"42
+"27 /home/krubro/MPLABProjects/Car_Black_Box/timer.c
+[v _blink_tick `Vuc ~T0 @X0 1 e ]
+[i _blink_tick
+-> -> 0 `i `uc
+]
+"28
+[v _timeout_tick `Vui ~T0 @X0 1 e ]
+[i _timeout_tick
+-> -> 0 `i `ui
+]
+"34
+[v _init_timers `(v ~T0 @X0 1 ef ]
+"35
 {
-[e :U _initUART ]
-"41
-[v _baud `ul ~T0 @X0 1 r1 ]
-"42
+[e :U _init_timers ]
 [f ]
+"37
+[e = _OPTION_REG -> | & -> _OPTION_REG `ui -> 192 `ui -> 7 `ui `uc ]
+"38
+[e = _TMR0 -> -> 61 `ui `uc ]
+"39
+[e = _TMR0IF -> -> 0 `i `b ]
+"40
+[e = _TMR0IE -> -> 1 `i `b ]
 "43
-[e = _SPEN -> -> 1 `i `b ]
+[e = _T1CON -> -> 49 `ui `uc ]
 "44
-[e = _SYNC -> -> 0 `i `b ]
+[e = _TMR1H -> >> -> 3036 `ui -> 8 `i `uc ]
 "45
-[e = _CREN -> -> 1 `i `b ]
+[e = _TMR1L -> & -> 3036 `ui -> 255 `ui `uc ]
 "46
-[e = _BRGH -> -> 1 `i `b ]
+[e = _TMR1IF -> -> 0 `i `b ]
 "47
-[e = _SPBRG -> - / -> 20000000 `ul * -> 16 `ul _baud -> 1 `ul `uc ]
-"48
-[e = _TXEN -> -> 1 `i `b ]
+[e = _TMR1IE -> -> 1 `i `b ]
 "49
+[e = _PEIE -> -> 1 `i `b ]
+"50
+[e = _GIE -> -> 1 `i `b ]
+"51
 [e :UE 99 ]
 }
-"58
-[v _uart_getchar `(uc ~T0 @X0 1 ef ]
-"59
+"53
+[v _reset_blink_tick `(v ~T0 @X0 1 ef ]
 {
-[e :U _uart_getchar ]
+[e :U _reset_blink_tick ]
 [f ]
-"60
-[e $ ! _OERR 101  ]
-"61
-{
-"63
-[e ( _uart_putchar (1 -> -> 88 `ui `uc ]
-"64
-[e = _CREN -> -> 0 `i `b ]
-"65
-[e = _CREN -> -> 1 `i `b ]
-"66
-}
-[e :U 101 ]
-"68
-[e $ ! _FERR 102  ]
-"69
-{
-"71
-[e ( _uart_putchar (1 -> -> 70 `ui `uc ]
-"72
-[e _RCREG ]
-"73
-[e ) -> -> 0 `i `uc ]
-[e $UE 100  ]
-"74
-}
-[e :U 102 ]
-"76
-[e $U 103  ]
-[e :U 104 ]
-[e :U 103 ]
-[e $ ! _RCIF 104  ]
-[e :U 105 ]
-"77
-[e ) _RCREG ]
-[e $UE 100  ]
-"78
+[e = _blink_tick -> -> 0 `i `uc ]
 [e :UE 100 ]
 }
-"84
-[v _uart_putchar `(v ~T0 @X0 1 ef1`uc ]
-"85
+"54
+[v _reset_timeout_tick `(v ~T0 @X0 1 ef ]
 {
-[e :U _uart_putchar ]
-"84
-[v _ch `uc ~T0 @X0 1 r1 ]
-"85
+[e :U _reset_timeout_tick ]
 [f ]
-"86
-[e $U 107  ]
-[e :U 108 ]
-[e :U 107 ]
-[e $ ! _TXIF 108  ]
-[e :U 109 ]
-"87
-[e = _TXREG _ch ]
-"88
-[e :UE 106 ]
+[e = _timeout_tick -> -> 0 `i `ui ]
+[e :UE 101 ]
 }
-"93
-[v _uart_puts `(v ~T0 @X0 1 ef1`*Cuc ]
-"94
+[v $root$_isr `(v ~T0 @X0 0 e ]
+"59
+[v _isr `(v ~T1 @X0 1 ef ]
+"60
 {
-[e :U _uart_puts ]
-"93
-[v _str `*Cuc ~T0 @X0 1 r1 ]
-"94
+[e :U _isr ]
 [f ]
-"95
-[e $U 111  ]
-[e :U 112 ]
-"96
+"61
+[e $ ! _TMR0IF 103  ]
+"62
 {
-"97
-[e ( _uart_putchar (1 -> *U _str `uc ]
-"98
-[e ++ _str * -> -> 1 `i `x -> -> # *U _str `i `x ]
-"99
+"63
+[e = _TMR0 -> -> 61 `ui `uc ]
+"64
+[e = _TMR0IF -> -> 0 `i `b ]
+"65
+[e ++ _blink_tick -> -> 1 `i `Vuc ]
+"66
 }
-[e :U 111 ]
-"95
-[e $ != -> *U _str `ui -> 0 `ui 112  ]
-[e :U 113 ]
-"100
-[e :UE 110 ]
+[e :U 103 ]
+"68
+[e $ ! _TMR1IF 104  ]
+"69
+{
+"70
+[e = _TMR1H -> >> -> 3036 `ui -> 8 `i `uc ]
+"71
+[e = _TMR1L -> & -> 3036 `ui -> 255 `ui `uc ]
+"72
+[e = _TMR1IF -> -> 0 `i `b ]
+"73
+[e $ ! < _timeout_tick -> 65535 `ui 105  ]
+[e ++ _timeout_tick -> -> 1 `i `Vui ]
+[e :U 105 ]
+"74
+}
+[e :U 104 ]
+"75
+[e :UE 102 ]
 }

@@ -2,60 +2,84 @@
  * @file    main.c
  * @author  krubro
  * @date    2026-05-05
- * @brief   Application entry point for the Car Black Box project.
- *
- * @details
- *   Initialises all on-board peripherals (CLCD, keypad, UART, I2C, RTC, ADC)
- *   and then enters an infinite loop that continuously refreshes the CLCD
- *   dashboard with current time, gear/event state, and vehicle speed.
- *
- *   Peripheral init order matters:
- *     1. CLCD   — GPIO-only, safe to configure first.
- *     2. Keypad — GPIO-only.
- *     3. UART   — configures EUSART; must precede any debug prints.
- *     4. I2C    — configures MSSP; must precede RTC init.
- *     5. RTC    — reads/writes DS1307 over I2C; depends on I2C being ready.
- *     6. ADC    — configures the A/D module; safe at any point after reset.
+ * @brief   Application entry point — peripheral init and main state-machine loop.
  */
 
 #include "main_config.h"
 
-/* -------------------------------------------------------------------------
- * Private Function Prototypes
- * ------------------------------------------------------------------------- */
 static void init_config(void);
 
-/* -------------------------------------------------------------------------
- * init_config
- * ------------------------------------------------------------------------- */
 /**
- * @brief   Initialises all hardware peripherals used by the application.
- * @details Must be called once before the main loop. See file-level comment
- *          for the rationale behind the initialisation order.
+ * @brief  Initialises all hardware peripherals in dependency order.
  */
 static void init_config(void)
 {
-    init_clcd();
-    init_digital_keypad();
-    initUART(9600UL);
-    initI2C(100000UL);
-    init_rtc();
-    initADC();
+    init_clcd();            // GPIO only — safe first
+    init_digital_keypad();  // GPIO only
+    initUART(9600UL);       // USART must be ready before any debug prints
+    initI2C(100000UL);      // MSSP must be ready before RTC
+    init_rtc();             // Clears DS1307 Clock Halt bit
+    initADC();              // A/D module
+    init_timers();          // Timer0 (10 ms) and Timer1 (100 ms) — enables GIE
 }
 
-/* -------------------------------------------------------------------------
- * main
- * ------------------------------------------------------------------------- */
 /**
- * @brief   Application entry point.
- * @return  This function never returns (infinite loop).
+ * @brief  Application entry point. Never returns.
  */
 void main(void)
 {
     init_config();
 
+    unsigned char key;
+
     while (1)
     {
-        clcd_dashboard();
+        key = read_digital_keypad(EDGE); // Poll hardware exactly once per cycle
+
+        switch (get_status())
+        {
+        case DASHBOARD:
+            if (key == SW4)
+            {
+                set_status(LOGIN);
+                key = ALL_RELEASED; // Prevent SW4 bleeding into Login screen
+            }
+            else
+            {
+                clcd_dashboard(key);
+            }
+            break;
+
+        case LOGIN:
+            if (key == SW1)
+            {
+                invalidate_dashboard_cache();
+                set_status(DASHBOARD);
+                key = ALL_RELEASED;
+            }
+            else
+            {
+                show_login_screen(key);
+            }
+            break;
+
+        case MENU:
+            break;
+
+        case VIEW_LOGS:
+            break;
+
+        case CLEAR_LOGS:
+            break;
+
+        case DOWNLOAD_LOGS:
+            break;
+
+        case SET_TIME:
+            break;
+
+        case CHANGE_PASSWORD:
+            break;
+        }
     }
 }

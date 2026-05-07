@@ -1,0 +1,509 @@
+Version 4.0 HI-TECH Software Intermediate Code
+"27 /home/krubro/MPLABProjects/Car_Black_Box/timer.h
+[v _reset_timeout_tick `(v ~T0 @X0 0 ef ]
+"18
+[v _timeout_tick `Vui ~T0 @X0 0 e ]
+"47 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
+[v _invalidate_dashboard_cache `(v ~T0 @X0 0 ef ]
+"53 /home/krubro/MPLABProjects/Car_Black_Box/login.c
+[c E1047 0 1 2 3 4 5 6 7 .. ]
+[n E1047 . DASHBOARD LOGIN MENU VIEW_LOGS CLEAR_LOGS DOWNLOAD_LOGS SET_TIME CHANGE_PASSWORD  ]
+"16 /home/krubro/MPLABProjects/Car_Black_Box/state.h
+[v _set_status `(v ~T0 @X0 0 ef1`E1047 ]
+"17 /home/krubro/MPLABProjects/Car_Black_Box/timer.h
+[v _blink_tick `Vuc ~T0 @X0 0 e ]
+"24
+[v _reset_blink_tick `(v ~T0 @X0 0 ef ]
+"91 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
+[v _clcd_putch `(v ~T0 @X0 0 ef2`Cuc`uc ]
+"31
+[v _uart_puts `(v ~T0 @X0 0 ef1`*Cuc ]
+"97
+[v _clcd_clear `(v ~T0 @X0 0 ef ]
+"94
+[v _clcd_print `(v ~T0 @X0 0 ef2`*Cuc`uc ]
+[v F164 `(v ~T0 @X0 1 tf1`ul ]
+"20 /opt/microchip/xc8/v3.10/pic/include/builtins.h
+[v __delay `JF164 ~T0 @X0 0 e ]
+[p i __delay ]
+"15 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
+[p x FOSC    =  HS        ]
+"16
+[p x WDTE    =  OFF       ]
+"17
+[p x PWRTE  =  OFF       ]
+"18
+[p x BOREN  =  ON        ]
+"19
+[p x LVP      =  OFF       ]
+"20
+[p x CPD      =  OFF       ]
+"21
+[p x WRT      =  OFF       ]
+"22
+[p x CP        =  OFF       ]
+"38 /home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8/pic/include/proc/pic16f877a.h
+[; <" INDF equ 00h ;# ">
+"45
+[; <" TMR0 equ 01h ;# ">
+"52
+[; <" PCL equ 02h ;# ">
+"59
+[; <" STATUS equ 03h ;# ">
+"145
+[; <" FSR equ 04h ;# ">
+"152
+[; <" PORTA equ 05h ;# ">
+"202
+[; <" PORTB equ 06h ;# ">
+"264
+[; <" PORTC equ 07h ;# ">
+"326
+[; <" PORTD equ 08h ;# ">
+"388
+[; <" PORTE equ 09h ;# ">
+"420
+[; <" PCLATH equ 0Ah ;# ">
+"440
+[; <" INTCON equ 0Bh ;# ">
+"518
+[; <" PIR1 equ 0Ch ;# ">
+"580
+[; <" PIR2 equ 0Dh ;# ">
+"620
+[; <" TMR1 equ 0Eh ;# ">
+"627
+[; <" TMR1L equ 0Eh ;# ">
+"634
+[; <" TMR1H equ 0Fh ;# ">
+"641
+[; <" T1CON equ 010h ;# ">
+"716
+[; <" TMR2 equ 011h ;# ">
+"723
+[; <" T2CON equ 012h ;# ">
+"794
+[; <" SSPBUF equ 013h ;# ">
+"801
+[; <" SSPCON equ 014h ;# ">
+"871
+[; <" CCPR1 equ 015h ;# ">
+"878
+[; <" CCPR1L equ 015h ;# ">
+"885
+[; <" CCPR1H equ 016h ;# ">
+"892
+[; <" CCP1CON equ 017h ;# ">
+"950
+[; <" RCSTA equ 018h ;# ">
+"1045
+[; <" TXREG equ 019h ;# ">
+"1052
+[; <" RCREG equ 01Ah ;# ">
+"1059
+[; <" CCPR2 equ 01Bh ;# ">
+"1066
+[; <" CCPR2L equ 01Bh ;# ">
+"1073
+[; <" CCPR2H equ 01Ch ;# ">
+"1080
+[; <" CCP2CON equ 01Dh ;# ">
+"1138
+[; <" ADRESH equ 01Eh ;# ">
+"1145
+[; <" ADCON0 equ 01Fh ;# ">
+"1241
+[; <" OPTION_REG equ 081h ;# ">
+"1311
+[; <" TRISA equ 085h ;# ">
+"1361
+[; <" TRISB equ 086h ;# ">
+"1423
+[; <" TRISC equ 087h ;# ">
+"1485
+[; <" TRISD equ 088h ;# ">
+"1547
+[; <" TRISE equ 089h ;# ">
+"1604
+[; <" PIE1 equ 08Ch ;# ">
+"1666
+[; <" PIE2 equ 08Dh ;# ">
+"1706
+[; <" PCON equ 08Eh ;# ">
+"1740
+[; <" SSPCON2 equ 091h ;# ">
+"1802
+[; <" PR2 equ 092h ;# ">
+"1809
+[; <" SSPADD equ 093h ;# ">
+"1816
+[; <" SSPSTAT equ 094h ;# ">
+"1985
+[; <" TXSTA equ 098h ;# ">
+"2066
+[; <" SPBRG equ 099h ;# ">
+"2073
+[; <" CMCON equ 09Ch ;# ">
+"2143
+[; <" CVRCON equ 09Dh ;# ">
+"2208
+[; <" ADRESL equ 09Eh ;# ">
+"2215
+[; <" ADCON1 equ 09Fh ;# ">
+"2274
+[; <" EEDATA equ 010Ch ;# ">
+"2281
+[; <" EEADR equ 010Dh ;# ">
+"2288
+[; <" EEDATH equ 010Eh ;# ">
+"2295
+[; <" EEADRH equ 010Fh ;# ">
+"2302
+[; <" EECON1 equ 018Ch ;# ">
+"2347
+[; <" EECON2 equ 018Dh ;# ">
+"14 /home/krubro/MPLABProjects/Car_Black_Box/login.c
+[v _i `uc ~T0 @X0 1 s ]
+[i _i
+-> -> 0 `i `uc
+]
+"15
+[v _user_pass `uc ~T0 @X0 -> 5 `i s ]
+[i _user_pass
+:U ..
+-> 49 `c
+-> 49 `c
+-> 49 `c
+-> 49 `c
+-> 0 `c
+..
+]
+"16
+[v _my_pass `uc ~T0 @X0 -> 5 `i s ]
+"17
+[v _attempts_left `uc ~T0 @X0 1 s ]
+[i _attempts_left
+-> -> 4 `i `uc
+]
+"18
+[v _cursor_visible `uc ~T0 @X0 1 s ]
+[i _cursor_visible
+-> -> 0 `i `uc
+]
+"19
+[v _login_successful `uc ~T0 @X0 1 s ]
+[i _login_successful
+-> -> 0 `i `uc
+]
+"20
+[v _entry_cooldown `uc ~T0 @X0 1 s ]
+[i _entry_cooldown
+-> -> 0 `i `uc
+]
+"21
+[v _screen_initialized `uc ~T0 @X0 1 s ]
+[i _screen_initialized
+-> -> 0 `i `uc
+]
+"26
+[v _my_strcmp `(i ~T0 @X0 1 ef2`*Cuc`*Cuc ]
+"27
+{
+[e :U _my_strcmp ]
+"26
+[v _s1 `*Cuc ~T0 @X0 1 r1 ]
+[v _s2 `*Cuc ~T0 @X0 1 r2 ]
+"27
+[f ]
+"28
+[v _index `ui ~T0 @X0 1 a ]
+[e = _index -> -> 0 `i `ui ]
+"29
+[e $U 100  ]
+[e :U 101 ]
+"30
+[e ++ _index -> -> 1 `i `ui ]
+[e :U 100 ]
+"29
+[e $ && != -> *U + _s1 * -> _index `ux -> -> # *U _s1 `ui `ux `ui -> 0 `ui == -> *U + _s1 * -> _index `ux -> -> # *U _s1 `ui `ux `i -> *U + _s2 * -> _index `ux -> -> # *U _s2 `ui `ux `i 101  ]
+[e :U 102 ]
+"31
+[e ) - -> -> *U + _s1 * -> _index `ux -> -> # *U _s1 `ui `ux `uc `i -> -> *U + _s2 * -> _index `ux -> -> # *U _s2 `ui `ux `uc `i ]
+[e $UE 99  ]
+"32
+[e :UE 99 ]
+}
+"38
+[v _time_out `(v ~T0 @X0 1 sf1`uc ]
+"39
+{
+[e :U _time_out ]
+"38
+[v _key `uc ~T0 @X0 1 r1 ]
+"39
+[f ]
+"40
+[e $ ! != -> _key `ui -> 63 `ui 104  ]
+"41
+{
+"42
+[e ( _reset_timeout_tick ..  ]
+"43
+[e $UE 103  ]
+"44
+}
+[e :U 104 ]
+"46
+[e $ ! && >= _timeout_tick -> 50 `ui == -> _login_successful `i -> 0 `i 105  ]
+"47
+{
+"48
+[e ( _reset_timeout_tick ..  ]
+"49
+[e = _i -> -> 0 `i `uc ]
+"50
+[e = _entry_cooldown -> -> 0 `i `uc ]
+"51
+[e = _screen_initialized -> -> 0 `i `uc ]
+"52
+[e ( _invalidate_dashboard_cache ..  ]
+"53
+[e ( _set_status (1 . `E1047 0 ]
+"54
+}
+[e :U 105 ]
+"55
+[e :UE 103 ]
+}
+"61
+[v _handle_blinker `(v ~T0 @X0 1 sf ]
+"62
+{
+[e :U _handle_blinker ]
+[f ]
+"63
+[e $ ! < -> _blink_tick `ui -> 20 `ui 107  ]
+"64
+[e $UE 106  ]
+[e :U 107 ]
+"66
+[e ( _reset_blink_tick ..  ]
+"67
+[e = _cursor_visible -> -> ! != -> _cursor_visible `i -> 0 `i `i `uc ]
+"69
+[e $ ! < -> _i `i -> 4 `i 108  ]
+"70
+[e ( _clcd_putch (2 , -> ? != -> _cursor_visible `i -> 0 `i : -> 95 `ui -> 32 `ui `uc -> + -> 192 `ui -> _i `ui `uc ]
+[e :U 108 ]
+"71
+[e :UE 106 ]
+}
+"76
+[v _process_keypress `(v ~T0 @X0 1 sf1`uc ]
+"77
+{
+[e :U _process_keypress ]
+"76
+[v _key `uc ~T0 @X0 1 r1 ]
+"77
+[f ]
+"78
+[e $ ! < -> _entry_cooldown `i -> 50 `i 110  ]
+"79
+{
+"80
+[e ++ _entry_cooldown -> -> 1 `i `uc ]
+"81
+[e $UE 109  ]
+"82
+}
+[e :U 110 ]
+"84
+[e $ ! || == -> _key `ui -> 55 `ui == -> _key `ui -> 47 `ui 111  ]
+"85
+{
+"86
+[e = *U + &U _my_pass * -> _i `ux -> -> # *U &U _my_pass `ui `ux -> ? == -> _key `ui -> 55 `ui : -> 48 `ui -> 49 `ui `uc ]
+"87
+[e ( _clcd_putch (2 , -> -> 42 `ui `uc -> + -> 192 `ui -> _i `ui `uc ]
+"88
+[e ++ _i -> -> 1 `i `uc ]
+"90
+[e ( _reset_blink_tick ..  ]
+"91
+[e = _cursor_visible -> -> 1 `i `uc ]
+"93
+[e $ ! < -> _i `i -> 4 `i 112  ]
+"94
+[e ( _clcd_putch (2 , -> -> 95 `ui `uc -> + -> 192 `ui -> _i `ui `uc ]
+[e :U 112 ]
+"95
+}
+[e :U 111 ]
+"96
+[e :UE 109 ]
+}
+"101
+[v _verify_password `(v ~T0 @X0 1 sf ]
+"102
+{
+[e :U _verify_password ]
+[f ]
+"103
+[e $ ! != -> _i `i -> 4 `i 114  ]
+"104
+[e $UE 113  ]
+[e :U 114 ]
+"106
+[e = *U + &U _my_pass * -> -> -> 4 `i `ui `ux -> -> # *U &U _my_pass `ui `ux -> -> 0 `ui `uc ]
+"108
+[e $ ! == ( _my_strcmp (2 , -> &U _user_pass `*Cuc -> &U _my_pass `*Cuc -> 0 `i 115  ]
+"109
+{
+"110
+[e = _login_successful -> -> 1 `i `uc ]
+"111
+[e $UE 113  ]
+"112
+}
+[e :U 115 ]
+"115
+[e ( _uart_puts (1 :s 1C ]
+"116
+[e -- _attempts_left -> -> 1 `i `uc ]
+"118
+[e ( _clcd_clear ..  ]
+"119
+[e ( _clcd_print (2 , :s 2C -> + -> 128 `ui -> -> 0 `i `ui `uc ]
+"120
+[e ( _clcd_putch (2 , -> + -> _attempts_left `ui -> 48 `ui `uc -> + -> 192 `ui -> -> 0 `i `ui `uc ]
+"121
+[e ( _clcd_print (2 , :s 3C -> + -> 192 `ui -> -> 1 `i `ui `uc ]
+"122
+[e ( __delay (1 -> * -> -> 2000 `i `d / -> -> 20000000 `ul `d .4000.0 `ul ]
+"124
+[e = _i -> -> 0 `i `uc ]
+"125
+[e = _entry_cooldown -> -> 0 `i `uc ]
+"126
+[e = _screen_initialized -> -> 0 `i `uc ]
+"127
+[e ( _reset_blink_tick ..  ]
+"128
+[e ( _reset_timeout_tick ..  ]
+"129
+[e ( _clcd_clear ..  ]
+"130
+[e :UE 113 ]
+}
+"135
+[v _handle_lockout `(v ~T0 @X0 1 sf ]
+"136
+{
+[e :U _handle_lockout ]
+[f ]
+"137
+[e ( _clcd_print (2 , :s 4C -> + -> 128 `ui -> -> 0 `i `ui `uc ]
+"138
+[e ( _clcd_print (2 , :s 5C -> + -> 192 `ui -> -> 0 `i `ui `uc ]
+"139
+[e :UE 116 ]
+}
+"144
+[v _get_attempts_left `(uc ~T0 @X0 1 ef ]
+"145
+{
+[e :U _get_attempts_left ]
+[f ]
+"146
+[e ) _attempts_left ]
+[e $UE 117  ]
+"147
+[e :UE 117 ]
+}
+"153
+[v _show_login_screen `(v ~T0 @X0 1 ef1`uc ]
+"154
+{
+[e :U _show_login_screen ]
+"153
+[v _key `uc ~T0 @X0 1 r1 ]
+"154
+[f ]
+"155
+[e $ ! == -> _attempts_left `i -> 0 `i 119  ]
+"156
+{
+"157
+[e ( _handle_lockout ..  ]
+"158
+[e $UE 118  ]
+"159
+}
+[e :U 119 ]
+"162
+[e $ ! == -> _screen_initialized `i -> 0 `i 120  ]
+"163
+{
+"164
+[e ( _clcd_clear ..  ]
+"165
+[e ( _clcd_print (2 , :s 6C -> + -> 128 `ui -> -> 0 `i `ui `uc ]
+"166
+[e ( _reset_blink_tick ..  ]
+"167
+[e ( _reset_timeout_tick ..  ]
+"168
+[e = _screen_initialized -> -> 1 `i `uc ]
+"169
+}
+[e :U 120 ]
+"171
+[e ( _handle_blinker ..  ]
+"172
+[e ( _process_keypress (1 _key ]
+"173
+[e ( _verify_password ..  ]
+"174
+[e ( _time_out (1 _key ]
+"176
+[e $ ! == -> _login_successful `i -> 1 `i 121  ]
+"177
+{
+"178
+[e ( _clcd_clear ..  ]
+"179
+[e ( _clcd_print (2 , :s 7C -> + -> 128 `ui -> -> 0 `i `ui `uc ]
+"180
+[e ( _clcd_print (2 , :s 8C -> + -> 192 `ui -> -> 0 `i `ui `uc ]
+"181
+[e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 20000000 `ul `d .4000.0 `ul ]
+"183
+[e ( _uart_puts (1 :s 9C ]
+"184
+[e = _login_successful -> -> 0 `i `uc ]
+"185
+[e = _i -> -> 0 `i `uc ]
+"186
+[e = _entry_cooldown -> -> 0 `i `uc ]
+"187
+[e = _screen_initialized -> -> 0 `i `uc ]
+"188
+[e ( _reset_timeout_tick ..  ]
+"189
+[e ( _set_status (1 . `E1047 2 ]
+"190
+}
+[e :U 121 ]
+"191
+[e :UE 118 ]
+}
+[a 8C 65 99 99 101 115 115 32 71 114 97 110 116 101 100 32 32 0 ]
+[a 7C 67 111 114 114 101 99 116 32 69 110 116 114 121 32 32 32 0 ]
+[a 2C 73 110 118 97 108 105 100 32 69 110 116 114 121 32 32 32 0 ]
+[a 5C 67 111 110 116 97 99 116 32 65 100 109 105 110 32 32 32 0 ]
+[a 4C 68 101 118 105 99 101 32 76 111 99 107 101 100 32 32 32 0 ]
+[a 6C 80 97 115 115 87 111 114 100 58 32 32 32 32 32 32 32 0 ]
+[a 3C 32 76 101 102 116 33 32 32 32 32 32 32 32 32 0 ]
+[a 1C 73 110 118 97 108 105 100 32 69 110 116 114 121 10 0 ]
+[a 9C 76 111 103 105 110 32 83 117 99 99 101 115 115 102 117 108 10 0 ]

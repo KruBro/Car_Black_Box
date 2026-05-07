@@ -1,33 +1,24 @@
 Version 4.0 HI-TECH Software Intermediate Code
-"49 /home/krubro/MPLABProjects/Car_Black_Box/ds1307.h
-[v _ds1307_i2c_read `(uc ~T0 @X0 0 ef1`uc ]
-"56
-[v _ds1307_i2c_write `(v ~T0 @X0 0 ef2`uc`uc ]
-"36 /home/krubro/MPLABProjects/Car_Black_Box/i2c.h
-[v _i2c_start `(v ~T0 @X0 0 ef ]
-"55
-[v _i2c_write `(i ~T0 @X0 0 ef1`uc ]
-"48
-[v _i2c_repeat_start `(v ~T0 @X0 0 ef ]
-"64
-[v _i2c_read `(uc ~T0 @X0 0 ef1`uc ]
-"42
-[v _i2c_stop `(v ~T0 @X0 0 ef ]
-"28 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
+"10 /home/krubro/MPLABProjects/Car_Black_Box/state.c
+[c E1047 0 1 2 3 4 5 6 7 .. ]
+[n E1047 . DASHBOARD LOGIN MENU VIEW_LOGS CLEAR_LOGS DOWNLOAD_LOGS SET_TIME CHANGE_PASSWORD  ]
+"97 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
+[v _clcd_clear `(v ~T0 @X0 0 ef ]
+"15 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
 [p x FOSC    =  HS        ]
-"29
+"16
 [p x WDTE    =  OFF       ]
-"30
+"17
 [p x PWRTE  =  OFF       ]
-"31
+"18
 [p x BOREN  =  ON        ]
-"32
+"19
 [p x LVP      =  OFF       ]
-"33
+"20
 [p x CPD      =  OFF       ]
-"34
+"21
 [p x WRT      =  OFF       ]
-"35
+"22
 [p x CP        =  OFF       ]
 "38 /home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8/pic/include/proc/pic16f877a.h
 [; <" INDF equ 00h ;# ">
@@ -149,74 +140,36 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; <" EECON1 equ 018Ch ;# ">
 "2347
 [; <" EECON2 equ 018Dh ;# ">
-"38 /home/krubro/MPLABProjects/Car_Black_Box/ds1307.c
-[v _init_rtc `(v ~T0 @X0 1 ef ]
-"39
+"10 /home/krubro/MPLABProjects/Car_Black_Box/state.c
+[v _current_state `E1047 ~T0 @X0 1 s ]
+[i _current_state
+. `E1047 0
+]
+"15
+[v _set_status `(v ~T0 @X0 1 ef1`E1047 ]
+"16
 {
-[e :U _init_rtc ]
+[e :U _set_status ]
+"15
+[v _new_state `E1047 ~T0 @X0 1 r1 ]
+"16
 [f ]
-"40
-[v _sec_reg `uc ~T0 @X0 1 a ]
-"42
-[e = _sec_reg ( _ds1307_i2c_read (1 -> -> 0 `i `uc ]
-"43
-[e = _sec_reg -> & -> _sec_reg `i -> 127 `i `uc ]
-"44
-[e ( _ds1307_i2c_write (2 , _sec_reg -> -> 0 `i `uc ]
-"45
+"17
+[e ( _clcd_clear ..  ]
+"18
+[e = _current_state _new_state ]
+"19
 [e :UE 99 ]
 }
-"58
-[v _ds1307_i2c_read `(uc ~T0 @X0 1 ef1`uc ]
-"59
+"24
+[v _get_status `(E1047 ~T0 @X0 1 ef ]
+"25
 {
-[e :U _ds1307_i2c_read ]
-"58
-[v _address `uc ~T0 @X0 1 r1 ]
-"59
+[e :U _get_status ]
 [f ]
-"60
-[v _data `uc ~T0 @X0 1 a ]
-"62
-[e ( _i2c_start ..  ]
-"63
-[e ( _i2c_write (1 -> -> 208 `i `uc ]
-"64
-[e ( _i2c_write (1 _address ]
-"65
-[e ( _i2c_repeat_start ..  ]
-"66
-[e ( _i2c_write (1 -> -> 209 `i `uc ]
-"74
-[e = _data ( _i2c_read (1 -> -> 1 `i `uc ]
-"76
-[e ( _i2c_stop ..  ]
-"77
-[e ) _data ]
+"26
+[e ) _current_state ]
 [e $UE 100  ]
-"78
+"27
 [e :UE 100 ]
-}
-"89
-[v _ds1307_i2c_write `(v ~T0 @X0 1 ef2`uc`uc ]
-"90
-{
-[e :U _ds1307_i2c_write ]
-"89
-[v _data `uc ~T0 @X0 1 r1 ]
-[v _address `uc ~T0 @X0 1 r2 ]
-"90
-[f ]
-"91
-[e ( _i2c_start ..  ]
-"92
-[e ( _i2c_write (1 -> -> 208 `i `uc ]
-"93
-[e ( _i2c_write (1 _address ]
-"94
-[e ( _i2c_write (1 _data ]
-"95
-[e ( _i2c_stop ..  ]
-"96
-[e :UE 101 ]
 }

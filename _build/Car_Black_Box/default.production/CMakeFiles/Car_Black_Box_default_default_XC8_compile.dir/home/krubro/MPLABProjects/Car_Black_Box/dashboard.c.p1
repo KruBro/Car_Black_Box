@@ -1,27 +1,25 @@
 Version 4.0 HI-TECH Software Intermediate Code
-"49 /home/krubro/MPLABProjects/Car_Black_Box/ds1307.h
+"117 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
 [v _ds1307_i2c_read `(uc ~T0 @X0 0 ef1`uc ]
-"85 /home/krubro/MPLABProjects/Car_Black_Box/clcd.h
+"94
 [v _clcd_print `(v ~T0 @X0 0 ef2`*Cuc`uc ]
-"70 /home/krubro/MPLABProjects/Car_Black_Box/digital_keypad.h
-[v _read_digital_keypad `(uc ~T0 @X0 0 ef1`uc ]
-"41 /home/krubro/MPLABProjects/Car_Black_Box/adc.h
+"159
 [v _read_adc `(us ~T0 @X0 0 ef1`uc ]
-"28 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
+"15 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
 [p x FOSC    =  HS        ]
-"29
+"16
 [p x WDTE    =  OFF       ]
-"30
+"17
 [p x PWRTE  =  OFF       ]
-"31
+"18
 [p x BOREN  =  ON        ]
-"32
+"19
 [p x LVP      =  OFF       ]
-"33
+"20
 [p x CPD      =  OFF       ]
-"34
+"21
 [p x WRT      =  OFF       ]
-"35
+"22
 [p x CP        =  OFF       ]
 "38 /home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8/pic/include/proc/pic16f877a.h
 [; <" INDF equ 00h ;# ">
@@ -143,70 +141,89 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; <" EECON1 equ 018Ch ;# ">
 "2347
 [; <" EECON2 equ 018Dh ;# ">
-"36 /home/krubro/MPLABProjects/Car_Black_Box/dashboard.c
-[v _get_time `(v ~T0 @X0 1 sf1`*uc ]
-"37
+"10 /home/krubro/MPLABProjects/Car_Black_Box/dashboard.c
+[v _prev_speed `us ~T0 @X0 1 s ]
+[i _prev_speed
+-> -> 65535 `ui `us
+]
+"15
+[v _invalidate_dashboard_cache `(v ~T0 @X0 1 ef ]
+"16
 {
-[e :U _get_time ]
-"36
-[v _clock_reg `*uc ~T0 @X0 1 r1 ]
-"37
+[e :U _invalidate_dashboard_cache ]
 [f ]
-"38
-[e = *U + _clock_reg * -> -> 0 `i `x -> -> # *U _clock_reg `i `x ( _ds1307_i2c_read (1 -> -> 0 `i `uc ]
-"39
-[e = *U + _clock_reg * -> -> 1 `i `x -> -> # *U _clock_reg `i `x ( _ds1307_i2c_read (1 -> -> 1 `i `uc ]
-"40
-[e = *U + _clock_reg * -> -> 2 `i `x -> -> # *U _clock_reg `i `x ( _ds1307_i2c_read (1 -> -> 2 `i `uc ]
-"41
+"17
+[e = _prev_speed -> -> 65535 `ui `us ]
+"18
 [e :UE 99 ]
 }
-"52
-[v _display_time `(v ~T0 @X0 1 sf1`*uc ]
-"53
+"23
+[v _get_time `(v ~T0 @X0 1 sf1`*uc ]
+"24
 {
-[e :U _display_time ]
-"52
+[e :U _get_time ]
+"23
 [v _clock_reg `*uc ~T0 @X0 1 r1 ]
-"53
+"24
 [f ]
-"54
-[v _time `uc ~T0 @X0 -> 9 `i a ]
-"56
-[e ( _clcd_print (2 , :s 1C -> + -> 128 `ui -> -> 0 `i `ui `uc ]
-"59
-[e = *U + &U _time * -> -> -> 0 `i `ui `ux -> -> # *U &U _time `ui `ux -> + & -> >> -> *U + _clock_reg * -> -> 2 `i `x -> -> # *U _clock_reg `i `x `i -> 4 `i `ui -> 3 `ui -> 48 `ui `uc ]
-"60
-[e = *U + &U _time * -> -> -> 1 `i `ui `ux -> -> # *U &U _time `ui `ux -> + & -> *U + _clock_reg * -> -> 2 `i `x -> -> # *U _clock_reg `i `x `ui -> 15 `ui -> 48 `ui `uc ]
-"61
-[e = *U + &U _time * -> -> -> 2 `i `ui `ux -> -> # *U &U _time `ui `ux -> -> 58 `ui `uc ]
-"64
-[e = *U + &U _time * -> -> -> 3 `i `ui `ux -> -> # *U &U _time `ui `ux -> + & -> >> -> *U + _clock_reg * -> -> 1 `i `x -> -> # *U _clock_reg `i `x `i -> 4 `i `ui -> 7 `ui -> 48 `ui `uc ]
-"65
-[e = *U + &U _time * -> -> -> 4 `i `ui `ux -> -> # *U &U _time `ui `ux -> + & -> *U + _clock_reg * -> -> 1 `i `x -> -> # *U _clock_reg `i `x `ui -> 15 `ui -> 48 `ui `uc ]
-"66
-[e = *U + &U _time * -> -> -> 5 `i `ui `ux -> -> # *U &U _time `ui `ux -> -> 58 `ui `uc ]
-"69
-[e = *U + &U _time * -> -> -> 6 `i `ui `ux -> -> # *U &U _time `ui `ux -> + & -> >> -> *U + _clock_reg * -> -> 0 `i `x -> -> # *U _clock_reg `i `x `i -> 4 `i `ui -> 7 `ui -> 48 `ui `uc ]
-"70
-[e = *U + &U _time * -> -> -> 7 `i `ui `ux -> -> # *U &U _time `ui `ux -> + & -> *U + _clock_reg * -> -> 0 `i `x -> -> # *U _clock_reg `i `x `ui -> 15 `ui -> 48 `ui `uc ]
-"71
-[e = *U + &U _time * -> -> -> 8 `i `ui `ux -> -> # *U &U _time `ui `ux -> -> 0 `ui `uc ]
-"73
-[e ( _clcd_print (2 , -> &U _time `*Cuc -> + -> 192 `ui -> -> 0 `i `ui `uc ]
-"74
+"25
+[e = *U + _clock_reg * -> -> 0 `i `x -> -> # *U _clock_reg `i `x ( _ds1307_i2c_read (1 -> -> 0 `ui `uc ]
+"26
+[e = *U + _clock_reg * -> -> 1 `i `x -> -> # *U _clock_reg `i `x ( _ds1307_i2c_read (1 -> -> 1 `ui `uc ]
+"27
+[e = *U + _clock_reg * -> -> 2 `i `x -> -> # *U _clock_reg `i `x ( _ds1307_i2c_read (1 -> -> 2 `ui `uc ]
+"28
 [e :UE 100 ]
 }
-"97
-[v _display_event `(v ~T0 @X0 1 sf ]
-"98
+"33
+[v _display_time `(v ~T0 @X0 1 sf1`*uc ]
+"34
+{
+[e :U _display_time ]
+"33
+[v _clock_reg `*uc ~T0 @X0 1 r1 ]
+"34
+[f ]
+"35
+[v _time `uc ~T0 @X0 -> 9 `i a ]
+"37
+[e ( _clcd_print (2 , :s 1C -> + -> 128 `ui -> -> 0 `i `ui `uc ]
+"40
+[e = *U + &U _time * -> -> -> 0 `i `ui `ux -> -> # *U &U _time `ui `ux -> + & -> >> -> *U + _clock_reg * -> -> 2 `i `x -> -> # *U _clock_reg `i `x `i -> 4 `i `ui -> 3 `ui -> 48 `ui `uc ]
+"41
+[e = *U + &U _time * -> -> -> 1 `i `ui `ux -> -> # *U &U _time `ui `ux -> + & -> *U + _clock_reg * -> -> 2 `i `x -> -> # *U _clock_reg `i `x `ui -> 15 `ui -> 48 `ui `uc ]
+"42
+[e = *U + &U _time * -> -> -> 2 `i `ui `ux -> -> # *U &U _time `ui `ux -> -> 58 `ui `uc ]
+"43
+[e = *U + &U _time * -> -> -> 3 `i `ui `ux -> -> # *U &U _time `ui `ux -> + & -> >> -> *U + _clock_reg * -> -> 1 `i `x -> -> # *U _clock_reg `i `x `i -> 4 `i `ui -> 7 `ui -> 48 `ui `uc ]
+"44
+[e = *U + &U _time * -> -> -> 4 `i `ui `ux -> -> # *U &U _time `ui `ux -> + & -> *U + _clock_reg * -> -> 1 `i `x -> -> # *U _clock_reg `i `x `ui -> 15 `ui -> 48 `ui `uc ]
+"45
+[e = *U + &U _time * -> -> -> 5 `i `ui `ux -> -> # *U &U _time `ui `ux -> -> 58 `ui `uc ]
+"46
+[e = *U + &U _time * -> -> -> 6 `i `ui `ux -> -> # *U &U _time `ui `ux -> + & -> >> -> *U + _clock_reg * -> -> 0 `i `x -> -> # *U _clock_reg `i `x `i -> 4 `i `ui -> 7 `ui -> 48 `ui `uc ]
+"47
+[e = *U + &U _time * -> -> -> 7 `i `ui `ux -> -> # *U &U _time `ui `ux -> + & -> *U + _clock_reg * -> -> 0 `i `x -> -> # *U _clock_reg `i `x `ui -> 15 `ui -> 48 `ui `uc ]
+"48
+[e = *U + &U _time * -> -> -> 8 `i `ui `ux -> -> # *U &U _time `ui `ux -> -> 0 `ui `uc ]
+"50
+[e ( _clcd_print (2 , -> &U _time `*Cuc -> + -> 192 `ui -> -> 0 `i `ui `uc ]
+"51
+[e :UE 101 ]
+}
+"57
+[v _display_event `(v ~T0 @X0 1 sf1`uc ]
+"58
 {
 [e :U _display_event ]
+"57
+[v _key `uc ~T0 @X0 1 r1 ]
+"58
 [f ]
-[v F1055 `*Cuc ~T0 @X0 1 t ]
-"100
-[v F1053 `C*Cuc ~T0 @X0 -> 6 `i s event ]
-[i F1053
+[v F1076 `*Cuc ~T0 @X0 1 t ]
+"59
+[v F1074 `C*Cuc ~T0 @X0 -> 6 `i s event ]
+[i F1074
 :U ..
 :s 2C
 :s 3C
@@ -216,168 +233,156 @@ Version 4.0 HI-TECH Software Intermediate Code
 :s 7C
 ..
 ]
-"103
-[v F1056 `uc ~T0 @X0 1 s gear_index ]
-[i F1056
+"60
+[v F1077 `uc ~T0 @X0 1 s gear_index ]
+[i F1077
+-> -> 1 `i `uc
+]
+"61
+[v F1078 `uc ~T0 @X0 1 s ignition_on ]
+[i F1078
 -> -> 0 `i `uc
 ]
-"104
-[v F1057 `uc ~T0 @X0 1 s ignition_on ]
-[i F1057
+"62
+[v F1079 `uc ~T0 @X0 1 s crash_detected ]
+[i F1079
 -> -> 0 `i `uc
 ]
-"105
-[v F1058 `uc ~T0 @X0 1 s crash_detected ]
-[i F1058
--> -> 0 `i `uc
-]
-"107
+"64
 [e ( _clcd_print (2 , :s 8C -> + -> 128 `ui -> -> 10 `i `ui `uc ]
-"109
-[v _key `uc ~T0 @X0 1 a ]
-[e = _key ( _read_digital_keypad (1 -> -> 0 `i `uc ]
-"111
-[e $ ! && == -> _key `ui -> 62 `ui == -> F1058 `i -> 0 `i 102  ]
-"112
+"67
+[e $ ! && == -> _key `ui -> 62 `ui == -> F1079 `i -> 0 `i 103  ]
+"68
 {
-"113
-[e = F1057 -> -> 1 `i `uc ]
-"114
-[e = F1058 -> -> 1 `i `uc ]
-"115
-[e ( _clcd_print (2 , :s 9C -> + -> 192 `ui -> -> 10 `i `ui `uc ]
-"116
+"69
+[e = F1078 -> -> 1 `i `uc ]
+"70
+[e = F1079 -> -> 1 `i `uc ]
+"71
 }
-[e $U 103  ]
-"117
-[e :U 102 ]
-[e $ ! && == -> _key `ui -> 61 `ui == -> F1058 `i -> 0 `i 104  ]
-"118
-{
-"119
-[e = F1057 -> -> 1 `i `uc ]
-"120
-[e $ ! < -> F1056 `ui -> 5 `ui 105  ]
-"121
-[e ++ F1056 -> -> 1 `i `uc ]
-[e :U 105 ]
-"122
-}
-[e $U 106  ]
-"123
-[e :U 104 ]
-[e $ ! && == -> _key `ui -> 59 `ui == -> F1058 `i -> 0 `i 107  ]
-"124
-{
-"125
-[e = F1057 -> -> 1 `i `uc ]
-"126
-[e $ ! > -> F1056 `ui -> 0 `ui 108  ]
-"127
-[e -- F1056 -> -> 1 `i `uc ]
-[e :U 108 ]
-"128
-}
-[e :U 107 ]
-[e :U 106 ]
+[e $U 104  ]
+"72
 [e :U 103 ]
-"130
-[e $ ! && == -> F1057 `i -> 1 `i == -> F1058 `i -> 0 `i 109  ]
-"131
+[e $ ! && == -> _key `ui -> 61 `ui == -> F1079 `i -> 0 `i 105  ]
+"73
 {
-"132
-[e ( _clcd_print (2 , *U + &U F1053 * -> F1056 `ux -> -> # *U &U F1053 `ui `ux -> + -> 192 `ui -> -> 10 `i `ui `uc ]
-"133
+"74
+[e = F1078 -> -> 1 `i `uc ]
+"75
+[e $ ! < -> F1077 `ui -> 5 `ui 106  ]
+[e ++ F1077 -> -> 1 `i `uc ]
+[e :U 106 ]
+"76
 }
-[e $U 110  ]
-"134
+[e $U 107  ]
+"77
+[e :U 105 ]
+[e $ ! && == -> _key `ui -> 59 `ui == -> F1079 `i -> 0 `i 108  ]
+"78
+{
+"79
+[e = F1078 -> -> 1 `i `uc ]
+"80
+[e $ ! > -> F1077 `ui -> 0 `ui 109  ]
+[e -- F1077 -> -> 1 `i `uc ]
 [e :U 109 ]
-[e $ ! == -> F1057 `i -> 0 `i 111  ]
-"135
-{
-"136
-[e ( _clcd_print (2 , :s 10C -> + -> 192 `ui -> -> 10 `i `ui `uc ]
-"137
+"81
 }
-[e :U 111 ]
+[e :U 108 ]
+[e :U 107 ]
+[e :U 104 ]
+"84
+[e $ ! == -> F1079 `i -> 1 `i 110  ]
+"85
+[e ( _clcd_print (2 , :s 9C -> + -> 192 `ui -> -> 10 `i `ui `uc ]
+[e $U 111  ]
+"86
 [e :U 110 ]
-"139
-[e :UE 101 ]
+[e $ ! == -> F1078 `i -> 1 `i 112  ]
+"87
+[e ( _clcd_print (2 , *U + &U F1074 * -> F1077 `ux -> -> # *U &U F1074 `ui `ux -> + -> 192 `ui -> -> 10 `i `ui `uc ]
+[e $U 113  ]
+"88
+[e :U 112 ]
+"89
+[e ( _clcd_print (2 , :s 10C -> + -> 192 `ui -> -> 10 `i `ui `uc ]
+[e :U 113 ]
+[e :U 111 ]
+"90
+[e :UE 102 ]
 }
-"151
+"95
 [v _convert_adc_val_to_char `(v ~T0 @X0 1 ef2`us`*uc ]
-"152
+"96
 {
 [e :U _convert_adc_val_to_char ]
-"151
+"95
 [v _reg_val `us ~T0 @X0 1 r1 ]
 [v _buff `*uc ~T0 @X0 1 r2 ]
-"152
+"96
 [f ]
-"153
+"97
 [e = *U + _buff * -> -> 0 `i `x -> -> # *U _buff `i `x -> + / -> _reg_val `ui -> 100 `ui -> 48 `ui `uc ]
-"154
+"98
 [e = *U + _buff * -> -> 1 `i `x -> -> # *U _buff `i `x -> + % / -> _reg_val `ui -> 10 `ui -> 10 `ui -> 48 `ui `uc ]
-"155
+"99
 [e = *U + _buff * -> -> 2 `i `x -> -> # *U _buff `i `x -> + % -> _reg_val `ui -> 10 `ui -> 48 `ui `uc ]
-"156
+"100
 [e = *U + _buff * -> -> 3 `i `x -> -> # *U _buff `i `x -> -> 0 `ui `uc ]
-"157
-[e :UE 112 ]
+"101
+[e :UE 114 ]
 }
-"164
+"106
 [v _display_speed `(v ~T0 @X0 1 sf ]
-"165
+"107
 {
 [e :U _display_speed ]
 [f ]
-"166
-[v F1067 `us ~T0 @X0 1 s curr_speed ]
-"167
-[v F1068 `us ~T0 @X0 1 s prev_speed ]
-[i F1068
--> -> 65535 `ui `us
-]
-"168
+"108
+[v F1087 `us ~T0 @X0 1 s curr_speed ]
+"109
 [v _buff `uc ~T0 @X0 -> 4 `i a ]
-"170
+"111
 [e ( _clcd_print (2 , :s 11C -> + -> 128 `ui -> -> 13 `i `ui `uc ]
-"172
-[e = F1067 -> / * -> ( _read_adc (1 -> -> 0 `i `uc `ul -> 100 `ul -> 1023 `ul `us ]
-"174
-[e $ ! != -> F1067 `ui -> F1068 `ui 114  ]
-"175
+"113
+[e = F1087 -> / * -> ( _read_adc (1 -> -> 0 `i `uc `ul -> 100 `ul -> 1023 `ul `us ]
+"115
+[e $ ! != -> F1087 `ui -> _prev_speed `ui 116  ]
+"116
 {
-"176
-[e = F1068 F1067 ]
-"177
-[e ( _convert_adc_val_to_char (2 , F1067 &U _buff ]
-"178
+"117
+[e = _prev_speed F1087 ]
+"118
+[e ( _convert_adc_val_to_char (2 , F1087 &U _buff ]
+"119
 [e ( _clcd_print (2 , -> &U _buff `*Cuc -> + -> 192 `ui -> -> 13 `i `ui `uc ]
-"179
+"120
 }
-[e :U 114 ]
-"180
-[e :UE 113 ]
+[e :U 116 ]
+"121
+[e :UE 115 ]
 }
-"191
-[v _clcd_dashboard `(v ~T0 @X0 1 ef ]
-"192
+"127
+[v _clcd_dashboard `(v ~T0 @X0 1 ef1`uc ]
+"128
 {
 [e :U _clcd_dashboard ]
+"127
+[v _key `uc ~T0 @X0 1 r1 ]
+"128
 [f ]
-"193
+"129
 [v _clock_reg `uc ~T0 @X0 -> 3 `i a ]
-"195
+"131
 [e ( _get_time (1 &U _clock_reg ]
-"196
+"132
 [e ( _display_time (1 &U _clock_reg ]
-"197
-[e ( _display_event ..  ]
-"198
+"133
+[e ( _display_event (1 _key ]
+"134
 [e ( _display_speed ..  ]
-"199
-[e :UE 115 ]
+"135
+[e :UE 117 ]
 }
 [a 8C 69 86 0 ]
 [a 2C 71 82 0 ]
