@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <executable name="/home/krubro/MPLABProjects/Car_Black_Box/out/Car_Black_Box/production/default-production.hex">
+    <memory name="program">
+      <units>words</units>
+      <length>8192</length>
+      <used>1551</used>
+      <free>6641</free>
+    </memory>
+    <memory name="data">
+      <units>bytes</units>
+      <length>368</length>
+      <used>52</used>
+      <free>316</free>
+    </memory>
+  </executable>
+</project>

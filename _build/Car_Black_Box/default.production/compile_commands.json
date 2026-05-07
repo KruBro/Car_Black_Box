@@ -1,0 +1,50 @@
+[
+{
+  "directory": "/home/krubro/MPLABProjects/Car_Black_Box/_build/Car_Black_Box/default.production",
+  "command": "/opt/microchip/xc8/v3.10/bin/xc8-cc -DXPRJ_default=default -D__16F877A__ -c -mcpu=16F877A -mdfp=/home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8 -fno-short-double -fno-short-float -O0 -maddrqual=ignore -mwarn=-3 -msummary=-psect,-class,+mem,-hex,-file -ginhx32 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall -mno-default-config-bits -std=c99 -gdwarf-3 -mstack=compiled:auto:auto -o CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/adc.c.p1 -c /home/krubro/MPLABProjects/Car_Black_Box/adc.c",
+  "file": "/home/krubro/MPLABProjects/Car_Black_Box/adc.c",
+  "output": "/home/krubro/MPLABProjects/Car_Black_Box/_build/Car_Black_Box/default.production/CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/adc.c.p1"
+},
+{
+  "directory": "/home/krubro/MPLABProjects/Car_Black_Box/_build/Car_Black_Box/default.production",
+  "command": "/opt/microchip/xc8/v3.10/bin/xc8-cc -DXPRJ_default=default -D__16F877A__ -c -mcpu=16F877A -mdfp=/home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8 -fno-short-double -fno-short-float -O0 -maddrqual=ignore -mwarn=-3 -msummary=-psect,-class,+mem,-hex,-file -ginhx32 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall -mno-default-config-bits -std=c99 -gdwarf-3 -mstack=compiled:auto:auto -o CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/clcd.c.p1 -c /home/krubro/MPLABProjects/Car_Black_Box/clcd.c",
+  "file": "/home/krubro/MPLABProjects/Car_Black_Box/clcd.c",
+  "output": "/home/krubro/MPLABProjects/Car_Black_Box/_build/Car_Black_Box/default.production/CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/clcd.c.p1"
+},
+{
+  "directory": "/home/krubro/MPLABProjects/Car_Black_Box/_build/Car_Black_Box/default.production",
+  "command": "/opt/microchip/xc8/v3.10/bin/xc8-cc -DXPRJ_default=default -D__16F877A__ -c -mcpu=16F877A -mdfp=/home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8 -fno-short-double -fno-short-float -O0 -maddrqual=ignore -mwarn=-3 -msummary=-psect,-class,+mem,-hex,-file -ginhx32 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall -mno-default-config-bits -std=c99 -gdwarf-3 -mstack=compiled:auto:auto -o CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/dashboard.c.p1 -c /home/krubro/MPLABProjects/Car_Black_Box/dashboard.c",
+  "file": "/home/krubro/MPLABProjects/Car_Black_Box/dashboard.c",
+  "output": "/home/krubro/MPLABProjects/Car_Black_Box/_build/Car_Black_Box/default.production/CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/dashboard.c.p1"
+},
+{
+  "directory": "/home/krubro/MPLABProjects/Car_Black_Box/_build/Car_Black_Box/default.production",
+  "command": "/opt/microchip/xc8/v3.10/bin/xc8-cc -DXPRJ_default=default -D__16F877A__ -c -mcpu=16F877A -mdfp=/home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8 -fno-short-double -fno-short-float -O0 -maddrqual=ignore -mwarn=-3 -msummary=-psect,-class,+mem,-hex,-file -ginhx32 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall -mno-default-config-bits -std=c99 -gdwarf-3 -mstack=compiled:auto:auto -o CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/digital_keypad.c.p1 -c /home/krubro/MPLABProjects/Car_Black_Box/digital_keypad.c",
+  "file": "/home/krubro/MPLABProjects/Car_Black_Box/digital_keypad.c",
+  "output": "/home/krubro/MPLABProjects/Car_Black_Box/_build/Car_Black_Box/default.production/CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/digital_keypad.c.p1"
+},
+{
+  "directory": "/home/krubro/MPLABProjects/Car_Black_Box/_build/Car_Black_Box/default.production",
+  "command": "/opt/microchip/xc8/v3.10/bin/xc8-cc -DXPRJ_default=default -D__16F877A__ -c -mcpu=16F877A -mdfp=/home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8 -fno-short-double -fno-short-float -O0 -maddrqual=ignore -mwarn=-3 -msummary=-psect,-class,+mem,-hex,-file -ginhx32 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall -mno-default-config-bits -std=c99 -gdwarf-3 -mstack=compiled:auto:auto -o CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/ds1307.c.p1 -c /home/krubro/MPLABProjects/Car_Black_Box/ds1307.c",
+  "file": "/home/krubro/MPLABProjects/Car_Black_Box/ds1307.c",
+  "output": "/home/krubro/MPLABProjects/Car_Black_Box/_build/Car_Black_Box/default.production/CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/ds1307.c.p1"
+},
+{
+  "directory": "/home/krubro/MPLABProjects/Car_Black_Box/_build/Car_Black_Box/default.production",
+  "command": "/opt/microchip/xc8/v3.10/bin/xc8-cc -DXPRJ_default=default -D__16F877A__ -c -mcpu=16F877A -mdfp=/home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8 -fno-short-double -fno-short-float -O0 -maddrqual=ignore -mwarn=-3 -msummary=-psect,-class,+mem,-hex,-file -ginhx32 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall -mno-default-config-bits -std=c99 -gdwarf-3 -mstack=compiled:auto:auto -o CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/i2c.c.p1 -c /home/krubro/MPLABProjects/Car_Black_Box/i2c.c",
+  "file": "/home/krubro/MPLABProjects/Car_Black_Box/i2c.c",
+  "output": "/home/krubro/MPLABProjects/Car_Black_Box/_build/Car_Black_Box/default.production/CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/i2c.c.p1"
+},
+{
+  "directory": "/home/krubro/MPLABProjects/Car_Black_Box/_build/Car_Black_Box/default.production",
+  "command": "/opt/microchip/xc8/v3.10/bin/xc8-cc -DXPRJ_default=default -D__16F877A__ -c -mcpu=16F877A -mdfp=/home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8 -fno-short-double -fno-short-float -O0 -maddrqual=ignore -mwarn=-3 -msummary=-psect,-class,+mem,-hex,-file -ginhx32 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall -mno-default-config-bits -std=c99 -gdwarf-3 -mstack=compiled:auto:auto -o CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/main.c.p1 -c /home/krubro/MPLABProjects/Car_Black_Box/main.c",
+  "file": "/home/krubro/MPLABProjects/Car_Black_Box/main.c",
+  "output": "/home/krubro/MPLABProjects/Car_Black_Box/_build/Car_Black_Box/default.production/CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/main.c.p1"
+},
+{
+  "directory": "/home/krubro/MPLABProjects/Car_Black_Box/_build/Car_Black_Box/default.production",
+  "command": "/opt/microchip/xc8/v3.10/bin/xc8-cc -DXPRJ_default=default -D__16F877A__ -c -mcpu=16F877A -mdfp=/home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8 -fno-short-double -fno-short-float -O0 -maddrqual=ignore -mwarn=-3 -msummary=-psect,-class,+mem,-hex,-file -ginhx32 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall -mno-default-config-bits -std=c99 -gdwarf-3 -mstack=compiled:auto:auto -o CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/uart.c.p1 -c /home/krubro/MPLABProjects/Car_Black_Box/uart.c",
+  "file": "/home/krubro/MPLABProjects/Car_Black_Box/uart.c",
+  "output": "/home/krubro/MPLABProjects/Car_Black_Box/_build/Car_Black_Box/default.production/CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/uart.c.p1"
+}
+]
