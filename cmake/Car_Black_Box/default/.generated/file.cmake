@@ -23,6 +23,8 @@ set(Car_Black_Box_default_default_XC8_FILE_TYPE_compile
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../login.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../main.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../menu.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../../set_password.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../../set_time.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../state.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../timer.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../view_logs.c")

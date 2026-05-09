@@ -1,7 +1,7 @@
 Version 4.0 HI-TECH Software Intermediate Code
 "10 /home/krubro/MPLABProjects/Car_Black_Box/events.c
-[c E1069 0 1 2 3 4 5 6 .. ]
-[n E1069 . EVENT_NONE EVENT_SW1 EVENT_SW2 EVENT_SW3 EVENT_SW4 EVENT_SW5 EVENT_SW6  ]
+[c E1067 0 1 2 3 4 5 6 .. ]
+[n E1067 . EVENT_NONE EVENT_SW1 EVENT_SW2 EVENT_SW3 EVENT_SW4 EVENT_SW5 EVENT_SW6  ]
 "11 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
 [p x FOSC    =  HS ]
 "12
@@ -139,7 +139,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "2347
 [; <" EECON2 equ 018Dh ;# ">
 "10 /home/krubro/MPLABProjects/Car_Black_Box/events.c
-[v _translate_key `(E1069 ~T0 @X0 1 ef1`uc ]
+[v _translate_key `(E1067 ~T0 @X0 1 ef1`uc ]
 "11
 {
 [e :U _translate_key ]
@@ -153,31 +153,31 @@ Version 4.0 HI-TECH Software Intermediate Code
 {
 "14
 [e :U 104 ]
-[e ) . `E1069 1 ]
+[e ) . `E1067 1 ]
 [e $UE 101  ]
 "15
 [e :U 105 ]
-[e ) . `E1069 2 ]
+[e ) . `E1067 2 ]
 [e $UE 101  ]
 "16
 [e :U 106 ]
-[e ) . `E1069 3 ]
+[e ) . `E1067 3 ]
 [e $UE 101  ]
 "17
 [e :U 107 ]
-[e ) . `E1069 4 ]
+[e ) . `E1067 4 ]
 [e $UE 101  ]
 "18
 [e :U 108 ]
-[e ) . `E1069 5 ]
+[e ) . `E1067 5 ]
 [e $UE 101  ]
 "19
 [e :U 109 ]
-[e ) . `E1069 6 ]
+[e ) . `E1067 6 ]
 [e $UE 101  ]
 "20
 [e :U 110 ]
-[e ) . `E1069 0 ]
+[e ) . `E1067 0 ]
 [e $UE 101  ]
 "21
 }

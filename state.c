@@ -20,7 +20,7 @@ void set_status(STATE new_state)
     clcd_clear();
     uart_puts("[STATE] ");
     uart_puts(state_names[new_state]);
-    uart_puts("\n");
+    uart_puts("\r\n");
     current_state = new_state;
 }
 

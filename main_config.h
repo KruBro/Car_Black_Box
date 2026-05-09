@@ -57,9 +57,6 @@ typedef struct
  *   gear / flags               — written by dashboard_update() from keypad.
  *   speed                      — written by dashboard_update() from ADC.
  *   log_pending                — set by dashboard_update(), cleared by main().
- *
- * No module may read hardware to produce these values.
- * No module may hold a separate copy of these values.
  * ------------------------------------------------------------------------- */
 typedef struct
 {
@@ -72,18 +69,20 @@ typedef struct
     unsigned char log_pending;
 } SYSTEM_STATE;
 
-extern SYSTEM_STATE sys;   /* Defined once in main.c */
+extern SYSTEM_STATE sys;    // Defined once in main.c
 
 /* -------------------------------------------------------------------------
- * Peripheral and module headers (order matters — lower layers first).
+ * Headers — lower layers first; types above must be defined before eeprom.h
  * ------------------------------------------------------------------------- */
 #include <xc.h>
 #include "blackbox_drivers.h"
 #include "events.h"
 #include "timer.h"
+#include "eeprom.h"
 #include "state.h"
 #include "login.h"
-#include "eeprom.h"
+#include "set_password.h"
+#include "set_time.h"
 #include "view_logs.h"
 #include "menu.h"
 #include "dashboard.h"

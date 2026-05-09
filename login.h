@@ -24,7 +24,14 @@ void          login_update(EVENT evt);
 void          login_render(void);
 void          login_reset(void);
 
-unsigned char is_logged_in(void);   /* 1 = authenticated session active */
-void          do_logout(void);      /* Clears the logged-in flag        */
+unsigned char is_logged_in(void);   // 1 = authenticated session active
+void          do_logout(void);      // Clears the logged-in flag
+
+// Called once in init_config() — loads PIN from EEPROM into RAM
+// Falls back to default "1111" if EEPROM is unprogrammed (reads 0xFF)
+void          login_load_password(void);
+
+// Called by set_password after a successful change — updates live PIN in RAM
+void          login_set_password(const unsigned char *new_pass);
 
 #endif /* LOGIN_H */

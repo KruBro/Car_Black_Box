@@ -1,12 +1,12 @@
 Version 4.0 HI-TECH Software Intermediate Code
 "42 /home/krubro/MPLABProjects/Car_Black_Box/menu.c
-[c E1085 0 1 2 3 4 5 6 7 .. ]
-[n E1085 . DASHBOARD LOGIN MENU VIEW_LOGS CLEAR_LOGS DOWNLOAD_LOGS SET_TIME CHANGE_PASSWORD  ]
+[c E1095 0 1 2 3 4 5 6 7 .. ]
+[n E1095 . DASHBOARD LOGIN MENU VIEW_LOGS CLEAR_LOGS DOWNLOAD_LOGS SET_TIME CHANGE_PASSWORD  ]
 "27 /home/krubro/MPLABProjects/Car_Black_Box/timer.h
 [v _reset_timeout_tick `(v ~T0 @X0 0 ef ]
 "58 /home/krubro/MPLABProjects/Car_Black_Box/menu.c
-[c E1069 0 1 2 3 4 5 6 .. ]
-[n E1069 . EVENT_NONE EVENT_SW1 EVENT_SW2 EVENT_SW3 EVENT_SW4 EVENT_SW5 EVENT_SW6  ]
+[c E1067 0 1 2 3 4 5 6 .. ]
+[n E1067 . EVENT_NONE EVENT_SW1 EVENT_SW2 EVENT_SW3 EVENT_SW4 EVENT_SW5 EVENT_SW6  ]
 "18 /home/krubro/MPLABProjects/Car_Black_Box/timer.h
 [v _timeout_tick `Vui ~T0 @X0 0 e ]
 "24 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
@@ -15,17 +15,17 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _do_logout `(v ~T0 @X0 0 ef ]
 "23 /home/krubro/MPLABProjects/Car_Black_Box/dashboard.h
 [v _invalidate_dashboard_cache `(v ~T0 @X0 0 ef ]
-"16 /home/krubro/MPLABProjects/Car_Black_Box/state.h
-[v _set_status `(v ~T0 @X0 0 ef1`E1085 ]
-"67 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
+"23 /home/krubro/MPLABProjects/Car_Black_Box/state.h
+[v _set_status `(v ~T0 @X0 0 ef1`E1095 ]
+"65 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
 [v _clcd_clear `(v ~T0 @X0 0 ef ]
-"66
+"64
 [v _clcd_print `(v ~T0 @X0 0 ef2`*Cuc`uc ]
 [v F190 `(v ~T0 @X0 1 tf1`ul ]
 "20 /opt/microchip/xc8/v3.10/pic/include/builtins.h
 [v __delay `JF190 ~T0 @X0 0 e ]
 [p i __delay ]
-"65 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
+"63 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
 [v _clcd_putch `(v ~T0 @X0 0 ef2`Cuc`uc ]
 "11 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
 [p x FOSC    =  HS ]
@@ -163,7 +163,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; <" EECON1 equ 018Ch ;# ">
 "2347
 [; <" EECON2 equ 018Dh ;# ">
-[v F1132 `*Cuc ~T0 @X0 1 t ]
+[v F1140 `*Cuc ~T0 @X0 1 t ]
 "31 /home/krubro/MPLABProjects/Car_Black_Box/menu.c
 [v _labels `C*Cuc ~T0 @X0 -> 6 `i s ]
 [i _labels
@@ -177,14 +177,14 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ]
 "42
-[v _destinations `CE1085 ~T0 @X0 -> 5 `i s ]
+[v _destinations `CE1095 ~T0 @X0 -> 5 `i s ]
 [i _destinations
 :U ..
-. `E1085 3
-. `E1085 4
-. `E1085 5
-. `E1085 6
-. `E1085 7
+. `E1095 3
+. `E1095 4
+. `E1095 5
+. `E1095 6
+. `E1095 7
 ..
 ]
 "47
@@ -213,16 +213,16 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :UE 101 ]
 }
 "58
-[v _menu_update `(v ~T0 @X0 1 ef1`E1069 ]
+[v _menu_update `(v ~T0 @X0 1 ef1`E1067 ]
 "59
 {
 [e :U _menu_update ]
 "58
-[v _evt `E1069 ~T0 @X0 1 r1 ]
+[v _evt `E1067 ~T0 @X0 1 r1 ]
 "59
 [f ]
 "61
-[e $ ! != -> _evt `ui -> . `E1069 0 `ui 103  ]
+[e $ ! != -> _evt `ui -> . `E1067 0 `ui 103  ]
 [e ( _reset_timeout_tick ..  ]
 [e :U 103 ]
 "64
@@ -238,14 +238,14 @@ Version 4.0 HI-TECH Software Intermediate Code
 "69
 [e ( _menu_reset ..  ]
 "70
-[e ( _set_status (1 . `E1085 0 ]
+[e ( _set_status (1 . `E1095 0 ]
 "71
 [e $UE 102  ]
 "72
 }
 [e :U 104 ]
 "74
-[e $ ! && == -> _evt `ui -> . `E1069 2 `ui < -> _selection `ui - -> 6 `ui -> 1 `ui 105  ]
+[e $ ! && == -> _evt `ui -> . `E1067 2 `ui < -> _selection `ui - -> 6 `ui -> 1 `ui 105  ]
 "75
 {
 "76
@@ -255,7 +255,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $U 106  ]
 "78
 [e :U 105 ]
-[e $ ! && == -> _evt `ui -> . `E1069 3 `ui > -> _selection `ui -> 0 `ui 107  ]
+[e $ ! && == -> _evt `ui -> . `E1067 3 `ui > -> _selection `ui -> 0 `ui 107  ]
 "79
 {
 "80
@@ -265,7 +265,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $U 108  ]
 "82
 [e :U 107 ]
-[e $ ! == -> _evt `ui -> . `E1069 4 `ui 109  ]
+[e $ ! == -> _evt `ui -> . `E1067 4 `ui 109  ]
 "83
 {
 "84
@@ -287,7 +287,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "92
 [e ( _invalidate_dashboard_cache ..  ]
 "93
-[e ( _set_status (1 . `E1085 0 ]
+[e ( _set_status (1 . `E1095 0 ]
 "94
 }
 [e $U 111  ]
@@ -313,13 +313,13 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $U 112  ]
 "104
 [e :U 109 ]
-[e $ ! == -> _evt `ui -> . `E1069 1 `ui 113  ]
+[e $ ! == -> _evt `ui -> . `E1067 1 `ui 113  ]
 "105
 {
 "106
 [e ( _uart_puts (1 :s 12C ]
 "107
-[e ( _set_status (1 . `E1085 0 ]
+[e ( _set_status (1 . `E1095 0 ]
 "108
 [e ( _invalidate_dashboard_cache ..  ]
 "109

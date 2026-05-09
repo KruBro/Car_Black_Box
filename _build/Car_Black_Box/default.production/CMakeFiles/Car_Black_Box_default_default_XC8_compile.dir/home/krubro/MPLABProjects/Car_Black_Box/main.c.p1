@@ -1,60 +1,66 @@
 Version 4.0 HI-TECH Software Intermediate Code
-"29 /home/krubro/MPLABProjects/Car_Black_Box/main.c
+"22 /home/krubro/MPLABProjects/Car_Black_Box/main.c
 [c E2 0 1 2 3 4 5 .. ]
 [n E2 . GR GN G1 G2 G3 G4  ]
-"65 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
+"62 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
 [s S2 `uc 1 `uc 1 `uc 1 `E2 1 `uc 1 `uc 1 `uc 1 ]
 [n S2 . hours minutes seconds gear speed flags log_pending ]
-"64 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
+"62 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
 [v _init_clcd `(v ~T0 @X0 0 ef ]
-"102
+"98
 [v _init_digital_keypad `(v ~T0 @X0 0 ef ]
 "20
 [v _initUART `(v ~T0 @X0 0 ef1`ul ]
-"31
+"30
 [v _initI2C `(v ~T0 @X0 0 ef1`ul ]
-"80
+"77
 [v _init_rtc `(v ~T0 @X0 0 ef ]
-"113
+"108
 [v _initADC `(v ~T0 @X0 0 ef ]
 "21 /home/krubro/MPLABProjects/Car_Black_Box/timer.h
 [v _init_timers `(v ~T0 @X0 0 ef ]
+"32 /home/krubro/MPLABProjects/Car_Black_Box/login.h
+[v _login_load_password `(v ~T0 @X0 0 ef ]
 "43 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
 [s S1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 ]
 [n S1 . hours minutes seconds speed gear flags ]
 [p mainexit ]
-"54 /home/krubro/MPLABProjects/Car_Black_Box/main.c
-[c E1069 0 1 2 3 4 5 6 .. ]
-[n E1069 . EVENT_NONE EVENT_SW1 EVENT_SW2 EVENT_SW3 EVENT_SW4 EVENT_SW5 EVENT_SW6  ]
+"48 /home/krubro/MPLABProjects/Car_Black_Box/main.c
+[c E1067 0 1 2 3 4 5 6 .. ]
+[n E1067 . EVENT_NONE EVENT_SW1 EVENT_SW2 EVENT_SW3 EVENT_SW4 EVENT_SW5 EVENT_SW6  ]
 "24 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
 [v _uart_puts `(v ~T0 @X0 0 ef1`*Cuc ]
 "27 /home/krubro/MPLABProjects/Car_Black_Box/events.h
-[v _translate_key `(E1069 ~T0 @X0 0 ef1`uc ]
-"103 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
+[v _translate_key `(E1067 ~T0 @X0 0 ef1`uc ]
+"99 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
 [v _read_digital_keypad `(uc ~T0 @X0 0 ef1`uc ]
 "27 /home/krubro/MPLABProjects/Car_Black_Box/login.h
 [v _is_logged_in `(uc ~T0 @X0 0 ef ]
 "14 /home/krubro/MPLABProjects/Car_Black_Box/menu.h
 [v _menu_reset `(v ~T0 @X0 0 ef ]
-"78 /home/krubro/MPLABProjects/Car_Black_Box/main.c
-[c E1085 0 1 2 3 4 5 6 7 .. ]
-[n E1085 . DASHBOARD LOGIN MENU VIEW_LOGS CLEAR_LOGS DOWNLOAD_LOGS SET_TIME CHANGE_PASSWORD  ]
-"16 /home/krubro/MPLABProjects/Car_Black_Box/state.h
-[v _set_status `(v ~T0 @X0 0 ef1`E1085 ]
+"70 /home/krubro/MPLABProjects/Car_Black_Box/main.c
+[c E1095 0 1 2 3 4 5 6 7 .. ]
+[n E1095 . DASHBOARD LOGIN MENU VIEW_LOGS CLEAR_LOGS DOWNLOAD_LOGS SET_TIME CHANGE_PASSWORD  ]
+"23 /home/krubro/MPLABProjects/Car_Black_Box/state.h
+[v _set_status `(v ~T0 @X0 0 ef1`E1095 ]
 "25 /home/krubro/MPLABProjects/Car_Black_Box/login.h
 [v _login_reset `(v ~T0 @X0 0 ef ]
 "17 /home/krubro/MPLABProjects/Car_Black_Box/dashboard.h
-[v _dashboard_update `(v ~T0 @X0 0 ef1`E1069 ]
+[v _dashboard_update `(v ~T0 @X0 0 ef1`E1067 ]
 "23
 [v _invalidate_dashboard_cache `(v ~T0 @X0 0 ef ]
 "23 /home/krubro/MPLABProjects/Car_Black_Box/login.h
-[v _login_update `(v ~T0 @X0 0 ef1`E1069 ]
+[v _login_update `(v ~T0 @X0 0 ef1`E1067 ]
 "12 /home/krubro/MPLABProjects/Car_Black_Box/menu.h
-[v _menu_update `(v ~T0 @X0 0 ef1`E1069 ]
+[v _menu_update `(v ~T0 @X0 0 ef1`E1067 ]
 "12 /home/krubro/MPLABProjects/Car_Black_Box/view_logs.h
-[v _view_logs_update `(v ~T0 @X0 0 ef1`E1069 ]
-"17 /home/krubro/MPLABProjects/Car_Black_Box/state.h
-[v _get_status `(E1085 ~T0 @X0 0 e? ]
+[v _view_logs_update `(v ~T0 @X0 0 ef1`E1067 ]
+"25 /home/krubro/MPLABProjects/Car_Black_Box/set_password.h
+[v _set_password_update `(v ~T0 @X0 0 ef1`E1067 ]
+"36 /home/krubro/MPLABProjects/Car_Black_Box/set_time.h
+[v _set_time_update `(v ~T0 @X0 0 ef1`E1067 ]
+"24 /home/krubro/MPLABProjects/Car_Black_Box/state.h
+[v _get_status `(E1095 ~T0 @X0 0 ef ]
 "20 /home/krubro/MPLABProjects/Car_Black_Box/dashboard.h
 [v _dashboard_render `(v ~T0 @X0 0 ef ]
 "24 /home/krubro/MPLABProjects/Car_Black_Box/login.h
@@ -63,11 +69,15 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _menu_render `(v ~T0 @X0 0 ef ]
 "13 /home/krubro/MPLABProjects/Car_Black_Box/view_logs.h
 [v _view_logs_render `(v ~T0 @X0 0 ef ]
-"17
+"26 /home/krubro/MPLABProjects/Car_Black_Box/set_password.h
+[v _set_password_render `(v ~T0 @X0 0 ef ]
+"37 /home/krubro/MPLABProjects/Car_Black_Box/set_time.h
+[v _set_time_render `(v ~T0 @X0 0 ef ]
+"17 /home/krubro/MPLABProjects/Car_Black_Box/view_logs.h
 [v _clear_logs `(v ~T0 @X0 0 ef ]
 "16
 [v _download_logs `(v ~T0 @X0 0 ef ]
-"62 /home/krubro/MPLABProjects/Car_Black_Box/eeprom.h
+"67 /home/krubro/MPLABProjects/Car_Black_Box/eeprom.h
 [v _eeprom_write_log `(uc ~T0 @X0 0 ef1`*CS1 ]
 "11 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
 [p x FOSC    =  HS ]
@@ -205,7 +215,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; <" EECON1 equ 018Ch ;# ">
 "2347
 [; <" EECON2 equ 018Dh ;# ">
-"29 /home/krubro/MPLABProjects/Car_Black_Box/main.c
+"22 /home/krubro/MPLABProjects/Car_Black_Box/main.c
 [v _sys `S2 ~T0 @X0 1 e ]
 [i _sys
 :U ..
@@ -214,301 +224,301 @@ Version 4.0 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-"31
+"24
 [v _init_config `(v ~T0 @X0 1 sf ]
-"32
+"25
 {
 [e :U _init_config ]
 [f ]
-"33
+"26
 [e ( _init_clcd ..  ]
-"34
+"27
 [e ( _init_digital_keypad ..  ]
-"35
+"28
 [e ( _initUART (1 -> 9600 `ul ]
-"36
+"29
 [e ( _initI2C (1 -> 100000 `ul ]
-"37
+"30
 [e ( _init_rtc ..  ]
-"38
+"31
 [e ( _initADC ..  ]
-"39
+"32
 [e ( _init_timers ..  ]
-"40
+"33
+[e ( _login_load_password ..  ]
+"34
 [e :UE 101 ]
 }
-"42
+"36
 [v _log_entry_from_sys `(v ~T0 @X0 1 sf1`*S1 ]
-"43
+"37
 {
 [e :U _log_entry_from_sys ]
-"42
+"36
 [v _e `*S1 ~T0 @X0 1 r1 ]
-"43
+"37
 [f ]
-"44
+"38
 [e = . *U _e 0 . _sys 0 ]
-"45
+"39
 [e = . *U _e 1 . _sys 1 ]
-"46
+"40
 [e = . *U _e 2 . _sys 2 ]
-"47
+"41
 [e = . *U _e 3 . _sys 4 ]
-"48
+"42
 [e = . *U _e 4 -> . _sys 3 `uc ]
-"49
+"43
 [e = . *U _e 5 . _sys 5 ]
-"50
+"44
 [e :UE 102 ]
 }
 [v $root$_main `(v ~T0 @X0 0 e ]
-"52
+"46
 [v _main `(v ~T0 @X0 1 ef ]
-"53
+"47
 {
 [e :U _main ]
 [f ]
-"54
-[v _evt `E1069 ~T0 @X0 1 a ]
-"55
+"48
+[v _evt `E1067 ~T0 @X0 1 a ]
+"49
 [v _pending_entry `S1 ~T0 @X0 1 a ]
-"57
+"51
 [e ( _init_config ..  ]
-"59
+"53
 [e ( _uart_puts (1 :s 1C ]
-"60
+"54
 [e ( _uart_puts (1 :s 2C ]
-"62
+"56
 [e :U 105 ]
+"57
+{
+"59
+[e = _evt ( _translate_key (1 ( _read_digital_keypad (1 -> -> 0 `i `uc ]
+"62
+[e $U 108  ]
 "63
 {
-"65
-[e = _evt ( _translate_key (1 ( _read_digital_keypad (1 -> -> 0 `i `uc ]
-"68
-[e $U 108  ]
-"69
-{
-"70
+"64
 [e :U 109 ]
-"71
-[e $ ! == -> _evt `ui -> . `E1069 4 `ui 110  ]
-"72
+"65
+[e $ ! == -> _evt `ui -> . `E1067 4 `ui 110  ]
+"66
 {
-"75
+"67
 [e $ ! != -> ( _is_logged_in ..  `i -> 0 `i 111  ]
-"76
+"68
 {
-"77
+"69
 [e ( _menu_reset ..  ]
-"78
-[e ( _set_status (1 . `E1085 2 ]
-"79
+"70
+[e ( _set_status (1 . `E1095 2 ]
+"71
 }
 [e $U 112  ]
-"80
+"72
 [e :U 111 ]
-"81
+"73
 {
-"82
+"74
 [e ( _login_reset ..  ]
-"83
-[e ( _set_status (1 . `E1085 1 ]
-"84
+"75
+[e ( _set_status (1 . `E1095 1 ]
+"76
 }
 [e :U 112 ]
-"85
-[e = _evt . `E1069 0 ]
-"86
+"77
+[e = _evt . `E1067 0 ]
+"78
 }
 [e $U 113  ]
-"87
+"79
 [e :U 110 ]
-"88
+"80
 {
-"89
+"81
 [e ( _dashboard_update (1 _evt ]
-"90
+"82
 }
 [e :U 113 ]
-"91
+"83
 [e $U 107  ]
-"93
+"85
 [e :U 114 ]
+"86
+[e $ ! == -> _evt `ui -> . `E1067 1 `ui 115  ]
+"87
+{
+"88
+[e ( _uart_puts (1 :s 3C ]
+"89
+[e ( _login_reset ..  ]
+"90
+[e ( _invalidate_dashboard_cache ..  ]
+"91
+[e ( _set_status (1 . `E1095 0 ]
+"92
+[e = _evt . `E1067 0 ]
+"93
+}
+[e $U 116  ]
 "94
-[e $ ! == -> _evt `ui -> . `E1069 1 `ui 115  ]
+[e :U 115 ]
 "95
 {
 "96
-[e ( _uart_puts (1 :s 3C ]
-"97
-[e ( _login_reset ..  ]
-"98
-[e ( _invalidate_dashboard_cache ..  ]
-"99
-[e ( _set_status (1 . `E1085 0 ]
-"100
-[e = _evt . `E1069 0 ]
-"101
-}
-[e $U 116  ]
-"102
-[e :U 115 ]
-"103
-{
-"104
 [e ( _login_update (1 _evt ]
-"105
+"97
 }
 [e :U 116 ]
+"98
+[e $U 107  ]
+"100
+[e :U 117 ]
+"101
+[e ( _menu_update (1 _evt ]
+"102
+[e $U 107  ]
+"104
+[e :U 118 ]
+"105
+[e ( _view_logs_update (1 _evt ]
 "106
 [e $U 107  ]
 "108
-[e :U 117 ]
+[e :U 119 ]
 "109
-[e ( _menu_update (1 _evt ]
+[e ( _set_password_update (1 _evt ]
 "110
 [e $U 107  ]
 "112
-[e :U 118 ]
+[e :U 120 ]
 "113
-[e ( _view_logs_update (1 _evt ]
+[e ( _set_time_update (1 _evt ]
 "114
 [e $U 107  ]
 "116
-[e :U 119 ]
-"117
-[e :U 120 ]
-"118
 [e :U 121 ]
-"119
+"117
 [e :U 122 ]
-"120
+"118
 [e $U 107  ]
-"121
+"119
 }
 [e $U 107  ]
 [e :U 108 ]
-[e [\ -> ( _get_status ..  `ui , $ -> . `E1085 0 `ui 109
- , $ -> . `E1085 1 `ui 114
- , $ -> . `E1085 2 `ui 117
- , $ -> . `E1085 3 `ui 118
- , $ -> . `E1085 4 `ui 119
- , $ -> . `E1085 5 `ui 120
- , $ -> . `E1085 6 `ui 121
- , $ -> . `E1085 7 `ui 122
+[e [\ -> ( _get_status ..  `ui , $ -> . `E1095 0 `ui 109
+ , $ -> . `E1095 1 `ui 114
+ , $ -> . `E1095 2 `ui 117
+ , $ -> . `E1095 3 `ui 118
+ , $ -> . `E1095 7 `ui 119
+ , $ -> . `E1095 6 `ui 120
+ , $ -> . `E1095 4 `ui 121
+ , $ -> . `E1095 5 `ui 122
  107 ]
 [e :U 107 ]
-"124
+"122
 [e $U 124  ]
-"125
+"123
 {
-"126
+"124
 [e :U 125 ]
-"127
+"125
 [e ( _dashboard_render ..  ]
+"126
+[e $U 123  ]
 "128
-[e $U 123  ]
-"130
 [e :U 126 ]
-"131
+"129
 [e ( _login_render ..  ]
+"130
+[e $U 123  ]
 "132
-[e $U 123  ]
-"134
 [e :U 127 ]
-"135
+"133
 [e ( _menu_render ..  ]
+"134
+[e $U 123  ]
 "136
-[e $U 123  ]
-"138
 [e :U 128 ]
-"139
+"137
 [e ( _view_logs_render ..  ]
-"140
+"138
 [e $U 123  ]
-"142
+"140
 [e :U 129 ]
-"143
-[e ( _clear_logs ..  ]
+"141
+[e ( _set_password_render ..  ]
+"142
+[e $U 123  ]
 "144
-[e ( _menu_reset ..  ]
+[e :U 130 ]
 "145
-[e ( _set_status (1 . `E1085 2 ]
+[e ( _set_time_render ..  ]
 "146
 [e $U 123  ]
 "148
-[e :U 130 ]
-"149
-[e ( _download_logs ..  ]
-"150
-[e $U 123  ]
-"152
 [e :U 131 ]
-"153
-[e ( _uart_puts (1 :s 4C ]
-"154
+"149
+[e ( _clear_logs ..  ]
+"150
 [e ( _menu_reset ..  ]
+"151
+[e ( _set_status (1 . `E1095 2 ]
+"152
+[e $U 123  ]
+"154
+[e :U 132 ]
 "155
-[e ( _set_status (1 . `E1085 2 ]
+[e ( _download_logs ..  ]
 "156
 [e $U 123  ]
-"158
-[e :U 132 ]
-"159
-[e ( _uart_puts (1 :s 5C ]
-"160
-[e ( _menu_reset ..  ]
-"161
-[e ( _set_status (1 . `E1085 2 ]
-"162
-[e $U 123  ]
-"163
+"157
 }
 [e $U 123  ]
 [e :U 124 ]
-[e [\ -> ( _get_status ..  `ui , $ -> . `E1085 0 `ui 125
- , $ -> . `E1085 1 `ui 126
- , $ -> . `E1085 2 `ui 127
- , $ -> . `E1085 3 `ui 128
- , $ -> . `E1085 4 `ui 129
- , $ -> . `E1085 5 `ui 130
- , $ -> . `E1085 6 `ui 131
- , $ -> . `E1085 7 `ui 132
+[e [\ -> ( _get_status ..  `ui , $ -> . `E1095 0 `ui 125
+ , $ -> . `E1095 1 `ui 126
+ , $ -> . `E1095 2 `ui 127
+ , $ -> . `E1095 3 `ui 128
+ , $ -> . `E1095 7 `ui 129
+ , $ -> . `E1095 6 `ui 130
+ , $ -> . `E1095 4 `ui 131
+ , $ -> . `E1095 5 `ui 132
  123 ]
 [e :U 123 ]
-"166
+"160
 [e $ ! != -> . _sys 6 `i -> 0 `i 133  ]
-"167
+"161
 {
-"168
+"162
 [e = . _sys 6 -> -> 0 `i `uc ]
-"169
+"163
 [e ( _log_entry_from_sys (1 &U _pending_entry ]
-"170
+"164
 [e $ ! != -> ( _eeprom_write_log (1 -> &U _pending_entry `*CS1 `i -> 0 `i 134  ]
-"171
-[e ( _uart_puts (1 :s 6C ]
+"165
+[e ( _uart_puts (1 :s 4C ]
 [e $U 135  ]
-"172
+"166
 [e :U 134 ]
-"173
-[e ( _uart_puts (1 :s 7C ]
+"167
+[e ( _uart_puts (1 :s 5C ]
 [e :U 135 ]
-"174
+"168
 }
 [e :U 133 ]
-"175
+"169
 }
 [e :U 104 ]
 [e $U 105  ]
 [e :U 106 ]
-"176
+"170
 [e :UE 103 ]
 }
-[a 4C 91 83 69 84 95 84 73 77 69 93 32 110 111 116 32 121 101 116 32 105 109 112 108 101 109 101 110 116 101 100 10 0 ]
-[a 5C 91 67 72 65 78 71 69 95 80 65 83 83 87 79 82 68 93 32 110 111 116 32 121 101 116 32 105 109 112 108 101 109 101 110 116 101 100 10 0 ]
-[a 7C 91 76 79 71 93 32 69 69 80 82 79 77 32 70 65 73 76 10 0 ]
-[a 6C 91 76 79 71 93 32 69 69 80 82 79 77 32 79 75 10 0 ]
-[a 2C 91 83 84 65 84 69 93 32 68 65 83 72 66 79 65 82 68 10 0 ]
-[a 3C 91 76 79 71 73 78 93 32 67 65 78 67 69 76 76 69 68 10 0 ]
-[a 1C 61 61 61 32 67 65 82 32 66 76 65 67 75 32 66 79 88 32 83 84 65 82 84 69 68 32 61 61 61 10 0 ]
+[a 5C 91 76 79 71 93 32 69 69 80 82 79 77 32 70 65 73 76 13 10 0 ]
+[a 4C 91 76 79 71 93 32 69 69 80 82 79 77 32 79 75 13 10 0 ]
+[a 2C 91 83 84 65 84 69 93 32 68 65 83 72 66 79 65 82 68 13 10 0 ]
+[a 3C 91 76 79 71 73 78 93 32 67 65 78 67 69 76 76 69 68 13 10 0 ]
+[a 1C 61 61 61 32 67 65 82 32 66 76 65 67 75 32 66 79 88 32 83 84 65 82 84 69 68 32 61 61 61 13 10 0 ]

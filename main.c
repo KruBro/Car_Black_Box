@@ -4,28 +4,21 @@
  * @date    2026-05-09
  * @brief   Application entry point — event-driven main loop.
  *
- * Loop structure (per embedded design model):
- *
+ * Loop structure:
  *   1. READ INPUTS    — hardware polled once; translated to one EVENT.
  *   2. UPDATE STATE   — active screen's _update(evt) modifies sys / module state.
  *   3. RENDER OUTPUTS — active screen's _render() writes LCD from current state.
  *   4. HANDLE STORAGE — EEPROM write if dashboard_update() set sys.log_pending.
  *
- * Invariants enforced by this structure:
- *   - Hardware is read exactly once per cycle (no double-poll races).
- *   - update() never writes LCD; render() never reads hardware.
- *   - EEPROM writes happen here, not inside any module, keeping call depth safe.
- *
  * Stack depth (PIC16F877A, 8-level hardware limit):
- *   main(1) -> eeprom_write_log(2) -> eeprom_write_byte(3)
- *           -> i2c_start(4) -> i2c_wait_for_idle(5).
- *   ISR adds 1 -> max 6. Safe (limit is 8).
+ *   main(1) → eeprom_write_log(2) → eeprom_write_byte(3)
+ *           → i2c_start(4) → i2c_wait_for_idle(5).
+ *   ISR adds 1 → max 6. Safe (limit is 8).
  */
 
 #include "main_config.h"
 
-/* Single authoritative vehicle state — owned by main.c, written by
- * dashboard_update(), read by dashboard_render() and EEPROM write. */
+// Single authoritative vehicle state — owned by main.c, written by dashboard_update()
 SYSTEM_STATE sys = {0};
 
 static void init_config(void)
@@ -37,6 +30,7 @@ static void init_config(void)
     init_rtc();
     initADC();
     init_timers();
+    login_load_password();  // Load PIN from EEPROM before the main loop
 }
 
 static void log_entry_from_sys(LOG_ENTRY *e)
@@ -51,13 +45,13 @@ static void log_entry_from_sys(LOG_ENTRY *e)
 
 void main(void)
 {
-    EVENT    evt;
+    EVENT     evt;
     LOG_ENTRY pending_entry;
 
     init_config();
 
-    uart_puts("=== CAR BLACK BOX STARTED ===\n");
-    uart_puts("[STATE] DASHBOARD\n");
+    uart_puts("=== CAR BLACK BOX STARTED ===\r\n");
+    uart_puts("[STATE] DASHBOARD\r\n");
 
     while (1)
     {
@@ -70,8 +64,6 @@ void main(void)
         case DASHBOARD:
             if (evt == EVENT_SW4)
             {
-                /* If already authenticated, skip login and go straight to menu.
-                 * Otherwise start a fresh login sequence. */
                 if (is_logged_in())
                 {
                     menu_reset();
@@ -93,7 +85,7 @@ void main(void)
         case LOGIN:
             if (evt == EVENT_SW1)
             {
-                uart_puts("[LOGIN] CANCELLED\n");
+                uart_puts("[LOGIN] CANCELLED\r\n");
                 login_reset();
                 invalidate_dashboard_cache();
                 set_status(DASHBOARD);
@@ -113,11 +105,17 @@ void main(void)
             view_logs_update(evt);
             break;
 
+        case CHANGE_PASSWORD:
+            set_password_update(evt);
+            break;
+
+        case SET_TIME:
+            set_time_update(evt);
+            break;
+
         case CLEAR_LOGS:
         case DOWNLOAD_LOGS:
-        case SET_TIME:
-        case CHANGE_PASSWORD:
-            break; /* Handled in render phase (one-shot screens). */
+            break; // One-shot — handled in render phase
         }
 
         /* ---- 3. RENDER OUTPUTS ------------------------------------------ */
@@ -139,6 +137,14 @@ void main(void)
             view_logs_render();
             break;
 
+        case CHANGE_PASSWORD:
+            set_password_render();
+            break;
+
+        case SET_TIME:
+            set_time_render();
+            break;
+
         case CLEAR_LOGS:
             clear_logs();
             menu_reset();
@@ -146,19 +152,7 @@ void main(void)
             break;
 
         case DOWNLOAD_LOGS:
-            download_logs(); /* Runs once, auto-transitions inside. */
-            break;
-
-        case SET_TIME:
-            uart_puts("[SET_TIME] not yet implemented\n");
-            menu_reset();
-            set_status(MENU);
-            break;
-
-        case CHANGE_PASSWORD:
-            uart_puts("[CHANGE_PASSWORD] not yet implemented\n");
-            menu_reset();
-            set_status(MENU);
+            download_logs(); // Runs once, auto-transitions inside
             break;
         }
 
@@ -168,9 +162,9 @@ void main(void)
             sys.log_pending = 0;
             log_entry_from_sys(&pending_entry);
             if (eeprom_write_log(&pending_entry))
-                uart_puts("[LOG] EEPROM OK\n");
+                uart_puts("[LOG] EEPROM OK\r\n");
             else
-                uart_puts("[LOG] EEPROM FAIL\n");
+                uart_puts("[LOG] EEPROM FAIL\r\n");
         }
     }
 }

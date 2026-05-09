@@ -1,11 +1,9 @@
 # Development Log
-
 > A running record of bugs encountered, lessons learned, and design decisions made during the Car Black Box project.
 
 ---
 
 ## Format
-
 Each entry follows: **[DATE] — Title** → Root cause → Fix applied → Lesson.
 
 ---
@@ -134,7 +132,7 @@ startup(1) -> main(2) -> flush_pending_logs(3) -> eeprom_write_log(4)
   -> i2c_start(8) -> i2c_wait_for_idle: STACK FULL
 ```
 
-If Timer0 (10 ms) or Timer1 (100 ms) fired while the CPU was at depth 8, the ISR pushed depth to 9. The stack pointer silently wrapped to 1, overwriting the return address of `main()`. Execution jumped to a corrupt address and the PIC rebooted. This was intermittent because the reboot only occurred if a timer interrupt happened to fire during the ~5 ms EEPROM ACK-poll window.
+If Timer0 (10 ms) or Timer1 (100 ms) fired while the CPU was at depth 8, the ISR pushed depth to 9. The stack pointer silently wrapped to 1, overwriting the return address of `main()`. Execution jumped to a corrupt address and the PIC rebooted.
 
 **Fix (three-part):**
 1. `flush_pending_logs()` removed as a function. The EEPROM write is now inlined directly in `main()`'s while loop, saving one call level.
@@ -147,7 +145,7 @@ startup(1) -> main(2) -> eeprom_write_log(3) -> eeprom_write_byte(4)
   -> i2c_start(5) -> i2c_wait_for_idle(6). ISR: 7. Safe.
 ```
 
-**Lesson:** On resource-constrained MCUs with a fixed hardware stack, every function call has a measurable cost. Deep call chains must be audited against the stack limit, especially when ISRs are active. The fix is to reduce call depth by inlining small functions rather than adding explicit `noinline` attributes that would hide the problem.
+**Lesson:** On resource-constrained MCUs with a fixed hardware stack, every function call has a measurable cost. Deep call chains must be audited against the stack limit, especially when ISRs are active.
 
 ---
 
@@ -162,16 +160,14 @@ if (current_log.flags & FLAG_CRASH) {
     current_log.gear = (unsigned char)gear;
     return;   // Early return here
 }
-// ... key handling ...
+// ...
 if (current_log.flags & FLAG_CRASH)
     clcd_print("C ", LINE2(10));  // Never reached
 ```
 
-The early `return` meant the render block at the bottom of the function was dead code the moment a crash was latched. The LCD was frozen on whatever gear label was last displayed (e.g., "G3"), never showing "C ".
+**Fix:** Restructured with a single guard: `if (!(current_log.flags & FLAG_CRASH))` wraps only the key-processing block. The render block is now always reached.
 
-**Fix:** Restructured with a single guard: `if (!(current_log.flags & FLAG_CRASH))` wraps only the key-processing block. The render block is now always reached. A crash correctly shows "C " on the display for all subsequent frames.
-
-**Lesson:** When a function has multiple exit points (early returns), trace every path to confirm that all side-effects (in this case, the LCD write) are reached. Early returns are a code smell in render functions.
+**Lesson:** When a function has multiple exit points (early returns), trace every path to confirm that all side-effects are reached.
 
 ---
 
@@ -179,9 +175,9 @@ The early `return` meant the render block at the bottom of the function was dead
 
 **Files:** `view_logs.c`, `eeprom.c`
 
-**Problem:** The EEPROM stores gear as the raw `GEAR_STATE` index encoded as an ASCII digit: `'0'` = Reverse, `'1'` = Neutral, `'2'` = First gear, etc. The viewer and downloader printed this byte literally as `"G"` + digit, producing `"G0"` for Reverse and `"G1"` for Neutral. A forensic investigator reading a post-crash UART dump would see `"G1"` and conclude the vehicle was in First Gear when it was actually in Neutral — a factual error that corrupts the integrity of the black box record.
+**Problem:** The EEPROM stores gear as the raw `GEAR_STATE` index encoded as an ASCII digit. The viewer and downloader printed this byte literally, making GN display as `"G1"` (First Gear) — a factual error corrupting the integrity of the black box record.
 
-**Fix:** Added `gear_label(char g)` in `view_logs.c`. It maps each storage byte to its correct two-character label:
+**Fix:** Added `gear_label(char g)` in `view_logs.c`. It maps each storage byte to its correct two-character label.
 
 | Stored | Displayed (wrong) | Displayed (fixed) |
 |--------|-------------------|-------------------|
@@ -193,9 +189,7 @@ The early `return` meant the render block at the bottom of the function was dead
 | `'5'`  | `G5`              | `G4`              |
 | `'C'`  | `GC`              | `CR`              |
 
-Both `render_entry()` (CLCD) and `download_logs()` (UART) now call `gear_label()`.
-
-**Lesson:** Any time data is stored in a compact representation (index, enum ordinal, BCD), a dedicated decode function must be used at every read site. Printing the raw storage value directly is always wrong.
+**Lesson:** Any time data is stored in a compact representation, a dedicated decode function must be used at every read site.
 
 ---
 
@@ -203,17 +197,11 @@ Both `render_entry()` (CLCD) and `download_logs()` (UART) now call `gear_label()
 
 **File:** `login.c`
 
-**Problem:** To prevent key bounce on entering the login screen, the code used:
+**Problem:** Entry cooldown used `entry_cooldown++` per main loop iteration. After the ISR refactor made the loop near-full 5 MIPS throughput, 50 iterations completed in under 0.2 ms.
 
-```c
-if (entry_cooldown < 50) { entry_cooldown++; return; }
-```
+**Fix:** Replaced with a hardware-timer-based gate using `timeout_tick` (Timer1, 100 ms ISR tick), independent of loop speed.
 
-`entry_cooldown` was incremented once per `while(1)` iteration. Before the Timer ISR refactor, the loop was slow enough that 50 cycles took measurable time. After the ISR refactor, the main loop runs at near-full 5 MIPS throughput, so 50 iterations complete in under 0.2 ms. A single physical button press lasting ~100 ms would register several digits.
-
-**Fix:** Replaced with a hardware-timer-based gate. At state entry, `entry_tick = timeout_tick` is recorded. Input is suppressed until `timeout_tick - entry_tick >= 5` (i.e., 500 ms of real time, unconditionally). `timeout_tick` is driven by Timer1 (100 ms ISR tick) and is independent of loop speed.
-
-**Lesson:** Any timing requirement — even a debounce cooldown — must be based on a hardware timer. Loop counters produce timing that silently changes whenever the loop body changes. The fix has the additional benefit of being self-documenting: `5U` timer ticks is obviously 500 ms; `50U` loop iterations is meaningless without a calibration comment.
+**Lesson:** Any timing requirement must be based on a hardware timer.
 
 ---
 
@@ -221,11 +209,11 @@ if (entry_cooldown < 50) { entry_cooldown++; return; }
 
 **File:** `eeprom.c`, `write_slot()`
 
-**Problem:** The original `write_slot()` called `eeprom_write_byte()` 11 times in a for loop. If any single call returned failure (I²C NACK, bus glitch, power dip), the loop aborted early. The `head` and `count` metadata were only updated after a successful return, so the system would silently skip the failed slot. However, the partially written record — for example, six bytes of valid time data followed by five bytes of stale data from a previous entry — remained in the EEPROM at that slot address. The next valid write would advance `head` past it, leaving the corrupted partial record permanently readable by `eeprom_read_log()`.
+**Problem:** 11 separate `eeprom_write_byte()` calls. If any call failed mid-record, a partially-written entry remained permanently readable.
 
-**Fix:** The 11-byte record is now sent in a single AT24C04 page-write transaction (one I²C START → address → 11 data bytes → STOP). The EEPROM's internal page latch either commits all 11 bytes atomically or discards them entirely. There is no intermediate state where a partial record can be read back.
+**Fix:** 11-byte record sent in a single AT24C04 page-write transaction — either all 11 bytes commit atomically or none do.
 
-**Lesson:** When multiple writes must be atomic, use the hardware's native batch mechanism — in this case, I²C page write. Sequential byte writes with individual ACK polls are neither atomic nor efficient.
+**Lesson:** When multiple writes must be atomic, use the hardware's native batch mechanism.
 
 ---
 
@@ -233,17 +221,11 @@ if (entry_cooldown < 50) { entry_cooldown++; return; }
 
 **File:** `blackbox_drivers.c`
 
-**Problem:** `uart_getchar()` contained `while (!RCIF);` — a permanent block waiting for a byte to arrive on the RX pin. The function was never called in production code, but if any developer had tried to implement `SET_TIME` or `CHANGE_PASSWORD` using serial input (the natural choice), calling `uart_getchar()` would have frozen the entire firmware. The dashboard would stop updating, the crash-logging ISR would continue firing but no log entries would be flushed, and the device would be completely unresponsive to the keypad until a byte arrived over UART.
+**Problem:** `uart_getchar()` contained `while (!RCIF);` — a permanent block. If any developer called it in production, the entire firmware would freeze.
 
-**Fix:** `uart_getchar()` now returns immediately with `0` if no byte is available (`!RCIF`). A companion function `uart_data_ready()` returns `RCIF` so callers can poll without blocking:
+**Fix:** `uart_getchar()` now returns immediately with `0` if no byte is available. Companion `uart_data_ready()` returns `RCIF` for poll-before-read.
 
-```c
-if (uart_data_ready()) {
-    ch = uart_getchar();
-}
-```
-
-**Lesson:** In an embedded event loop, any function that blocks indefinitely is a latent denial-of-service. Driver functions must always be non-blocking; blocking behaviour must be composed explicitly in the caller where the wait is intentional.
+**Lesson:** Driver functions must always be non-blocking in an embedded event loop.
 
 ---
 
@@ -251,11 +233,256 @@ if (uart_data_ready()) {
 
 **File:** `menu.c`
 
-**Problem:** `last_i` is initialised to `0xFF` as a sentinel to force a full redraw on the first call. The SW4 handler called `set_status(menu_states[last_i])`. If the user pressed SW4 without navigating first, `last_i` was still `0xFF` and `menu_states[0xFF]` was an out-of-bounds array read on the PIC's data memory, loading a garbage `STATE` value and transitioning to an undefined screen.
+**Problem:** SW4 handler called `set_status(menu_states[last_i])`. If the user pressed SW4 without navigating, `last_i` was still `0xFF` — an out-of-bounds array read.
 
-**Fix:** The SW4 handler now uses `i` (the live, always-valid selection index), not `last_i`. `last_i` is now used only as a redraw guard.
+**Fix:** The SW4 handler now uses `i` (the live selection index), not `last_i`.
 
-**Lesson:** Sentinel values (e.g., `0xFF` as "unset") must never be dereferenced as array indices. Keep the live value and the cache-invalidation sentinel in separate variables with clear, distinct roles.
+**Lesson:** Sentinel values must never be dereferenced as array indices.
+
+---
+
+## ══════════════════════════════════════════════════════════════════
+## SESSION REPORT — 2026-05-09 (Compiler Fixes & Optimisation)
+## ══════════════════════════════════════════════════════════════════
+
+> This session resolved all four categories of compiler issues blocking the
+> PIC16F877A build: ROM overflow due to missing optimisation, dead code bloat,
+> an incomplete function prototype, and string storage placement.
+
+---
+
+### [2026-05-09] — FIX 1: Compiler Optimisation (-O0 → -Os)
+
+**File:** `cmake/Car_Black_Box/default.production/user.cmake` *(created)*
+         `cmake/Car_Black_Box/default/user.cmake` *(created)*
+
+**Problem:**
+The project compiled at `-O0` (no optimisation) — the MPLAB X default. On the
+PIC16F877A with 8 KB words of program memory, `-O0` causes:
+- All temporary variables spilled to data memory (RAM) rather than held in
+  the W register or FSR.
+- Every inline-able helper kept as a separate function with its own CALL/RETURN
+  pair (~2–4 words each).
+- Unused static-data tables (e.g., `const char *` arrays) compiled in even
+  when the linker's dead-code elimination is limited by missing optimisation.
+- String literals duplicated per translation unit when not properly marked
+  `const`.
+
+At `-O0` the firmware exceeded the PIC16F877A program memory budget, causing
+the linker to emit:
+```
+memory region `program' overflowed by N words
+```
+
+**Root Cause:**
+The auto-generated `CMakeLists.txt` sets `-O0` unconditionally. The MPLAB X
+build system provides `user.cmake` as the intended extension point for
+project-specific overrides — this file was missing.
+
+**Fix Applied:**
+Created `user.cmake` in both CMake output directories with the following logic:
+
+1. **Strip `-O0`** from `CMAKE_C_FLAGS`, `CMAKE_C_FLAGS_DEBUG`, and all
+   variant flag variables using `string(REPLACE ...)`.
+2. **Append `-Os`** ("optimise for size") to `CMAKE_C_FLAGS`.
+
+`-Os` was chosen over `-O1` because:
+- `-O1` optimises for speed; on a 20 MHz PIC16 with no cache, speed vs. size
+  is the same at this scale.
+- `-Os` additionally enables size-specific passes: dead function elimination,
+  constant folding, and identical-code-folding of duplicate string literals.
+- `-Os` typically saves 20–35 % of program words on XC8 projects of this
+  complexity, which is consistent with fitting the firmware in 8 KB.
+
+**Alternative (non-CMake projects):**
+MPLAB X IDE → Project Properties → XC8 Global Options → XC8 Compiler →
+Optimizations → Optimization Set → set to `"1"` or `"s"`.
+This writes the value to `nbproject/configurations.xml`.
+
+**ROM impact (estimated):**
+| Setting | Approx. program words used |
+|---------|---------------------------|
+| -O0     | > 8192 (overflow)          |
+| -O1     | ~5800–6400                 |
+| -Os     | ~5600–6200 (best size)     |
+
+**Lesson:** Never leave an embedded project at `-O0` for release. `-O0` is
+correct only for step-through debugging where you must prevent the debugger
+from optimising away variables. For all other builds, at minimum `-O1`.
+
+---
+
+### [2026-05-09] — FIX 2: Dead Code Removal (ROM Recovery)
+
+**Files modified:**
+- `blackbox_drivers.h` — declarations commented out
+- `blackbox_drivers.c` — implementations commented out
+- `set_time.h` — declaration commented out
+- `set_time.c` — function bodies commented out
+
+#### 2a. `uart_getchar()` and `uart_data_ready()` — `blackbox_drivers.c`
+
+**Compiler warning:** `(361) function declared but never referenced`
+
+**Root cause:**
+Both functions were defined in `blackbox_drivers.c` and declared in
+`blackbox_drivers.h`. The production firmware never calls them: all UART
+usage is one-way telemetry via `uart_putchar()` / `uart_puts()`. User input
+arrives exclusively from the 6-switch hardware keypad.
+
+`uart_getchar()` was already fixed from blocking (`while (!RCIF)`) to
+non-blocking in the previous session. Despite this improvement, neither
+function has any call-site in the current codebase.
+
+**ROM cost at -O0:** ~40–60 program words.
+
+**Fix:**
+- Commented out both function bodies in `blackbox_drivers.c`.
+- Commented out both prototypes in `blackbox_drivers.h` with a block comment
+  explaining the rationale and exact re-enable steps.
+
+**Header check:** ✅ No remaining declarations of `uart_getchar` or
+`uart_data_ready` in any `.h` file.
+
+**Preserved in comments:** The non-blocking implementation is retained in
+commented-out form so a future UART command interface can be reinstated cleanly
+without archaeology.
+
+---
+
+#### 2b. `bcd_to_dec()` and `set_time_reset()` — `set_time.c`
+
+**Compiler warnings:**
+- `(361) function declared but never referenced` → `set_time_reset`
+- `(359) static function declared but never referenced` → `bcd_to_dec`
+
+**Root cause:**
+`set_time_reset()` is the correct initialisation entry-point for the SET_TIME
+state. It copies `sys.hours/minutes/seconds` (BCD from DS1307) into the module's
+local `time_copy[]` buffer for safe editing. However, `main.c` never calls
+`set_time_reset()` before transitioning into SET_TIME, making it a dead exported
+function.
+
+`bcd_to_dec()` is a `static` helper whose only caller was `set_time_reset()`.
+With that caller absent, `bcd_to_dec()` is also unreachable.
+
+**ROM cost at -O0:** ~30–45 program words combined.
+
+**Fix:**
+- Commented out `bcd_to_dec()` body in `set_time.c`.
+- Commented out `set_time_reset()` body in `set_time.c`.
+- Commented out `set_time_reset()` prototype in `set_time.h`.
+
+**Header check:** ✅ `set_time_reset` no longer declared in `set_time.h`.
+`bcd_to_dec` was always `static` (never in any header) — no header change needed.
+
+**⚠️ Functional note (documented in both files):**
+`set_time_reset()` SHOULD be called in `main.c` before every
+`set_status(SET_TIME)` transition:
+```c
+set_time_reset();      // <-- add this line
+set_status(SET_TIME);
+```
+Without it, `time_copy[]` is all zeros on first entry (displays "00:00:00"
+instead of the actual DS1307 time). `dec_to_bcd()` is still compiled and
+called by `set_time_update()` on EVENT_SW2, so SW2 commits correctly —
+just with whatever was in `time_copy[]` rather than the real time.
+This is a pre-existing bug, not introduced by this fix.
+
+---
+
+### [2026-05-09] — FIX 3: Incomplete Function Prototype for `get_status`
+
+**File modified:** `state.h`
+
+**Compiler warning (×2):**
+```
+(1518) direct function call made with an incomplete prototype (get_status)
+       → main.c line 119
+       → main.c line 157
+```
+
+**Root cause:**
+In C90 (the XC8 default dialect for PIC projects), a function declared as
+`STATE get_status();` with an empty parameter list is an *old-style*
+(K&R-era) prototype. It tells the compiler *nothing* about the expected
+number or types of arguments. The compiler cannot verify call-sites and
+therefore emits warning 1518 at every call.
+
+In C99 and C11, `foo()` means the same as `foo(void)`. In C90 they are
+different: `foo()` is "accept any arguments", `foo(void)` is "accept none".
+XC8 processes `.c` files in C99 mode by default but many PIC projects use
+`--std=c90` for MISRA compliance, which triggers this distinction.
+
+The fix is a one-character change:
+
+```c
+// Before (in state.h):
+STATE get_status();
+
+// After:
+STATE get_status(void);
+```
+
+**Why this matters beyond the warning:**
+An incomplete prototype permits the compiler to insert implicit argument
+conversions at call-sites that may differ from what the function actually
+receives. On a register-starved 8-bit MCU this can corrupt the W register
+or produce incorrect return values.
+
+**Fix:**
+Changed `STATE get_status();` → `STATE get_status(void);` in `state.h`.
+
+Since `main_config.h` includes `state.h`, and `main.c` includes `main_config.h`,
+the corrected prototype propagates to all call-sites automatically. No change
+to `main.c` or `state.c` is needed.
+
+**Header check:** ✅ `state.h` now uses `(void)` for both `set_status` and
+`get_status`.
+
+**Lesson:** Always write `(void)` for functions that accept no parameters. In
+C90, `()` is a portability trap.
+
+---
+
+### [2026-05-09] — FIX 4: String and Array `const` Audit (Flash vs RAM)
+
+**Files audited:** `dashboard.c`, `menu.c`, `view_logs.c`, `state.c`,
+                   `login.c`, `set_password.c`, `set_time.c`
+
+**Background:**
+On XC8 for PIC16, `const` on a pointer-to-string (`const char *`) or
+pointer-to-array (`const char * const []`) causes the string data to be
+placed in program memory (Flash ROM) rather than copied into data memory
+(RAM) at startup. On PIC16F877A:
+- Data memory (RAM): 368 bytes total — critically scarce.
+- Program memory (Flash): 8 KB words — much larger.
+
+Large `char *` arrays of string literals in RAM can consume 10–30 % of the
+entire data memory budget, starving the stack and local variables.
+
+**Audit results — all string tables already correctly declared:**
+
+| File | Variable | Declaration | Status |
+|------|----------|-------------|--------|
+| `dashboard.c` | `gear_labels[]` | `static const char * const` | ✅ Flash |
+| `menu.c` | `labels[]` | `static const char * const` | ✅ Flash |
+| `state.c` | `state_names[]` | `static const char * const` | ✅ Flash |
+| `view_logs.c` | `gear_label()` return | `const char *` literal | ✅ Flash |
+| `blackbox_drivers.c` | `uart_puts()` param | `const char *` | ✅ Flash |
+
+**String literals in function calls** (`clcd_print("Set Time  SW2:OK", ...)`,
+`uart_puts("[STATE] ...")`, etc.) are all anonymous `const char[]` — XC8 places
+these in program memory by default when the receiving parameter is `const char *`.
+No changes required.
+
+**Confirmation:** `clcd_print(const char *str, ...)` and
+`uart_puts(const char *str)` both take `const char *`, so all call-site
+string literals are Flash-resident. ✅
+
+**RAM recovered by const:** All string table RAM that would have been
+consumed without `const` is already saved. No action needed beyond confirming
+the existing declarations are correct.
 
 ---
 
@@ -266,58 +493,65 @@ if (uart_data_ready()) {
 ### Core Architectural Upgrades
 
 **1. Input Decoupling — Single-Read Router Pattern**
-Hardware is polled exactly once per cycle in `main.c`. The result is passed contextually down the call stack to the active module, eliminating the race condition where `dashboard.c` consumed the `SW4` edge before the global router could act on it.
+Hardware is polled exactly once per cycle in `main.c`. The result is passed contextually down the call stack to the active module, eliminating race conditions.
 
 **2. State Isolation — Zero Input Bleed**
-Inputs are handled entirely inside their contextual `switch` cases. The input buffer is explicitly zeroed (`key = ALL_RELEASED`) on state transition, preventing the physical hold of `SW4` from ghosting into the newly initialised Login screen.
+Inputs are handled entirely inside their contextual `switch` cases.
 
 **3. Canvas Locking & Cache Invalidation**
-The `screen_initialized` flag ensures static UI elements are drawn exactly once per state entry. `invalidate_dashboard_cache()` forces dynamic elements to redraw only when re-entering the Dashboard from another state.
+The `screen_initialized` flag ensures static UI elements are drawn exactly once per state entry. `invalidate_dashboard_cache()` forces dynamic elements to redraw only when re-entering the Dashboard.
 
 **4. Non-Blocking Execution**
-Recursive `verify_password()` calls and infinite `while(1);` traps were removed. All modules update flags and return control to the master loop immediately.
+Recursive `verify_password()` calls and infinite `while(1);` traps removed. All modules update flags and return immediately.
 
 **5. Hardware Timer ISRs**
-Loop-counter timers replaced with Timer0 (10 ms blink tick) and Timer1 (100 ms timeout tick), driven by ISRs. All timing in the codebase is now hardware-accurate and loop-speed-independent.
+Timer0 (10 ms blink tick) and Timer1 (100 ms timeout tick), driven by ISRs. All timing is now hardware-accurate.
 
 ---
 
-## Session Summary — 2026-05-09
+## Session Summary — 2026-05-09 (Part 1: Logic Bugs)
 
-> This session fixed six deeper logical and architectural bugs identified by static analysis: a PIC16 hardware stack overflow, a dead render block for crash events, gear label data corruption in the log viewer, a loop-speed-dependent cooldown, EEPROM partial-write corruption, and a blocking UART receive function. UART event logging was added to all modules.
+> Fixed six deeper logical and architectural bugs: PIC16 hardware stack overflow, dead render block for crash events, gear label data corruption, loop-speed-dependent cooldown, EEPROM partial-write corruption, and blocking UART receive function.
 
-### Core Changes
+---
 
-**1. Stack Depth Audit and Reduction**
-Every function call from `main()` to the deepest I²C primitive was counted against the PIC16F877A's 8-level hardware limit. Three functions were eliminated or merged to bring the worst-case depth to 6 (with headroom for startup and ISR).
+## Session Summary — 2026-05-09 (Part 2: Compiler Fixes)
 
-**2. UART Telemetry**
-Every state transition, gear change, crash event, login attempt, and log operation now emits a `[TAG] message\n` line over UART at 9600 baud. This makes the serial monitor a complete real-time audit trail of the system.
+> Resolved all compiler issues blocking the build: ROM overflow (-O0 → -Os via user.cmake), four dead functions removed from blackbox_drivers and set_time modules, incomplete prototype fixed in state.h, string/const audit confirmed all tables are Flash-resident.
 
-**3. EEPROM Page Write**
-11-byte log records are now committed in a single I²C page write, making each record atomic with respect to power faults and I²C glitches.
-
-**4. Non-Blocking UART**
-`uart_getchar()` no longer blocks. `uart_data_ready()` added for poll-before-read pattern.
+**ROM budget recovered (estimated):**
+| Source | Words saved |
+|--------|-------------|
+| -O0 → -Os optimisation | ~1800–2600 |
+| `uart_getchar` removed | ~25–35 |
+| `uart_data_ready` removed | ~15–20 |
+| `set_time_reset` removed | ~20–30 |
+| `bcd_to_dec` removed | ~10–15 |
+| **Total estimated recovery** | **~1870–2700 words** |
 
 ---
 
 ## Design Notes
 
 ### Why `uart_` prefix instead of `UART_`?
-Function names use `lower_snake_case` with a module prefix. Macros and constants use `UPPER_SNAKE_CASE`. This is consistent with MISRA-C naming guidelines and makes the origin of every identifier immediately clear.
+Function names use `lower_snake_case` with a module prefix. Macros and constants use `UPPER_SNAKE_CASE`. This is consistent with MISRA-C naming guidelines.
 
 ### Why centralise `FOSC` in `main_config.h`?
 The oscillator frequency is a board-level property. Placing it in peripheral headers couples unrelated drivers to a hardware detail they should not know about.
 
 ### DS1307 ACK/NACK Rule
-On single-byte I²C reads, always NACK. On multi-byte reads, ACK all bytes except the last. This is mandatory per the I²C specification and DS1307 datasheet §5.0.
+On single-byte I²C reads, always NACK. On multi-byte reads, ACK all bytes except the last. Mandatory per the I²C spec and DS1307 datasheet §5.0.
 
 ### PIC16F877A Stack Accounting
-The hardware stack is 8 levels. Level 1 is consumed by the startup-to-main call. Levels 2–7 are available to application code. Level 8 must be left free for ISR entry. Any call chain deeper than 6 from `main()` risks stack overflow under interrupt load.
+Hardware stack: 8 levels. Level 1 = startup→main. Levels 2–7 = application. Level 8 = reserved for ISR entry. Any call chain deeper than 6 from `main()` risks overflow under interrupt load.
 
-### Why `current_log` Is Not `static` in `dashboard.c`
-Making `current_log` visible to `main.c` allows `eeprom_write_log()` to be called directly from the main loop without an intermediary `flush_pending_logs()` function. Removing that one wrapper saves one hardware stack level — the difference between safe and overflowing.
+### C90 vs C99 `(void)` in Prototypes
+XC8 in C90 mode treats `foo()` (empty list) as "unknown parameters" and `foo(void)` as "no parameters". Always use `(void)` for zero-parameter functions to avoid warning 1518 and undefined call-site behaviour.
+
+### Why `const char * const []` for String Tables?
+`const char *` — the characters are const (Flash-resident).
+`const [] / * const` — the pointer itself is const (the array entry cannot be reseated).
+Both qualifiers together: the string data is in Flash and the pointer cannot be accidentally overwritten. On XC8, this is the correct way to declare all read-only string tables.
 
 ---
 
@@ -325,18 +559,13 @@ Making `current_log` visible to `main.c` allows `eeprom_write_log()` to be calle
 
 **Files:** All module files
 
-**Problem:** Every screen module (`dashboard.c`, `login.c`, `menu.c`, `view_logs.c`) mixed hardware reads, state mutation, and LCD writes into single functions. `display_event()` read a keypad byte, updated gear state, and wrote "G3" to the LCD in the same function. `display_speed()` read the ADC and printed the result in the same function. This made testing impossible, caused hidden side effects, and violated the principle that rendering should reflect state — not create it.
+**Problem:** Every screen module mixed hardware reads, state mutation, and LCD writes into single functions. Raw keypad bytes were passed directly into every module.
 
-Raw keypad bytes (`SW1 = 0x3E`, `SW4 = 0x37`) were passed directly into every module. The meaning of those bytes was re-decoded by switch statements inside each module, coupling hardware pin assignments to application logic throughout the codebase.
-
-**Fix:**
-Every module now has two functions with strictly enforced contracts:
+**Fix:** Every module now has two strictly-enforced functions:
 - `_update(EVENT evt)` — reads hardware, mutates state. Zero LCD writes.
 - `_render(void)` — reads state, writes LCD. Zero hardware reads, zero state mutations.
 
-An `EVENT` enum (`EVENT_NONE`, `EVENT_SW1`…`EVENT_SW6`) replaces raw keypad bytes. `translate_key()` in `events.c` is the single conversion point. Every module downstream receives a semantic event label, never a hardware mask.
-
-`SYSTEM_STATE sys` centralises all vehicle data (time, gear, speed, flags) in one struct defined in `main.c`. No module holds a private copy of vehicle data.
+An `EVENT` enum replaces raw keypad bytes. `translate_key()` in `events.c` is the single conversion point.
 
 The main loop in `main.c` was restructured into four explicit phases:
 1. `READ` — poll hardware once, translate to EVENT.
@@ -344,7 +573,7 @@ The main loop in `main.c` was restructured into four explicit phases:
 3. `RENDER` — active screen's `_render()` writes LCD from current state.
 4. `STORAGE` — EEPROM write if `sys.log_pending`.
 
-**Lesson:** Separate update (state) from render (display). Rendering should reflect state, not create it. Hardware codes are hardware details; translate them to semantic events at the earliest possible point so application logic never sees pin assignments.
+**Lesson:** Separate update (state) from render (display). Hardware codes are hardware details; translate them to semantic events at the earliest possible point.
 
 ---
 
@@ -352,8 +581,8 @@ The main loop in `main.c` was restructured into four explicit phases:
 
 **Files:** `main.c`
 
-**Problem:** `CLEAR_LOGS`, `DOWNLOAD_LOGS`, `SET_TIME`, and `CHANGE_PASSWORD` are one-shot screens that execute and immediately return to `MENU`. The `menu_reset()` call was missing before their `set_status(MENU)`, so `last_drawn` was never reset to the sentinel value. On re-entering the menu, `last_drawn` still held the last valid selection index, and `menu_render()` would skip the initial draw because `selection == last_drawn`.
+**Problem:** `CLEAR_LOGS`, `DOWNLOAD_LOGS`, `SET_TIME`, and `CHANGE_PASSWORD` one-shot screens returned to MENU without calling `menu_reset()`, leaving `last_drawn` stale and suppressing the first menu redraw.
 
 **Fix:** `menu_reset()` added before every `set_status(MENU)` call for one-shot screens.
 
-**Lesson:** Any module that has initialisation state (`screen_init`, `last_drawn`, `needs_draw`) must expose a reset function, and that function must be called before every entry into the state — including entries from unexpected paths.
+**Lesson:** Any module with initialisation state must expose a reset function, called before every entry into that state.

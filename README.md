@@ -1,380 +1,776 @@
-# 🚗 Car Black Box
+# 🚗 Car Black Box — PIC16F877A Event Data Recorder
 
 ![Platform](https://img.shields.io/badge/Platform-PIC16F877A-blue)
 ![Board](https://img.shields.io/badge/Board-PICGENIOS-informational)
 ![Simulator](https://img.shields.io/badge/Simulator-PICSIMSLAB-blueviolet)
 ![Language](https://img.shields.io/badge/Language-C%20%28XC8%29-orange)
-![Status](https://img.shields.io/badge/Status-In%20Development-yellow)
+![Optimisation](https://img.shields.io/badge/Optimisation--Os-brightgreen)
+![Status](https://img.shields.io/badge/Status-Active-success)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-A embedded systems project that simulates the core functionality of an automotive black box (Event Data Recorder) on a **PIC16F877A** microcontroller, running on the **PICGENIOS** development board inside **PICSIMSLAB**. The system logs real-time speed, gear state, crash events, and timestamps to an AT24C04 EEPROM over I²C.
+A firmware project that implements the core functionality of an automotive
+**Event Data Recorder (EDR / "black box")** on a PIC16F877A 8-bit
+microcontroller. The system captures real-time speed, gear state, crash
+events, and timestamps into a circular EEPROM log, protected behind a
+PIN-authenticated menu with lockout and idle timeout.
 
 ---
 
-## 🎬 Demo
+## 🗺️ Project Mind Map
+
+```
+CAR BLACK BOX (PIC16F877A)
+│
+├── 🔩 HARDWARE LAYER
+│   ├── CPU ─────────── PIC16F877A @ 20 MHz (HS oscillator)
+│   ├── RTC ─────────── DS1307 (I²C, BCD registers)
+│   ├── Storage ──────── AT24C04 EEPROM 512B (I²C, page-write)
+│   ├── Display ──────── HD44780 16×2 CLCD (8-bit parallel, PORTD)
+│   ├── Input ────────── 6-switch active-low keypad (PORTB, RB0–RB5)
+│   ├── Speed sensor ─── 10 kΩ pot → AN0 (ADC, 10-bit right-justified)
+│   └── Debug port ───── UART RC6/RC7 @ 9600 8N1
+│
+├── 🧠 FIRMWARE ARCHITECTURE
+│   ├── Design pattern ── Event-driven state machine
+│   ├── Main loop ─────── 4-phase: READ → UPDATE → RENDER → STORAGE
+│   ├── Key principle ─── Update ≠ Render (strict separation)
+│   ├── Event model ───── Raw keycode → EVENT enum (translate_key)
+│   └── Global state ──── SYSTEM_STATE sys (single source of truth)
+│
+├── 📦 MODULE MAP
+│   ├── main.c ────────── Entry point, master loop, EEPROM flush
+│   ├── main_config.h ─── Types, constants, include chain
+│   ├── events.h/.c ───── EVENT enum + translate_key()
+│   ├── state.h/.c ────── State machine (set_status / get_status)
+│   ├── timer.h/.c ────── Timer0 (10 ms) + Timer1 (100 ms) ISR
+│   ├── blackbox_drivers  Peripheral API (UART/I²C/CLCD/RTC/ADC/Keypad)
+│   ├── dashboard.h/.c ── Live display (update + render)
+│   ├── login.h/.c ────── PIN auth (phases, lockout, timeout)
+│   ├── menu.h/.c ─────── Scrollable 6-item menu
+│   ├── view_logs.h/.c ── CLCD log viewer + UART downloader
+│   ├── set_time.h/.c ─── Field-edit RTC set screen
+│   ├── set_password.h/.c Dual-buffer PIN change screen
+│   └── eeprom.h/.c ───── Circular 10-slot EEPROM log driver
+│
+├── 🔄 STATE MACHINE
+│   ├── DASHBOARD (boot default)
+│   │   └── SW4 → LOGIN (if not logged in) or MENU (if logged in)
+│   ├── LOGIN
+│   │   └── Correct PIN → MENU
+│   ├── MENU
+│   │   ├── VIEW LOG     → VIEW_LOGS
+│   │   ├── CLEAR LOG    → CLEAR_LOGS (one-shot)
+│   │   ├── DOWNLOAD LOG → DOWNLOAD_LOGS (one-shot)
+│   │   ├── SET TIME     → SET_TIME
+│   │   ├── CHANGE PASS  → CHANGE_PASSWORD
+│   │   └── LOGOUT       → DASHBOARD
+│   ├── VIEW_LOGS       (scroll log entries on CLCD)
+│   ├── CLEAR_LOGS      (one-shot: eeprom_clear_log → MENU)
+│   ├── DOWNLOAD_LOGS   (one-shot: UART dump → MENU)
+│   ├── SET_TIME        (field-edit time → DS1307 → MENU)
+│   └── CHANGE_PASSWORD (dual-buffer PIN → EEPROM → MENU)
+│
+├── ⏱️ TIMING SUBSYSTEM
+│   ├── Timer0 ── 8-bit, 1:256 prescaler → overflow ~10 ms → blink_tick
+│   │   └── Used by: login cursor blink, entry cooldown, set_time blink
+│   ├── Timer1 ── 16-bit, 1:8 prescaler → overflow ~100 ms → timeout_tick
+│   │   └── Used by: login idle timeout, menu inactivity, lockout countdown
+│   └── ISR ───── Increments counters only. Zero LCD writes. Zero decisions.
+│
+├── 💾 DATA STORAGE (AT24C04 EEPROM)
+│   ├── Layout
+│   │   ├── 0x00  head  (1 byte — next write slot 0–9)
+│   │   ├── 0x01  count (1 byte — valid entries 0–10)
+│   │   ├── 0x02–0x72  10 × 11-byte log records
+│   │   └── 0xF0–0xF3  4-byte PIN (ASCII '0'/'1')
+│   ├── Record format: "HHMMSSGxSSS" (11 ASCII bytes, no null)
+│   │   ├── HH  hours  (BCD-decoded to 2 ASCII digits)
+│   │   ├── MM  minutes
+│   │   ├── SS  seconds
+│   │   ├── G   literal prefix
+│   │   ├── x   gear: '0'=GR '1'=GN '2'=G1 '3'=G2 '4'=G3 '5'=G4 'C'=crash
+│   │   └── SSS speed 000–100
+│   └── Write mechanism: I²C page-write (atomic — all 11 bytes or none)
+│
+└── 🔑 KEY DESIGN DECISIONS
+    ├── No malloc — all buffers are statically declared
+    ├── ISR only increments — zero application logic in ISR
+    ├── One EVENT per main loop cycle — prevents double-consume bugs
+    ├── EEPROM write in step 4 only — keeps call stack at depth ≤ 6
+    └── const char * const for all string tables — Flash, not RAM
+```
+
+---
+
+## 🏗️ Architecture Mind Map — 4-Phase Main Loop
+
+```
+                    ╔══════════════════════════════════════════╗
+                    ║         main.c — while(1) loop           ║
+                    ╠══════════════════════════════════════════╣
+                    ║                                          ║
+                    ║  ① READ                                  ║
+                    ║  ┌─────────────────────────────────┐    ║
+                    ║  │ key = read_digital_keypad(EDGE)  │    ║
+                    ║  │ evt = translate_key(key)         │    ║
+                    ║  └────────────────┬────────────────┘    ║
+                    ║                   │ EVENT                ║
+                    ║  ② UPDATE         ▼                      ║
+                    ║  ┌─────────────────────────────────┐    ║
+                    ║  │ switch(get_status()) {           │    ║
+                    ║  │   DASHBOARD → dashboard_update() │    ║
+                    ║  │   LOGIN     → login_update()     │    ║
+                    ║  │   MENU      → menu_update()      │    ║
+                    ║  │   VIEW_LOGS → view_logs_update() │    ║
+                    ║  │   SET_TIME  → set_time_update()  │    ║
+                    ║  │   CHANGE_PW → set_pw_update()    │    ║
+                    ║  │ }                                │    ║
+                    ║  └────────────────┬────────────────┘    ║
+                    ║                   │ sys mutated          ║
+                    ║  ③ RENDER         ▼                      ║
+                    ║  ┌─────────────────────────────────┐    ║
+                    ║  │ switch(get_status()) {           │    ║
+                    ║  │   DASHBOARD → dashboard_render() │    ║
+                    ║  │   LOGIN     → login_render()     │    ║
+                    ║  │   MENU      → menu_render()      │    ║
+                    ║  │   VIEW_LOGS → view_logs_render() │    ║
+                    ║  │   CLEAR_LOGS→ clear_logs()       │    ║
+                    ║  │   DOWNLOAD  → download_logs()    │    ║
+                    ║  │   SET_TIME  → set_time_render()  │    ║
+                    ║  │   CHANGE_PW → set_pw_render()    │    ║
+                    ║  │ }                                │    ║
+                    ║  └────────────────┬────────────────┘    ║
+                    ║                   │ LCD updated          ║
+                    ║  ④ STORAGE        ▼                      ║
+                    ║  ┌─────────────────────────────────┐    ║
+                    ║  │ if (sys.log_pending) {           │    ║
+                    ║  │   eeprom_write_log(&entry)       │    ║
+                    ║  │ }                                │    ║
+                    ║  └─────────────────────────────────┘    ║
+                    ╚══════════════════════════════════════════╝
+```
+
+### The 5 Invariants That Make This Work
+
+| # | Invariant | Why |
+|---|-----------|-----|
+| 1 | `_update()` never writes the LCD | Prevents hidden render side-effects |
+| 2 | `_render()` never reads hardware | Keeps render deterministic & testable |
+| 3 | One EVENT per cycle | Prevents double-consume on state transitions |
+| 4 | EEPROM write only in step 4 | Keeps call depth ≤ 6 (PIC stack limit = 8) |
+| 5 | ISR only increments counters | No race conditions between ISR and main |
+
+---
+
+## 🔌 Hardware Mind Map
+
+```
+PIC16F877A (PICGENIOS development board, PICSIMSLAB simulation)
+│
+├── PORTD [RD0–RD7] ─────────────────── HD44780 CLCD Data Bus (D0–D7)
+│   (8-bit parallel, write-only)
+│
+├── PORTE
+│   ├── RE1 (CLCD_EN) ─────────────── CLCD Enable strobe (active high, 100 µs)
+│   └── RE2 (CLCD_RS) ─────────────── CLCD Register Select (0=Inst, 1=Data)
+│
+├── PORTC
+│   ├── RC3 (SCL) ──────────────────── I²C clock → DS1307 SCL + AT24C04 SCL
+│   ├── RC4 (SDA) ──────────────────── I²C data  → DS1307 SDA + AT24C04 SDA
+│   ├── RC6 (TX)  ──────────────────── UART transmit → PC serial monitor
+│   └── RC7 (RX)  ──────────────────── UART receive (reserved for future use)
+│
+├── PORTB [RB0–RB5] ─────────────────── 6-switch keypad (active-low, pull-up)
+│   ├── RB0 (SW1) — Crash / Login: back / Menu: back / Log: back
+│   ├── RB1 (SW2) — Gear up / Menu: scroll down / Set Time: confirm
+│   ├── RB2 (SW3) — Gear down / Menu: scroll up / Log: previous
+│   ├── RB3 (SW4) — Enter login / Digit '0' / Select / Increment field
+│   ├── RB4 (SW5) — Digit '1' / Decrement field
+│   └── RB5 (SW6) — Set Time: cycle active field (HH→MM→SS→HH)
+│
+└── PORTA
+    └── AN0 (RA0) ───────────────────── Speed potentiometer → ADC CH0
+                                        0V = 0 km/h, Vref = 100 km/h
+```
+
+### I²C Bus Topology
+
+```
+PIC16F877A (Master)
+    │
+    ├── SCL ──────┬──────────── DS1307 RTC  (addr 0x68)
+    │             └──────────── AT24C04 EEPROM (addr 0xA0/0xA2)
+    └── SDA ──────┴──────────── (shared I²C bus, 100 kHz)
+```
+
+---
+
+## 📁 File Structure Mind Map
+
+```
+Car_Black_Box/
+│
+├── README.md                  ← This file
+├── LOG.md                     ← Bug log, session notes, design decisions
+│
+├── cmake/
+│   └── Car_Black_Box/
+│       ├── default/
+│       │   └── user.cmake     ← [NEW] Override: -O0 → -Os optimisation
+│       └── default.production/
+│           └── user.cmake     ← [NEW] Same override for production build
+│
+└── src/
+    │
+    ├── CONFIGURATION
+    │   ├── main_config.h      Global: FOSC, _XTAL_FREQ, SYSTEM_STATE,
+    │   │                               LOG_ENTRY, GEAR_STATE, include chain
+    │   └── events.h/.c        EVENT enum + translate_key() bridge
+    │
+    ├── INFRASTRUCTURE
+    │   ├── state.h/.c         Application state machine (STATE enum, accessors)
+    │   ├── timer.h/.c         Timer0 (blink_tick) + Timer1 (timeout_tick) ISR
+    │   └── blackbox_drivers.h/.c  Peripheral API (UART/I²C/CLCD/RTC/ADC/Keypad)
+    │
+    ├── APPLICATION SCREENS
+    │   ├── main.c             Entry point: init + 4-phase while(1) loop
+    │   ├── dashboard.h/.c     Live vehicle display (RTC + ADC + gear/crash)
+    │   ├── login.h/.c         4-digit PIN auth with lockout + timeout
+    │   ├── menu.h/.c          Scrollable 6-item authenticated menu
+    │   ├── view_logs.h/.c     CLCD log viewer + UART log downloader
+    │   ├── set_time.h/.c      Blinking-field RTC editor (BCD ↔ decimal)
+    │   └── set_password.h/.c  Dual-buffer PIN change with EEPROM persistence
+    │
+    └── STORAGE
+        └── eeprom.h/.c        AT24C04 circular 10-slot log driver (page-write)
+```
+
+---
+
+## 🧩 Module Reference
+
+### `main.c` — Entry Point
+
+The master coordinator. Owns the `SYSTEM_STATE sys` global struct. After
+`init_config()` (which calls all peripheral inits and loads the PIN from EEPROM),
+the infinite loop runs four phases:
+1. **READ** — polls keypad once, translates to `EVENT`.
+2. **UPDATE** — dispatches event to active screen's `_update()` function.
+3. **RENDER** — dispatches to active screen's `_render()` function.
+4. **STORAGE** — if `sys.log_pending`, packs and writes EEPROM log entry.
+
+The EEPROM write is here (not inside `dashboard_update`) specifically to keep
+the call stack shallower — critical on the PIC16F877A's 8-level hardware stack.
+
+---
+
+### `main_config.h` — Global Configuration
+
+```
+main_config.h provides:
+├── Pragma config bits (HS oscillator, WDT off, LVP off)
+├── FOSC = 20000000UL       → used by UART/I²C baud calc + __delay_ms
+├── _XTAL_FREQ = 20000000UL → used by XC8 built-in delay macros
+├── GEAR_STATE enum (GR, GN, G1, G2, G3, G4)
+├── FLAG_IGNITION_ON = 0x01, FLAG_CRASH = 0x02
+├── LOG_ENTRY struct (hours, minutes, seconds, speed, gear, flags)
+├── SYSTEM_STATE struct (all vehicle data + log_pending)
+└── Include chain (xc.h → blackbox_drivers.h → events → timer
+                   → eeprom → state → login → set_password
+                   → set_time → view_logs → menu → dashboard)
+```
+
+**Rule:** Nothing else defines `FOSC` or `_XTAL_FREQ`. Peripheral drivers
+that need these values receive them transitively from this header.
+
+---
+
+### `events.h/.c` — Hardware-to-Application Bridge
+
+```
+Raw keypad byte (unsigned char)
+        │
+        ▼
+  translate_key()
+        │
+        ▼
+  EVENT enum value
+  ├── EVENT_NONE    (no key / unknown)
+  ├── EVENT_SW1     (semantic: crash / back / cancel)
+  ├── EVENT_SW2     (semantic: gear-up / down-scroll / confirm)
+  ├── EVENT_SW3     (semantic: gear-down / up-scroll / previous)
+  ├── EVENT_SW4     (semantic: enter-login / digit '0' / select)
+  ├── EVENT_SW5     (semantic: digit '1' / decrement)
+  └── EVENT_SW6     (semantic: cycle field)
+```
+
+**Why this matters:** If hardware changes (different keypad, remapped pins),
+only `translate_key()` needs updating. All application logic is insulated.
+
+---
+
+### `state.h/.c` — State Machine
+
+```
+States:
+├── DASHBOARD      — Boot state. Live clock, gear, speed.
+├── LOGIN          — 4-digit binary PIN entry.
+├── MENU           — Authenticated scrollable menu.
+├── VIEW_LOGS      — Browse EEPROM entries on CLCD.
+├── CLEAR_LOGS     — One-shot: erase EEPROM log.
+├── DOWNLOAD_LOGS  — One-shot: dump all entries via UART.
+├── SET_TIME       — Field-by-field RTC editor.
+└── CHANGE_PASSWORD— Dual-buffer PIN change.
+
+Accessors:
+├── set_status(STATE) → clcd_clear() + UART log + state transition
+└── get_status(void)  → returns current STATE        [FIX: was get_status()]
+```
+
+Every transition emits a `[STATE] name\r\n` UART log line — the serial monitor
+shows a complete audit trail of every screen change.
+
+---
+
+### `timer.h/.c` — Hardware Timer Driver
+
+```
+Timer0 (8-bit)
+├── Clock: FOSC/4 (5 MHz)
+├── Prescaler: 1:256
+├── Preload: 61 (256 − 195 = 61)
+├── Overflow period: 195 × 256 × 200 ns ≈ 9.98 ms
+└── Increments: blink_tick (unsigned char)
+    Used by: login cursor blink (BLINK_THRESHOLD = 20 → 200 ms)
+             set_time field blink (ST_BLINK_THRESHOLD = 25 → 250 ms)
+             entry cooldown gate
+
+Timer1 (16-bit)
+├── Clock: FOSC/4 (5 MHz)
+├── Prescaler: 1:8
+├── Preload: 3036 (65536 − 62500 = 3036)
+├── Overflow period: 62500 × 8 × 200 ns = 100.0 ms
+└── Increments: timeout_tick (unsigned int, caps at 0xFFFF)
+    Used by: login idle timeout (TIMEOUT_THRESHOLD = 50 → 5 s)
+             menu inactivity (MENU_INACTIVITY = 300 → 30 s)
+             login lockout countdown
+             set_password idle timeout (CP_TIMEOUT_TICKS = 100 → 10 s)
+
+ISR contract:
+└── Increments counters and returns. NOTHING else.
+    Application logic that reads counters runs in the main loop.
+```
+
+---
+
+### `blackbox_drivers.h/.c` — Peripheral API
+
+```
+blackbox_drivers
+│
+├── UART (RC6=TX, RC7=RX)
+│   ├── initUART(baud)           Configure USART, set SPBRG
+│   ├── uart_putchar(ch)         Blocking single-byte TX (waits for TXIF)
+│   ├── uart_puts(str)           Sends null-terminated string; \n → \r\n
+│   │
+│   └── [REMOVED - dead code, 2026-05-09]
+│       ├── uart_getchar()       Non-blocking RX (returned 0 if no data)
+│       └── uart_data_ready()    Returned RCIF flag
+│
+├── I²C MSSP Master (RC3=SCL, RC4=SDA, 100 kHz)
+│   ├── initI2C(baud)            Configure SSPADD, enable MSSP
+│   ├── i2c_start()              Assert START condition
+│   ├── i2c_stop()               Assert STOP condition
+│   ├── i2c_repeat_start()       Assert Repeated START
+│   ├── i2c_write(data)          Send byte; returns 1 if ACK received
+│   ├── i2c_read(ack)            Read byte; ack=1 → NACK (last byte)
+│   └── [static] i2c_wait_for_idle()  Polls R_nW + SSPCON2 busy bits
+│
+├── CLCD HD44780 16×2 (PORTD, RE1=EN, RE2=RS)
+│   ├── init_clcd()              TRIS config + HD44780 power-up sequence
+│   ├── clcd_putch(ch, addr)     Write one character at DDRAM address
+│   ├── clcd_print(str, addr)    Write null-terminated string from addr
+│   └── clcd_clear()             Send 0x01 command + 2 ms delay
+│
+├── DS1307 RTC (I²C addr 0x68)
+│   ├── init_rtc()               Clear CH bit (clock-halt) in register 0x00
+│   ├── ds1307_i2c_read(addr)    Read one BCD register
+│   └── ds1307_i2c_write(data, addr)  Write one BCD register
+│
+├── Digital Keypad (PORTB, RB0–RB5, active-low)
+│   ├── init_digital_keypad()    Set TRISB=0xFF (all inputs)
+│   └── read_digital_keypad(mode)
+│       ├── LEVEL mode: returns PORTB & 0x3F immediately
+│       └── EDGE mode:  returns key only on new press (debounced, once=flag)
+│
+└── ADC 10-bit (AN0–AN7)
+    ├── initADC()                ADCS=010 (FOSC/32), right-justified, all analog
+    └── read_adc(channel)        Set CHS, assert GO, wait nDONE, return 10-bit
+```
+
+---
+
+### `dashboard.h/.c` — Live Vehicle Display
+
+```
+dashboard_update(EVENT evt)              dashboard_render(void)
+─────────────────────────────────        ─────────────────────────────────
+Reads from:                              Reads from:
+  DS1307 → sys.hours/minutes/seconds      sys.hours/minutes/seconds
+  ADC(CH0) → sys.speed                    sys.gear
+  EVENT → sys.gear (SW2=up, SW3=down)     sys.flags
+  EVENT → sys.flags (SW1=crash)           sys.speed
+  EVENT → sys.log_pending                Cache: prev_speed, prev_gear,
+                                          prev_flags
+Writes to:                               Writes to:
+  sys.*                                   CLCD (via clcd_print/clcd_putch)
+  uart (telemetry on change only)
+                                         Optimisation: redraws only when
+Crash behaviour:                         cached values differ from sys.
+  SW1 sets FLAG_CRASH | FLAG_IGNITION.   Time always redrawn (cheap).
+  Subsequent SW2/SW3 ignored.
+  log_pending = 1 on any gear/crash.
+
+CLCD layout:
+  LINE1: "TIME      EV   SD"
+  LINE2: "HH:MM:SS  GN   072"
+         └──────┘  └─┘  └─┘
+           RTC     gear speed%
+```
+
+---
+
+### `login.h/.c` — PIN Authentication
+
+```
+LOGIN_PHASE state machine:
+│
+├── PHASE_ENTERING (initial)
+│   ├── Timer: 5 s idle timeout → DASHBOARD
+│   ├── SW4 digit '0', SW5 digit '1'
+│   ├── After 4 digits → pass_match()
+│   │   ├── match    → PHASE_SUCCESS
+│   │   └── mismatch → PHASE_FAIL (fail_count++)
+│   └── SW1 → DASHBOARD (cancel)
+│
+├── PHASE_FAIL (one-shot render)
+│   ├── Display "Invalid Entry" + tries remaining
+│   ├── If fail_count >= MAX_FAILS → PHASE_LOCKED
+│   └── Else → PHASE_LOCKOUT (timer starts)
+│
+├── PHASE_LOCKOUT (timed wait)
+│   ├── Lockout durations: fail 1→0s, 2→15s, 3→30s, 4→60s
+│   ├── Countdown displayed on LCD (seconds remaining)
+│   └── Expires → PHASE_ENTERING
+│
+├── PHASE_SUCCESS (one-shot render)
+│   ├── Display "Access Granted"
+│   ├── logged_in_flag = 1
+│   ├── fail_count = 0
+│   └── → MENU
+│
+└── PHASE_LOCKED (permanent)
+    ├── Display "Device Locked / Contact Admin"
+    └── Only a power cycle resets fail_count (by design)
+
+Password storage:
+├── EEPROM @ 0xF0–0xF3 (4 ASCII bytes, '0' or '1')
+├── Loaded at boot via login_load_password()
+├── Default "1111" written if EEPROM reads all 0xFF
+└── Updated live by login_set_password() after a change
+
+Timing:
+├── Cursor blink: 20 × 10 ms = 200 ms (Timer0)
+└── Idle timeout: 50 × 100 ms = 5 s (Timer1)
+```
+
+---
+
+### `menu.h/.c` — Authenticated Menu
+
+```
+Menu items (selection index 0–5):
+  0: VIEW LOG        → VIEW_LOGS state
+  1: CLEAR LOG       → CLEAR_LOGS state (one-shot)
+  2: DOWNLOAD LOG    → DOWNLOAD_LOGS state (one-shot)
+  3: SET TIME        → SET_TIME state
+  4: CHANGE PASSWORD → CHANGE_PASSWORD state
+  5: LOGOUT          → do_logout() → DASHBOARD
+
+Controls:
+  SW2: scroll down (selection++)
+  SW3: scroll up   (selection--)
+  SW4: confirm      set_status(destination) or do_logout()
+  SW1: back         set_status(DASHBOARD)
+
+CLCD layout (2-row preview):
+  LINE1: "> [selected item]   "
+  LINE2: "  [next item]       " (blank if at last item)
+
+Inactivity: 300 × 100 ms = 30 s → auto-logout → DASHBOARD
+Redraw: only when selection != last_drawn (sentinel: 0xFF)
+```
+
+---
+
+### `view_logs.h/.c` — Log Viewer and Downloader
+
+```
+view_logs_update(EVENT)            view_logs_render(void)
+─────────────────────────────      ─────────────────────────────
+SW2: log_index++, needs_draw=1     if (!needs_draw) return  ← cache
+SW3: log_index--, needs_draw=1     eeprom_read_log(index, buf)
+SW1: → MENU                        gear_label(buf[7]) → gl
+                                   Draw on CLCD:
+                                   LINE1: "LOG xx/xx      "
+                                   LINE2: "HH:MM:SS GL SSS"
+
+gear_label() decode (mandatory at every read site):
+  '0' → "GR"  (Reverse)
+  '1' → "GN"  (Neutral)
+  '2' → "G1"  (First)
+  '3' → "G2"  (Second)
+  '4' → "G3"  (Third)
+  '5' → "G4"  (Fourth)
+  'C' → "CR"  (Crash event)
+
+download_logs() — one-shot UART dump:
+  Sends all entries to serial monitor in tabular format:
+  "=== CAR BLACK BOX LOG ===\n"
+  "## HH:MM:SS GEAR SPD\n"
+  "01 09:41:03 GN  072\n"
+  ...
+  Auto-transitions to MENU after dump.
+```
+
+---
+
+### `eeprom.h/.c` — Circular Log Driver
+
+```
+Memory layout (AT24C04, 512 bytes):
+  Addr 0x00     head  (next write slot, 0–9)
+  Addr 0x01     count (valid entries, 0–10)
+  Addr 0x02–0x72  10 slots × 11 bytes = 110 bytes log data
+  Addr 0xF0–0xF3  4-byte PIN (ASCII, independent of log ring)
+
+Circular buffer rules:
+  Write: slot[head] ← record; head = (head+1)%10; count = min(count+1, 10)
+  Read:  oldest = (head - count + 10) % 10; slot[i] = (oldest + i) % 10
+  When full (count=10): head advances, silently overwrites oldest — no special case
+
+Write path (atomic page-write):
+  i2c_start()
+  i2c_write(dev_addr | page_select)
+  i2c_write(byte_addr)
+  i2c_write(rec[0]) … i2c_write(rec[10])   ← 11 bytes in one transaction
+  i2c_stop()
+  ack_poll() (max 50 retries × 100 µs = 5 ms)
+  → Either all 11 bytes commit or the slot is unchanged
+
+Stack depth for eeprom_write_log():
+  main(1) → eeprom_write_log(2) → eeprom_write_byte(3)
+  → i2c_start(4) → i2c_wait_for_idle(5). ISR: 6. Safe (limit: 8)
+```
+
+---
+
+## 📊 CLCD Display Reference
+
+### DASHBOARD screen
 
 ```
 ┌────────────────┐
-│ TIME  EV   SD  │   ← LINE 1 labels
-│ 09:41:03 GN 72 │   ← LINE 2 live values (time / gear / speed %)
+│ TIME  EV   SD  │  ← static labels (redrawn every frame — cheap)
+│ 09:41:03 GN 72 │  ← live: BCD-decoded time | gear/crash | speed %
+└────────────────┘
+Gear field values: GR GN G1 G2 G3 G4  or  C  (crash)
+Speed field:       000–100 (ADC mapped: 0–1023 → 0–100)
+```
+
+### LOGIN screen
+
+```
+┌────────────────┐
+│ PassWord:      │
+│ ** _           │  ← * = confirmed digit, _ = blinking cursor
+└────────────────┘
+Lockout:
+│ Locked!        │
+│ Retry in: 030s │
+Permanent lock:
+│ Device Locked  │
+│ Contact Admin  │
+```
+
+### MENU screen
+
+```
+┌────────────────┐
+│ > VIEW LOG     │  ← selected item (with > marker)
+│   CLEAR LOG    │  ← next item preview
+└────────────────┘
+```
+
+### VIEW LOGS screen
+
+```
+┌────────────────┐
+│ LOG 03/10      │  ← entry 3 of 10
+│ 09:43:19 CR 055│  ← time | gear ("CR"=crash) | speed
+└────────────────┘
+```
+
+### SET TIME screen
+
+```
+┌────────────────┐
+│ Set Time SW2:OK│
+│ [09]:41:03  SW1:Back │  ← active field blinks (250 ms), others solid
 └────────────────┘
 ```
 
 ---
 
-## 📋 Table of Contents
+## 🔌 Serial Monitor Reference
 
-- [Overview](#overview)
-- [Hardware Requirements](#hardware-requirements)
-- [Pin Configuration](#pin-configuration)
-- [File Structure](#file-structure)
-- [Architecture](#architecture)
-- [Module Descriptions](#module-descriptions)
-- [Serial Monitor Reference](#serial-monitor-reference)
-- [Getting Started](#getting-started)
-- [What I Learned](#what-i-learned)
-- [Known Limitations](#known-limitations)
-- [License](#license)
+Connect a USB-UART bridge to **RC6 (TX) / RC7 (RX)**. Open terminal at **9600 8N1**.
 
----
-
-## Overview
-
-Modern vehicles carry Event Data Recorders (EDRs) that capture pre- and post-crash data. This project implements a simplified version on a PIC16F877A. The system covers:
-
-- **Real-time clock** via DS1307 over I²C
-- **Speed sensing** via ADC (potentiometer simulating a speed sensor)
-- **Gear + crash event logging** via a 6-switch digital keypad
-- **Live dashboard** on a 16×2 Character LCD
-- **UART serial output** for real-time monitoring of every event
-- **PIN-protected access menu** with lockout and idle timeout
-- **Circular EEPROM log** — 10 entries, oldest overwritten, atomic page writes
-
----
-
-## Hardware Requirements
-
-| Component | Part Number / Spec |
-|---|---|
-| Microcontroller | PIC16F877A |
-| Development Board | PICGENIOS |
-| Simulation Environment | PICSIMSLAB |
-| Crystal Oscillator | 20 MHz |
-| RTC Module | DS1307 + 32.768 kHz crystal |
-| Display | 16×2 HD44780 Character LCD |
-| Speed Sensor (sim) | 10 kΩ potentiometer on AN0 |
-| Input | 6-switch active-low keypad on PORTB |
-| Storage | AT24C04 EEPROM on I²C bus |
-| Communication | RS-232 / USB-UART bridge at 9600 baud |
-
----
-
-## Pin Configuration
-
-```
-PIC16F877A (PICGENIOS board)
-├── PORTD [RD0–RD7]  ──►  CLCD Data Bus (D0–D7)
-├── RE1              ──►  CLCD EN
-├── RE2              ──►  CLCD RS
-├── RC3 (SCL)        ──►  DS1307 + AT24C04 SCL  (I²C)
-├── RC4 (SDA)        ──►  DS1307 + AT24C04 SDA  (I²C)
-├── RC6 (TX)         ──►  UART TX → PC serial monitor
-├── RC7 (RX)         ──►  UART RX (future use)
-├── RB0              ──►  SW1 (crash / menu back)
-├── RB1              ──►  SW2 (gear up / menu down)
-├── RB2              ──►  SW3 (gear down / menu up)
-├── RB3              ──►  SW4 (enter login / digit '0' / select)
-├── RB4              ──►  SW5 (digit '1')
-└── AN0 (RA0)        ──►  Speed potentiometer
-```
-
----
-
-## File Structure
-
-```
-Car_Black_Box/
-├── README.md
-├── LOG.md
-└── src/
-    ├── main.c              Entry point, 4-phase event-driven loop
-    ├── main_config.h       Global config, SYSTEM_STATE, all includes
-    ├── events.h / .c       EVENT enum + translate_key() — hardware→app bridge
-    ├── state.h / .c        Application state machine (DASHBOARD…CHANGE_PASSWORD)
-    ├── timer.h / .c        Timer0 (10 ms) + Timer1 (100 ms) ISR driver
-    ├── dashboard.h / .c    Dashboard update (hardware→sys) and render (sys→LCD)
-    ├── login.h / .c        PIN login — update/render split, LOGIN_PHASE enum
-    ├── menu.h / .c         Scrollable menu — update/render split
-    ├── view_logs.h / .c    Log viewer (CLCD) and downloader (UART)
-    ├── eeprom.h / .c       AT24C04 circular log driver — 10-slot, atomic page write
-    └── blackbox_drivers.h  Unified peripheral API (UART, I²C, CLCD, DS1307, keypad, ADC)
-    └── blackbox_drivers.c  Peripheral driver implementations
-```
-
----
-
-## Architecture
-
-### Design Model
-
-The firmware follows a strict embedded design model: **Inputs → State Machine → Outputs → Storage**.
-
-```
-                    ┌──────────────────────────────────────────┐
-                    │              main.c while(1)              │
-                    │                                           │
-                    │  1. READ    key = read_digital_keypad()   │
-                    │             evt = translate_key(key)      │
-                    │                                           │
-                    │  2. UPDATE  switch(state) {               │
-                    │               DASHBOARD: dashboard_update │
-                    │               LOGIN:     login_update     │
-                    │               MENU:      menu_update      │
-                    │               VIEW_LOGS: view_logs_update │
-                    │             }                             │
-                    │                                           │
-                    │  3. RENDER  switch(state) {               │
-                    │               DASHBOARD: dashboard_render │
-                    │               LOGIN:     login_render     │
-                    │               MENU:      menu_render      │
-                    │               VIEW_LOGS: view_logs_render │
-                    │             }                             │
-                    │                                           │
-                    │  4. STORAGE if(sys.log_pending)           │
-                    │               eeprom_write_log()          │
-                    └──────────────────────────────────────────┘
-```
-
-### Core Rules
-
-**Rule 1 — Update never writes the LCD. Render never reads hardware.**
-`dashboard_update()` calls `ds1307_i2c_read()` and `read_adc()`. It writes `sys`. It never calls `clcd_print()`. `dashboard_render()` reads `sys` and calls `clcd_print()`. It never calls a hardware driver. This separation makes both functions individually testable and prevents hidden side effects.
-
-**Rule 2 — One event per cycle.**
-The keypad is polled exactly once in step 1. The raw byte is immediately translated to an `EVENT` enum value. All modules downstream receive the `EVENT` — never the raw keypad byte. This means no module can misinterpret which physical key was pressed.
-
-**Rule 3 — Single authoritative state (`sys`).**
-All vehicle data (time, gear, speed, flags) lives in one `SYSTEM_STATE sys` struct defined in `main.c`. No module holds a private copy of vehicle data. When `dashboard_update()` reads a new speed from the ADC, it writes to `sys.speed`. When `dashboard_render()` needs the speed, it reads `sys.speed`. There is one truth.
-
-**Rule 4 — EEPROM writes happen in step 4, never inside a module.**
-`dashboard_update()` sets `sys.log_pending = 1`. The actual `eeprom_write_log()` call happens at the bottom of the main loop. This keeps the EEPROM call one level shallower in the call stack — critical on the PIC16F877A's 8-level hardware stack.
-
-**Rule 5 — ISR only increments counters.**
-The Timer0/Timer1 ISR increments `blink_tick` and `timeout_tick` and returns. All decisions based on those counters are made in `login_update()` running in the main loop. This makes the ISR's behaviour predictable and prevents race conditions.
-
-### Event Flow
-
-```
-Physical keypress
-      │
-      ▼
-read_digital_keypad(EDGE)    → raw unsigned char (SW1..SW6 mask)
-      │
-      ▼
-translate_key()              → EVENT enum value
-      │
-      ▼
-active_screen_update(EVENT)  → modifies SYSTEM_STATE or module statics
-      │
-      ▼
-active_screen_render()       → reads state, writes LCD
-      │
-      ▼
-eeprom_write_log()           → if sys.log_pending (step 4)
-```
-
-### Call Stack Depth (PIC16F877A: 8-level limit)
-
-| Deepest chain | Depth from main | + ISR | Total |
-|---|---|---|---|
-| `eeprom_write_log → eeprom_write_byte → i2c_start → i2c_wait_for_idle` | 5 | 1 | **6** ✅ |
-| `dashboard_update → ds1307_i2c_read → i2c_start → i2c_wait_for_idle` | 5 | 1 | **6** ✅ |
-| `dashboard_render → clcd_print → clcd_write` | 4 | 1 | **5** ✅ |
-
-The three inlining decisions that make this safe: `flush_pending_logs()` removed, `write_slot()` merged into `eeprom_write_log()`, `ack_poll()` inlined.
-
----
-
-## Module Descriptions
-
-### `events` — Hardware-to-Application Bridge
-`translate_key(unsigned char key)` is the single point where raw hardware codes become semantic application events. Every module that reacts to input takes an `EVENT`; none takes a raw keypad byte. This makes the meaning of every key context-independent at the driver level and context-specific at the module level.
-
-### `main_config` — Global Configuration
-Defines hardware constants (`FOSC`, `_XTAL_FREQ`), the `SYSTEM_STATE` struct, `LOG_ENTRY` struct, `GEAR_STATE` enum, and event flags. Includes all module headers in dependency order. Nothing else should define hardware constants.
-
-### `timer` — Hardware Timer ISR
-Configures Timer0 (8-bit, 1:256, ≈10 ms overflow → `blink_tick`) and Timer1 (16-bit, 1:8, ≈100 ms overflow → `timeout_tick`). The ISR increments both counters and returns immediately — no LCD writes, no EEPROM writes, no state decisions. Modules read the counters and make decisions in the main loop.
-
-### `dashboard` — Live Vehicle Display
-Two strictly separate functions:
-- `dashboard_update(EVENT)` reads RTC (I²C), ADC, and processes gear/crash keys. Writes `sys`. Never calls `clcd_print()`.
-- `dashboard_render()` reads `sys` and draws time, gear, and speed on the LCD. Has a `prev_speed` cache to skip writes when speed hasn't changed. Never calls a hardware driver.
-
-### `login` — PIN Entry Screen
-Uses a `LOGIN_PHASE` enum (`ENTERING`, `FAIL`, `SUCCESS`, `LOCKED`) as the internal state machine. `login_update(EVENT)` advances the phase — processes digits, runs `pass_match()`, decrements `attempts_left`. `login_render()` displays based on the current phase. The 2-second failure-feedback delay is in `render()` because it is display behaviour: it fires once per `PHASE_FAIL` entry, then resets the phase to `ENTERING`. Entry cooldown is 500 ms based on `timeout_tick` (hardware Timer1), not loop iterations.
-
-### `menu` — Scrollable Selection Menu
-`menu_update(EVENT)` moves a `selection` index (0–4) and calls `set_status()` on SW4. `menu_render()` draws the selected item and the item below it. Redraws only when `selection != last_drawn`. `last_drawn` is a cache sentinel (`0xFF`); it is **never** used as an array index (see LOG.md — `last_i` OOB bug).
-
-### `view_logs` — EEPROM Log Viewer and Downloader
-`view_logs_update(EVENT)` moves a `log_index` and sets `needs_draw = 1`. `view_logs_render()` reads the EEPROM entry at `log_index` only when `needs_draw` is set, then clears it. Gear bytes from EEPROM are raw `GEAR_STATE` indices — `gear_label()` translates them to display strings (`"GR"`, `"GN"`, `"G1"`…) at every read site. `download_logs()` dumps all entries over UART in one pass then auto-transitions to MENU.
-
-### `eeprom` — Circular Log Driver
-10-slot circular buffer. `head` = next write slot, `count` = valid entries. Writes use AT24C04 **page write** (11 bytes in one I²C transaction) — atomic: either all 11 bytes commit or none do. `ack_poll()` is inlined. `write_slot()` is merged into `eeprom_write_log()`. Both inlining decisions were made to reduce call stack depth on the PIC16F877A.
-
-### `blackbox_drivers` — Peripheral API
-Unified driver for UART, I²C MSSP master, HD44780 CLCD, DS1307 RTC, 6-switch keypad, and 10-bit ADC. `uart_getchar()` is non-blocking — returns 0 if no byte is available. `uart_data_ready()` returns `RCIF` for poll-before-read. `i2c_wait_for_idle()` is `static` inside the `.c` file — not exposed in the header.
-
-### `state` — Application State Machine
-`set_status(STATE)` calls `clcd_clear()`, logs `[STATE] name\n` over UART, and updates `current_state`. `get_status()` returns it. Every screen transition is visible in the serial monitor.
-
----
-
-## Serial Monitor Reference
-
-Connect a USB-UART bridge to RC6/RC7. Open a terminal at **9600 8N1**. Every significant event produces a tagged line:
-
-| Prefix | Meaning |
-|---|---|
-| `[STATE] DASHBOARD` | State machine transitioned to that screen |
-| `[DASH] GEAR: G2` | Gear changed on dashboard |
+| Prefix | Event |
+|--------|-------|
+| `=== CAR BLACK BOX STARTED ===` | Power-on / reset |
+| `[STATE] DASHBOARD` | State machine transitioned |
+| `[DASH] GEAR: G2` | Gear changed |
 | `[DASH] CRASH` | SW1 pressed — crash latched |
-| `[DASH] IGNITION ON` | First gear/crash key pressed |
-| `[LOGIN] digit 2` | Second digit entered on login screen |
-| `[LOGIN] FAIL - 3 left` | Wrong PIN, 3 attempts remaining |
-| `[LOGIN] TIMEOUT` | Idle 5 s — returned to dashboard |
-| `[LOGIN] ACCESS GRANTED` | Correct PIN |
-| `[LOGIN] LOCKED` | All attempts exhausted |
-| `[MENU] SELECT: VIEW LOG` | Menu item selected |
-| `[MENU] BACK` | Returned to dashboard from menu |
-| `[LOGS] NEXT / PREV` | Scrolled log entries |
-| `[LOGS] CLEARED` | All EEPROM log entries erased |
-| `[DOWNLOAD] …` | UART log dump in progress |
-| `[LOG] EEPROM OK` | Log entry saved successfully |
-| `[LOG] EEPROM FAIL` | I²C write failed |
+| `[DASH] IGNITION ON` | First key event after boot |
+| `[LOGIN] No saved pass — writing default` | Fresh EEPROM |
+| `[LOGIN] Password loaded from EEPROM` | Normal boot |
+| `[LOGIN] digit 2` | Second digit entered |
+| `[LOGIN] CORRECT` | PIN matched |
+| `[LOGIN] FAIL 2/5` | Second wrong attempt |
+| `[LOGIN] TIMEOUT` | 5 s idle → DASHBOARD |
+| `[LOGIN] ACCESS GRANTED` | Login succeeded |
+| `[LOGIN] LOCKOUT EXPIRED` | Cooldown elapsed |
+| `[LOGIN] LOGGED OUT` | do_logout() called |
+| `[MENU] SELECT: VIEW LOG` | Menu item activated |
+| `[MENU] BACK` | SW1 pressed in menu |
+| `[MENU] INACTIVITY — auto-logout` | 30 s idle |
+| `[LOGS] NEXT` | SW2 in view_logs |
+| `[LOGS] PREV` | SW3 in view_logs |
+| `[LOGS] BACK` | SW1 in view_logs |
+| `[LOGS] empty` | No log entries exist |
+| `[LOGS] CLEARED` | clear_logs() ran |
+| `[DOWNLOAD] No logs stored.` | Empty EEPROM log |
+| `[LOG] EEPROM OK` | Entry written successfully |
+| `[LOG] EEPROM FAIL` | I²C write error |
+| `[SET_TIME] SAVED to DS1307` | SW2 confirmed time |
+| `[SET_TIME] DISCARDED — RTC unchanged` | SW1 cancelled |
+| `[CP] MATCH — writing to EEPROM` | New PIN matches confirm |
+| `[CP] MISMATCH — resetting` | PIN mismatch |
+| `[CP] EEPROM write complete` | New PIN saved |
+| `[CP] CANCELLED` | SW1 in set_password |
+| `[CP] TIMEOUT — returning to MENU` | 10 s idle |
 
-Download format:
+### UART Download Format
+
 ```
 === CAR BLACK BOX LOG ===
 ## HH:MM:SS GEAR SPD
-01 09:41:03 GN 072
-02 09:43:17 G2 055
-03 09:43:19 CR 055
+01 09:41:03 GN  072
+02 09:43:17 G2  055
+03 09:43:19 CR  055
 =========================
 ```
 
 ---
 
-## Getting Started
+## 🛠️ Getting Started
 
 ### Prerequisites
-- MPLAB X IDE ≥ 6.x
-- XC8 Compiler ≥ 2.x
-- PICkit 3/4 or compatible programmer (or PICSIMSLAB for simulation)
 
-### Build & Flash
+| Tool | Version |
+|------|---------|
+| MPLAB X IDE | ≥ 6.x |
+| XC8 Compiler | ≥ 2.x |
+| Programmer | PICkit 3/4 (or PICSIMSLAB for simulation) |
+| Serial terminal | Any 9600 8N1 (PuTTY, Tera Term, CoolTerm) |
+
+### Build Steps
+
 1. Clone the repository.
-2. Open MPLAB X and create a new project targeting **PIC16F877A @ 20 MHz**.
-3. Add all `.c` files in `src/` to the project (including `events.c`).
-4. Build and program via PICkit, or load into PICSIMSLAB.
+2. Open MPLAB X → **File → Open Project**.
+3. Select the `Car_Black_Box` folder.
+4. **Copy `user.cmake`** into both CMake output directories:
+   - `cmake/Car_Black_Box/default.production/`
+   - `cmake/Car_Black_Box/default/`
+5. Clean and build — ROM usage should now be well within 8 KB.
+6. Program via PICkit or load into PICSIMSLAB.
 
-### Serial Monitor
-Connect a USB-UART bridge to RC6 (TX) / RC7 (RX). Open a terminal at **9600 8N1**.
+### Alternative: Setting Optimisation in MPLAB X GUI
 
----
-
-## What I Learned
-
-### 1. One Source of Truth for Hardware Constants
-**Bug:** `#define FOSC 20000000` duplicated in `uart.h` and `i2c.h`.
-**Concept:** Hardware constants belong in one top-level config header. Any peripheral that defines them creates a silent maintenance hazard.
-
-### 2. Namespace Hygiene in C
-**Bug:** UART functions named `getchar`, `putchar`, `puts` — reserved by `<stdio.h>`.
-**Concept:** C has no namespaces. Module-prefixed names (`uart_putchar`, `i2c_read`) are the only reliable way to prevent collisions with the standard library.
-
-### 3. `static` Linkage and Header Files
-**Bug:** `static void i2c_wait_for_idle()` declared in the public header.
-**Concept:** `static` means internal linkage — declaring it in a header defeats the purpose and gives every translation unit its own copy.
-
-### 4. ADC Startup Sequencing
-**Bug:** `GO = 1` placed before `ADON = 1` inside `initADC()`.
-**Concept:** Initialisation functions configure — they do not trigger operations. Embedded datasheets specify strict startup sequences.
-
-### 5. I²C ACK/NACK Protocol
-**Bug:** `i2c_read(0)` (ACK) called after a single-byte DS1307 read.
-**Concept:** The master sends NACK after the last byte to signal the slave to stop. ACK means "send me another byte." Always verify argument semantics against the callee's documented contract.
-
-### 6. Never Use Empty Loops for Timing
-**Bug:** `for(i=0;i<50;i++);` used as 1.52 ms delay in `clcd_clear()`. Eliminated at `-O2`.
-**Concept:** `__delay_ms()` in XC8 uses `_XTAL_FREQ` to generate compiler-intrinsic delays that survive optimisation. Empty loops are not portable timing.
-
-### 7. Unsigned Types for Array Indices
-**Bug:** `static char i` (signed) used as gear index — wraps to -1 below zero.
-**Concept:** Array indices must always be unsigned. A signed index that wraps below zero silently reads memory before the array.
-
-### 8. Non-Blocking State Machines
-**Bug:** `verify_password()` recursively called `show_login_screen()` on failure.
-**Concept:** Embedded event loops require every function to return promptly. Recursion and blocking traps starve the loop of CPU time, preventing keypad polling and LCD updates.
-
-### 9. Context-Dependent Input Routing
-**Bug:** `if(key == SW4)` at the top of `while(1)` triggered LOGIN transition even when already on the Login screen.
-**Concept:** The meaning of an input depends entirely on the active state. Input routing belongs strictly inside the originating state's case block, never at global scope.
-
-### 10. Hardware Timers vs. Software Loop Counters
-**Bug:** Blink cursor and idle timeout used raw `counter++` variables whose real duration depended on loop speed.
-**Concept:** Hardware timers run independently of the CPU and fire at crystal-accurate intervals. Software loop counters break the moment loop speed changes.
-
-### 11. PIC16F877A Hardware Stack Overflow (Intermittent Reboot)
-**Bug:** Call chain from main to `i2c_wait_for_idle` was 8 levels deep. Timer ISR pushed depth to 9. Stack pointer wrapped, corrupting the return address of `main()`. The reboot was intermittent because it only occurred when a timer interrupt fired during the ~5 ms EEPROM ACK-poll window.
-**Concept:** On fixed-hardware-stack MCUs, every function call has a measurable cost. Audit call depth against the limit. Reduce depth by inlining small intermediate functions rather than adding abstraction.
-
-### 12. Early Return Killing a Render Block (Dead Code)
-**Bug:** In `display_event()`, an early `return` when `FLAG_CRASH` was set meant the `clcd_print("C ", ...)` render block below it was never reached. The crash display was dead code.
-**Concept:** When a function has multiple exit points, trace every path to confirm all side effects are reached. Render functions should have one exit point and one render path for each state.
-
-### 13. Gear Label Corruption (Black Box Data Integrity)
-**Bug:** EEPROM stored gear as raw index (`'0'`=GR, `'1'`=GN…). The viewer printed `"G"` + raw digit, making GN display as `"G1"` (First Gear) and GR as `"G0"`. This would mislead forensic analysis.
-**Concept:** Any time data is stored in a compact representation, a dedicated decode function must be used at every read site. Printing the raw storage value is always wrong.
-
-### 14. Loop-Speed-Dependent Cooldown Was Instantaneous
-**Bug:** `entry_cooldown < 50` incremented once per loop iteration. After the ISR refactor made the loop faster, 50 iterations completed in under 0.2 ms — effectively no cooldown.
-**Concept:** Any timing requirement, even a debounce cooldown, must be based on a hardware timer. Loop counters produce timing that silently changes whenever the loop body changes.
-
-### 15. EEPROM Partial-Write Record Corruption
-**Bug:** 11 separate byte writes. If a power fault occurred on byte 6, the remaining bytes kept the stale data from a previous record. `head`/`count` were only updated on success, but the partial record sat permanently in that slot.
-**Concept:** When multiple writes must be atomic, use the hardware's native batch mechanism. I²C page write commits all 11 bytes or none.
-
-### 16. Blocking `uart_getchar()` Was a Latent System Freeze
-**Bug:** `while (!RCIF);` — permanent block waiting for a UART byte. Never called in production, but waiting like a landmine for anyone implementing SET_TIME via serial.
-**Concept:** Driver functions must be non-blocking. Blocking behaviour is composed explicitly in the caller. Provide `uart_data_ready()` for poll-before-read.
-
-### 17. Sentinel Value Used as Array Index (Menu OOB Read)
-**Bug:** `last_i` initialised to `0xFF` as a "force redraw" sentinel. The SW4 handler called `menu_states[last_i]` — an out-of-bounds read into arbitrary data memory.
-**Concept:** Sentinel values must never be dereferenced as array indices. Keep the live selection index and the cache-invalidation sentinel in separate variables with distinct roles.
-
-### 18. Separation of UPDATE and RENDER
-**Concept (design principle):** The biggest architectural improvement in this codebase. `_update()` reads hardware and mutates state. `_render()` reads state and writes the display. Neither does the other's job. This makes both functions individually testable, prevents hidden side effects, and makes the system's data flow explicit and auditable.
-
-### 19. Single Authoritative State (SYSTEM_STATE)
-**Concept (design principle):** Before this refactor, vehicle state was scattered — gear lived as a `static` inside `display_event()`, speed lived inside `current_log`, time fields were re-read inside a render function. `SYSTEM_STATE sys` is one struct that holds all vehicle data. One owner (dashboard_update writes it). One reader per field. No hidden copies.
-
-### 20. Event Abstraction Over Raw Keycodes
-**Concept (design principle):** Passing raw keypad bytes (`SW1 = 0x3E`) into every module is a coupling between hardware and application logic. `translate_key()` is the single conversion point. Modules receive `EVENT_SW1` — a semantic label. When hardware changes (different keypad, different pin), only `translate_key()` needs updating.
+If your project is not CMake-based:
+- Project Properties → **XC8 Global Options** → **XC8 Compiler**
+- → **Optimizations** → **Optimization Set** → `"s"` (size) or `"1"`
 
 ---
 
-## Known Limitations
+## ⚠️ Known Limitations
 
-- No date register: only HH:MM:SS is read from DS1307. Date requires DS1307 registers 0x03–0x06.
-- Crash flag not latched across power cycles. A reboot clears `sys.flags`.
-- SET_TIME and CHANGE_PASSWORD are stubs — they log a message and return to MENU.
-- Single ADC channel: only speed (AN0) is sampled.
-- Login password is hardcoded as `"1111"`. CHANGE_PASSWORD is not yet implemented.
+| Limitation | Notes |
+|------------|-------|
+| No date field | DS1307 date registers (0x03–0x06) not read |
+| Crash flag volatile | `sys.flags` cleared on power cycle; not EEPROM-persisted |
+| `set_time_reset()` not called | SET_TIME starts at "00:00:00" on entry; see LOG.md for one-line fix |
+| Single ADC channel | Only AN0 (speed pot); AN1–AN7 unused |
+| Binary PIN only | Password digits are `'0'` or `'1'`; 4-digit = 16 possible combos |
+| 10-entry log cap | Oldest overwritten silently; no full-log alert |
+| No UART RX in production | `uart_getchar` / `uart_data_ready` removed as dead code |
 
 ---
 
-## License
+## 📐 PIC16F877A Resource Budget
+
+| Resource | Total | Used (est. -Os) | Free |
+|----------|-------|-----------------|------|
+| Program Memory | 8192 words | ~5800–6200 | ~2000–2400 |
+| Data Memory (RAM) | 368 bytes | ~200–250 | ~120–170 |
+| EEPROM (internal) | 256 bytes | 0 (not used) | 256 |
+| AT24C04 (external) | 512 bytes | 116 (log+PIN) | 396 |
+| Hardware call stack | 8 levels | 6 (worst case) | 2 |
+| Interrupt levels | 1 (no priority) | 1 (Timer0+1 ISR) | 0 |
+
+---
+
+## 📚 What I Learned
+
+### Embedded Architecture
+1. **4-phase event loop** — READ → UPDATE → RENDER → STORAGE eliminates hidden side effects and makes the data flow explicit.
+2. **Update/Render separation** — the single biggest architectural improvement. Render reflects state; it never creates it.
+3. **One source of truth** — `SYSTEM_STATE sys` eliminates private copies of vehicle data scattered across modules.
+4. **Event abstraction** — `translate_key()` insulates application logic from hardware pin assignments.
+5. **ISR discipline** — ISRs that only increment counters produce no race conditions and are trivially testable.
+
+### PIC16F877A Constraints
+6. **Hardware stack limit** — 8 levels. Every function call is a cost. Audit the deepest chain and leave headroom for ISR.
+7. **ROM vs RAM trade-off** — `const char * const` tables live in Flash. Mutable string buffers burn scarce RAM.
+8. **`-Os` not `-O0`** — `-O0` exists only for step-through debugging. `-Os` is the correct default for release.
+9. **`__delay_ms()` not empty loops** — empty loops are optimised away. `__delay_ms()` uses `_XTAL_FREQ` and survives.
+10. **Unsigned indices always** — signed `char` as an array index wraps negative below zero; use `unsigned char`.
+
+### C Language Pitfalls
+11. **`(void)` vs `()`** — In C90, `foo()` is "unknown parameters". `foo(void)` is "no parameters". Always write `(void)`.
+12. **`static` never in headers** — declaring `static` functions in headers gives every TU its own copy; ROM bloat.
+13. **Namespace with prefixes** — C has no namespaces. `uart_putchar`, not `putchar`. Module prefixes prevent stdlib collisions.
+14. **Sentinel values are not indices** — `0xFF` as "unset" must never be dereferenced as an array index.
+15. **Non-blocking drivers only** — `while (!RCIF);` in a driver is a latent denial-of-service in an event loop.
+
+### I²C and EEPROM
+16. **ACK/NACK on last byte** — single-byte read → NACK (1). Sending ACK tells the slave to send another byte.
+17. **Page-write atomicity** — 11 sequential byte-writes are not atomic. One I²C page-write transaction is.
+18. **ACK polling after write** — EEPROM needs up to 5 ms internal write cycle; poll until ACK before next access.
+
+---
+
+## 📄 License
 
 MIT License — see [LICENSE](LICENSE) for details.

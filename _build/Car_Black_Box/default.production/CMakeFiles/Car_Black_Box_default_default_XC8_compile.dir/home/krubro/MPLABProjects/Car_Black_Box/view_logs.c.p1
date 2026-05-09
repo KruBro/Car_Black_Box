@@ -1,23 +1,23 @@
 Version 4.0 HI-TECH Software Intermediate Code
-"65 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
+"63 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
 [v _clcd_putch `(v ~T0 @X0 0 ef2`Cuc`uc ]
 "66 /home/krubro/MPLABProjects/Car_Black_Box/view_logs.c
-[c E1069 0 1 2 3 4 5 6 .. ]
-[n E1069 . EVENT_NONE EVENT_SW1 EVENT_SW2 EVENT_SW3 EVENT_SW4 EVENT_SW5 EVENT_SW6  ]
-"74 /home/krubro/MPLABProjects/Car_Black_Box/eeprom.h
+[c E1067 0 1 2 3 4 5 6 .. ]
+[n E1067 . EVENT_NONE EVENT_SW1 EVENT_SW2 EVENT_SW3 EVENT_SW4 EVENT_SW5 EVENT_SW6  ]
+"73 /home/krubro/MPLABProjects/Car_Black_Box/eeprom.h
 [v _eeprom_get_entry_count `(uc ~T0 @X0 0 ef ]
 "24 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
 [v _uart_puts `(v ~T0 @X0 0 ef1`*Cuc ]
 "76 /home/krubro/MPLABProjects/Car_Black_Box/view_logs.c
-[c E1085 0 1 2 3 4 5 6 7 .. ]
-[n E1085 . DASHBOARD LOGIN MENU VIEW_LOGS CLEAR_LOGS DOWNLOAD_LOGS SET_TIME CHANGE_PASSWORD  ]
-"16 /home/krubro/MPLABProjects/Car_Black_Box/state.h
-[v _set_status `(v ~T0 @X0 0 ef1`E1085 ]
-"67 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
+[c E1095 0 1 2 3 4 5 6 7 .. ]
+[n E1095 . DASHBOARD LOGIN MENU VIEW_LOGS CLEAR_LOGS DOWNLOAD_LOGS SET_TIME CHANGE_PASSWORD  ]
+"23 /home/krubro/MPLABProjects/Car_Black_Box/state.h
+[v _set_status `(v ~T0 @X0 0 ef1`E1095 ]
+"65 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
 [v _clcd_clear `(v ~T0 @X0 0 ef ]
-"66
+"64
 [v _clcd_print `(v ~T0 @X0 0 ef2`*Cuc`uc ]
-"71 /home/krubro/MPLABProjects/Car_Black_Box/eeprom.h
+"70 /home/krubro/MPLABProjects/Car_Black_Box/eeprom.h
 [v _eeprom_read_log `(v ~T0 @X0 0 ef2`uc`*uc ]
 "23 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
 [v _uart_putchar `(v ~T0 @X0 0 ef1`uc ]
@@ -25,7 +25,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "20 /opt/microchip/xc8/v3.10/pic/include/builtins.h
 [v __delay `JF190 ~T0 @X0 0 e ]
 [p i __delay ]
-"77 /home/krubro/MPLABProjects/Car_Black_Box/eeprom.h
+"76 /home/krubro/MPLABProjects/Car_Black_Box/eeprom.h
 [v _eeprom_clear_log `(uc ~T0 @X0 0 ef ]
 "11 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
 [p x FOSC    =  HS ]
@@ -272,12 +272,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :UE 113 ]
 }
 "66
-[v _view_logs_update `(v ~T0 @X0 1 ef1`E1069 ]
+[v _view_logs_update `(v ~T0 @X0 1 ef1`E1067 ]
 "67
 {
 [e :U _view_logs_update ]
 "66
-[v _evt `E1069 ~T0 @X0 1 r1 ]
+[v _evt `E1067 ~T0 @X0 1 r1 ]
 "67
 [f ]
 "68
@@ -288,7 +288,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "71
 {
 "72
-[e $ ! == -> _evt `ui -> . `E1069 1 `ui 116  ]
+[e $ ! == -> _evt `ui -> . `E1067 1 `ui 116  ]
 "73
 {
 "74
@@ -296,7 +296,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "75
 [e ( _view_logs_reset ..  ]
 "76
-[e ( _set_status (1 . `E1085 2 ]
+[e ( _set_status (1 . `E1095 2 ]
 "77
 }
 [e :U 116 ]
@@ -306,7 +306,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e :U 115 ]
 "81
-[e $ ! && == -> _evt `ui -> . `E1069 2 `ui < -> _log_index `ui - -> _count `ui -> 1 `ui 117  ]
+[e $ ! && == -> _evt `ui -> . `E1067 2 `ui < -> _log_index `ui - -> _count `ui -> 1 `ui 117  ]
 "82
 {
 "83
@@ -320,7 +320,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $U 118  ]
 "87
 [e :U 117 ]
-[e $ ! && == -> _evt `ui -> . `E1069 3 `ui > -> _log_index `ui -> 0 `ui 119  ]
+[e $ ! && == -> _evt `ui -> . `E1067 3 `ui > -> _log_index `ui -> 0 `ui 119  ]
 "88
 {
 "89
@@ -334,7 +334,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $U 120  ]
 "93
 [e :U 119 ]
-[e $ ! == -> _evt `ui -> . `E1069 1 `ui 121  ]
+[e $ ! == -> _evt `ui -> . `E1067 1 `ui 121  ]
 "94
 {
 "95
@@ -342,7 +342,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "96
 [e ( _view_logs_reset ..  ]
 "97
-[e ( _set_status (1 . `E1085 2 ]
+[e ( _set_status (1 . `E1095 2 ]
 "98
 }
 [e :U 121 ]
@@ -547,7 +547,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "207
 [e ( __delay (1 -> * -> -> 1500 `i `d / -> -> 20000000 `ul `d .4000.0 `ul ]
 "208
-[e ( _set_status (1 . `E1085 2 ]
+[e ( _set_status (1 . `E1095 2 ]
 "209
 [e :UE 126 ]
 }
