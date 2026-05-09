@@ -1,50 +1,91 @@
 /**
  * @file    main_config.h
  * @author  krubro
- * @date    2026-05-05
- * @brief   Global project configuration — hardware constants, peripheral includes,
- *          and forward declarations shared across all modules.
+ * @date    2026-05-09
+ * @brief   Global project configuration — hardware constants, types, includes.
  */
 
 #ifndef MAIN_CONFIG_H
 #define MAIN_CONFIG_H
 
-/* -------------------------------------------------------------------------
- * Configuration Bits — PIC16F877A @ 20 MHz (PICGENIOS / PICSIMSLAB)
- * ------------------------------------------------------------------------- */
-#pragma config FOSC  = HS       // High-Speed crystal oscillator
-#pragma config WDTE  = OFF      // Watchdog Timer disabled
-#pragma config PWRTE = OFF      // Power-up Timer disabled
-#pragma config BOREN = ON       // Brown-out Reset enabled
-#pragma config LVP   = OFF      // Low-Voltage Programming disabled
-#pragma config CPD   = OFF      // Data EEPROM code protection off
-#pragma config WRT   = OFF      // Flash write protection off
-#pragma config CP    = OFF      // Code protection off
+#pragma config FOSC  = HS
+#pragma config WDTE  = OFF
+#pragma config PWRTE = OFF
+#pragma config BOREN = ON
+#pragma config LVP   = OFF
+#pragma config CPD   = OFF
+#pragma config WRT   = OFF
+#pragma config CP    = OFF
 
-/* -------------------------------------------------------------------------
- * Oscillator Frequency — defined ONCE here, nowhere else
- * ------------------------------------------------------------------------- */
 #ifndef _XTAL_FREQ
-#define _XTAL_FREQ  20000000UL  // Required by __delay_ms / __delay_us macros
+#define _XTAL_FREQ  20000000UL
 #endif
 
 #ifndef FOSC
-#define FOSC        20000000UL  // Used for UART and I2C baud rate calculations
+#define FOSC        20000000UL
 #endif
 
 /* -------------------------------------------------------------------------
- * Headers
+ * Gear state — index maps directly into the event[] render array.
+ * ------------------------------------------------------------------------- */
+typedef enum { GR = 0, GN, G1, G2, G3, G4 } GEAR_STATE;
+
+/* -------------------------------------------------------------------------
+ * Event flags — bitmask stored in SYSTEM_STATE.flags and LOG_ENTRY.flags.
+ * ------------------------------------------------------------------------- */
+#define FLAG_IGNITION_ON    0x01U
+#define FLAG_CRASH          0x02U
+
+/* -------------------------------------------------------------------------
+ * EEPROM log entry — packed when writing; field order must not change.
+ * ------------------------------------------------------------------------- */
+typedef struct
+{
+    unsigned char hours;
+    unsigned char minutes;
+    unsigned char seconds;
+    unsigned char speed;
+    unsigned char gear;
+    unsigned char flags;
+} LOG_ENTRY;
+
+/* -------------------------------------------------------------------------
+ * SYSTEM_STATE — single authoritative vehicle state.
+ *
+ * Ownership rules:
+ *   hours / minutes / seconds  — written by dashboard_update() from DS1307.
+ *   gear / flags               — written by dashboard_update() from keypad.
+ *   speed                      — written by dashboard_update() from ADC.
+ *   log_pending                — set by dashboard_update(), cleared by main().
+ *
+ * No module may read hardware to produce these values.
+ * No module may hold a separate copy of these values.
+ * ------------------------------------------------------------------------- */
+typedef struct
+{
+    unsigned char hours;
+    unsigned char minutes;
+    unsigned char seconds;
+    GEAR_STATE    gear;
+    unsigned char speed;
+    unsigned char flags;
+    unsigned char log_pending;
+} SYSTEM_STATE;
+
+extern SYSTEM_STATE sys;   /* Defined once in main.c */
+
+/* -------------------------------------------------------------------------
+ * Peripheral and module headers (order matters — lower layers first).
  * ------------------------------------------------------------------------- */
 #include <xc.h>
 #include "blackbox_drivers.h"
+#include "events.h"
 #include "timer.h"
 #include "state.h"
 #include "login.h"
-
-/* -------------------------------------------------------------------------
- * Forward Declarations
- * ------------------------------------------------------------------------- */
-void invalidate_dashboard_cache(void);
-void clcd_dashboard(unsigned char key);
+#include "eeprom.h"
+#include "view_logs.h"
+#include "menu.h"
+#include "dashboard.h"
 
 #endif /* MAIN_CONFIG_H */

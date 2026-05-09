@@ -13,14 +13,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _TXEN `Vb ~T0 @X0 0 e@1221 ]
 "2602
 [v _OERR `Vb ~T0 @X0 0 e@193 ]
-"28 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
-[v _uart_putchar `(v ~T0 @X0 0 ef1`uc ]
-"2551 /home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8/pic/include/proc/pic16f877a.h
+"2731
+[v _RCIF `Vb ~T0 @X0 0 e@101 ]
+"2551
 [v _FERR `Vb ~T0 @X0 0 e@194 ]
 "1050
 [v _RCREG `Vuc ~T0 @X0 0 e@26 ]
-"2731
-[v _RCIF `Vb ~T0 @X0 0 e@101 ]
 "3025
 [v _TXIF `Vb ~T0 @X0 0 e@100 ]
 "1043
@@ -67,9 +65,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _PORTD `Vuc ~T0 @X0 0 e@8 ]
 "2764
 [v _RE1 `Vb ~T0 @X0 0 e@73 ]
-[v F164 `(v ~T0 @X0 1 tf1`ul ]
+[v F190 `(v ~T0 @X0 1 tf1`ul ]
 "20 /opt/microchip/xc8/v3.10/pic/include/builtins.h
-[v __delay `JF164 ~T0 @X0 0 e ]
+[v __delay `JF190 ~T0 @X0 0 e ]
 [p i __delay ]
 "1483 /home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8/pic/include/proc/pic16f877a.h
 [v _TRISD `Vuc ~T0 @X0 0 e@136 ]
@@ -77,9 +75,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _TRISE2 `Vb ~T0 @X0 0 e@1098 ]
 "2998
 [v _TRISE1 `Vb ~T0 @X0 0 e@1097 ]
-"117 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
+"81 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
 [v _ds1307_i2c_read `(uc ~T0 @X0 0 ef1`uc ]
-"120
+"82
 [v _ds1307_i2c_write `(v ~T0 @X0 0 ef2`uc`uc ]
 "1359 /home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8/pic/include/proc/pic16f877a.h
 [v _TRISB `Vuc ~T0 @X0 0 e@134 ]
@@ -119,22 +117,22 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _ADRESH `Vuc ~T0 @X0 0 e@30 ]
 "2206
 [v _ADRESL `Vuc ~T0 @X0 0 e@158 ]
-"15 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
-[p x FOSC    =  HS        ]
+"11 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
+[p x FOSC    =  HS ]
+"12
+[p x WDTE    =  OFF ]
+"13
+[p x PWRTE  =  OFF ]
+"14
+[p x BOREN  =  ON ]
+"15
+[p x LVP      =  OFF ]
 "16
-[p x WDTE    =  OFF       ]
+[p x CPD      =  OFF ]
 "17
-[p x PWRTE  =  OFF       ]
+[p x WRT      =  OFF ]
 "18
-[p x BOREN  =  ON        ]
-"19
-[p x LVP      =  OFF       ]
-"20
-[p x CPD      =  OFF       ]
-"21
-[p x WRT      =  OFF       ]
-"22
-[p x CP        =  OFF       ]
+[p x CP        =  OFF ]
 "38 /home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8/pic/include/proc/pic16f877a.h
 [; <" INDF equ 00h ;# ">
 "45
@@ -255,509 +253,475 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; <" EECON1 equ 018Ch ;# ">
 "2347
 [; <" EECON2 equ 018Dh ;# ">
-"58 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.c
+"14 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.c
 [v _initUART `(v ~T0 @X0 1 ef1`ul ]
-"59
+"15
 {
 [e :U _initUART ]
-"58
+"14
 [v _baud `ul ~T0 @X0 1 r1 ]
-"59
+"15
 [f ]
-"60
+"16
 [e = _SPEN -> -> 1 `i `b ]
-"61
+"17
 [e = _SYNC -> -> 0 `i `b ]
-"62
+"18
 [e = _CREN -> -> 1 `i `b ]
-"63
+"19
 [e = _BRGH -> -> 1 `i `b ]
-"64
+"20
 [e = _SPBRG -> - / -> 20000000 `ul * -> 16 `ul _baud -> 1 `ul `uc ]
-"65
+"21
 [e = _TXEN -> -> 1 `i `b ]
-"66
-[e :UE 99 ]
+"22
+[e :UE 101 ]
 }
-"75
+"26
 [v _uart_getchar `(uc ~T0 @X0 1 ef ]
-"76
+"27
 {
 [e :U _uart_getchar ]
 [f ]
-"77
-[e $ ! _OERR 101  ]
-"78
+"28
+[e $ ! _OERR 103  ]
 {
-"79
-[e ( _uart_putchar (1 -> -> 88 `ui `uc ]
-"80
 [e = _CREN -> -> 0 `i `b ]
-"81
 [e = _CREN -> -> 1 `i `b ]
-"82
 }
-[e :U 101 ]
-"84
-[e $ ! _FERR 102  ]
-"85
-{
-"86
-[e ( _uart_putchar (1 -> -> 70 `ui `uc ]
-"87
-[e _RCREG ]
-"88
-[e ) -> -> 0 `i `uc ]
-[e $UE 100  ]
-"89
-}
-[e :U 102 ]
-"91
-[e $U 103  ]
-[e :U 104 ]
 [e :U 103 ]
-[e $ ! _RCIF 104  ]
-[e :U 105 ]
-"92
-[e ) _RCREG ]
-[e $UE 100  ]
-"93
-[e :UE 100 ]
-}
-"99
-[v _uart_putchar `(v ~T0 @X0 1 ef1`uc ]
-"100
+"29
+[e $ ! ! _RCIF 104  ]
+[e ) -> -> 0 `i `uc ]
+[e $UE 102  ]
+[e :U 104 ]
+"30
+[e $ ! _FERR 105  ]
 {
-[e :U _uart_putchar ]
-"99
-[v _ch `uc ~T0 @X0 1 r1 ]
-"100
+[e _RCREG ]
+[e ) -> -> 0 `i `uc ]
+[e $UE 102  ]
+}
+[e :U 105 ]
+"31
+[e ) _RCREG ]
+[e $UE 102  ]
+"32
+[e :UE 102 ]
+}
+"34
+[v _uart_data_ready `(uc ~T0 @X0 1 ef ]
+"35
+{
+[e :U _uart_data_ready ]
 [f ]
-"101
-[e $U 107  ]
-[e :U 108 ]
-[e :U 107 ]
-[e $ ! _TXIF 108  ]
-[e :U 109 ]
-"102
-[e = _TXREG _ch ]
-"103
+"36
+[e ) -> _RCIF `uc ]
+[e $UE 106  ]
+"37
 [e :UE 106 ]
 }
-"108
+"39
+[v _uart_putchar `(v ~T0 @X0 1 ef1`uc ]
+"40
+{
+[e :U _uart_putchar ]
+"39
+[v _ch `uc ~T0 @X0 1 r1 ]
+"40
+[f ]
+"41
+[e $U 108  ]
+[e :U 109 ]
+[e :U 108 ]
+[e $ ! _TXIF 109  ]
+[e :U 110 ]
+"42
+[e = _TXREG _ch ]
+"43
+[e :UE 107 ]
+}
+"45
 [v _uart_puts `(v ~T0 @X0 1 ef1`*Cuc ]
-"109
+"46
 {
 [e :U _uart_puts ]
-"108
+"45
 [v _str `*Cuc ~T0 @X0 1 r1 ]
-"109
+"46
 [f ]
-"110
-[e $U 111  ]
-[e :U 112 ]
-"111
-{
-"112
-[e ( _uart_putchar (1 -> *U _str `uc ]
-"113
-[e ++ _str * -> -> 1 `i `x -> -> # *U _str `i `x ]
-"114
-}
-[e :U 111 ]
-"110
-[e $ != -> *U _str `ui -> 0 `ui 112  ]
+"47
+[e $U 112  ]
 [e :U 113 ]
-"115
-[e :UE 110 ]
+"48
+{
+"49
+[e $ ! == -> *U _str `ui -> 10 `ui 115  ]
+"50
+[e ( _uart_putchar (1 -> -> 13 `ui `uc ]
+[e :U 115 ]
+"51
+[e ( _uart_putchar (1 -> *U _str `uc ]
+"52
+[e ++ _str * -> -> 1 `i `x -> -> # *U _str `i `x ]
+"53
 }
-"135
+[e :U 112 ]
+"47
+[e $ != -> *U _str `ui -> 0 `ui 113  ]
+[e :U 114 ]
+"54
+[e :UE 111 ]
+}
+"61
 [v _i2c_wait_for_idle `(v ~T0 @X0 1 sf ]
-"136
+"62
 {
 [e :U _i2c_wait_for_idle ]
 [f ]
-"137
-[e $U 115  ]
-[e :U 116 ]
-[e :U 115 ]
-[e $ || _R_nW != & -> _SSPCON2 `i -> 31 `i -> 0 `i 116  ]
+"63
+[e $U 117  ]
+[e :U 118 ]
 [e :U 117 ]
-"138
-[e :UE 114 ]
+[e $ || _R_nW != & -> _SSPCON2 `i -> 31 `i -> 0 `i 118  ]
+[e :U 119 ]
+"64
+[e :UE 116 ]
 }
-"143
+"66
 [v _initI2C `(v ~T0 @X0 1 ef1`ul ]
-"144
+"67
 {
 [e :U _initI2C ]
-"143
+"66
 [v _baud `ul ~T0 @X0 1 r1 ]
-"144
+"67
 [f ]
-"145
+"68
 [e = _SSPM3 -> -> 1 `i `b ]
-"146
 [e = _SSPM2 -> -> 0 `i `b ]
-"147
 [e = _SSPM1 -> -> 0 `i `b ]
-"148
 [e = _SSPM0 -> -> 0 `i `b ]
-"150
+"69
 [e = _SSPADD -> - / -> 20000000 `ul * -> 4 `ul _baud -> 1 `ul `uc ]
-"152
+"70
 [e = _TRISC3 -> -> 1 `i `b ]
-"153
+"71
 [e = _TRISC4 -> -> 1 `i `b ]
-"155
+"72
 [e = _SSPEN -> -> 1 `i `b ]
-"156
-[e :UE 118 ]
+"73
+[e :UE 120 ]
 }
-"161
+"75
 [v _i2c_start `(v ~T0 @X0 1 ef ]
-"162
 {
 [e :U _i2c_start ]
 [f ]
-"163
 [e ( _i2c_wait_for_idle ..  ]
-"164
 [e = _SEN -> -> 1 `i `b ]
-"165
-[e :UE 119 ]
+[e :UE 121 ]
 }
-"170
+"76
 [v _i2c_repeat_start `(v ~T0 @X0 1 ef ]
-"171
 {
 [e :U _i2c_repeat_start ]
 [f ]
-"172
 [e ( _i2c_wait_for_idle ..  ]
-"173
 [e = _RSEN -> -> 1 `i `b ]
-"174
-[e :UE 120 ]
+[e :UE 122 ]
 }
-"179
+"77
 [v _i2c_stop `(v ~T0 @X0 1 ef ]
-"180
 {
 [e :U _i2c_stop ]
 [f ]
-"181
 [e ( _i2c_wait_for_idle ..  ]
-"182
 [e = _PEN -> -> 1 `i `b ]
-"183
-[e :UE 121 ]
-}
-"189
-[v _i2c_write `(i ~T0 @X0 1 ef1`uc ]
-"190
-{
-[e :U _i2c_write ]
-"189
-[v _data `uc ~T0 @X0 1 r1 ]
-"190
-[f ]
-"191
-[e ( _i2c_wait_for_idle ..  ]
-"192
-[e = _SSPBUF _data ]
-"193
-[e ( _i2c_wait_for_idle ..  ]
-"194
-[e ) -> ! _ACKSTAT `i ]
-[e $UE 122  ]
-"195
-[e :UE 122 ]
-}
-"207
-[v _i2c_read `(uc ~T0 @X0 1 ef1`uc ]
-"208
-{
-[e :U _i2c_read ]
-"207
-[v _ack `uc ~T0 @X0 1 r1 ]
-"208
-[f ]
-"209
-[v _data `uc ~T0 @X0 1 a ]
-"211
-[e ( _i2c_wait_for_idle ..  ]
-"212
-[e = _RCEN -> -> 1 `i `b ]
-"213
-[e ( _i2c_wait_for_idle ..  ]
-"215
-[e = _data _SSPBUF ]
-"217
-[e = _ACKDT -> ? == -> _ack `i -> 1 `i : -> 1 `i -> 0 `i `b ]
-"218
-[e = _ACKEN -> -> 1 `i `b ]
-"220
-[e ) _data ]
-[e $UE 123  ]
-"221
 [e :UE 123 ]
 }
-"239
-[v _clcd_write `(v ~T0 @X0 1 sf2`uc`uc ]
-"240
+"79
+[v _i2c_write `(i ~T0 @X0 1 ef1`uc ]
+"80
 {
-[e :U _clcd_write ]
-"239
-[v _byte `uc ~T0 @X0 1 r1 ]
-[v _mode `uc ~T0 @X0 1 r2 ]
-"240
+[e :U _i2c_write ]
+"79
+[v _data `uc ~T0 @X0 1 r1 ]
+"80
 [f ]
-"241
-[e = _RE2 -> _mode `b ]
-"242
-[e = _PORTD _byte ]
-"244
-[e = _RE1 -> -> 1 `i `b ]
-"245
-[e ( __delay (1 -> * -> -> 100 `i `d / -> -> 20000000 `ul `d .4000000.0 `ul ]
-"246
-[e = _RE1 -> -> 0 `i `b ]
-"248
-[e ( __delay (1 -> * -> -> 4100 `i `d / -> -> 20000000 `ul `d .4000000.0 `ul ]
-"249
+"81
+[e ( _i2c_wait_for_idle ..  ]
+"82
+[e = _SSPBUF _data ]
+"83
+[e ( _i2c_wait_for_idle ..  ]
+"84
+[e ) -> ! _ACKSTAT `i ]
+[e $UE 124  ]
+"85
 [e :UE 124 ]
 }
-"256
+"87
+[v _i2c_read `(uc ~T0 @X0 1 ef1`uc ]
+"88
+{
+[e :U _i2c_read ]
+"87
+[v _ack `uc ~T0 @X0 1 r1 ]
+"88
+[f ]
+"89
+[v _data `uc ~T0 @X0 1 a ]
+"90
+[e ( _i2c_wait_for_idle ..  ]
+"91
+[e = _RCEN -> -> 1 `i `b ]
+"92
+[e ( _i2c_wait_for_idle ..  ]
+"93
+[e = _data _SSPBUF ]
+"94
+[e = _ACKDT -> ? == -> _ack `i -> 1 `i : -> 1 `i -> 0 `i `b ]
+"95
+[e = _ACKEN -> -> 1 `i `b ]
+"96
+[e ) _data ]
+[e $UE 125  ]
+"97
+[e :UE 125 ]
+}
+"104
+[v _clcd_write `(v ~T0 @X0 1 sf2`uc`uc ]
+"105
+{
+[e :U _clcd_write ]
+"104
+[v _byte `uc ~T0 @X0 1 r1 ]
+[v _mode `uc ~T0 @X0 1 r2 ]
+"105
+[f ]
+"106
+[e = _RE2 -> _mode `b ]
+"107
+[e = _PORTD _byte ]
+"108
+[e = _RE1 -> -> 1 `i `b ]
+"109
+[e ( __delay (1 -> * -> -> 100 `i `d / -> -> 20000000 `ul `d .4000000.0 `ul ]
+"110
+[e = _RE1 -> -> 0 `i `b ]
+"111
+[e ( __delay (1 -> * -> -> 4100 `i `d / -> -> 20000000 `ul `d .4000000.0 `ul ]
+"112
+[e :UE 126 ]
+}
+"114
 [v _init_display_controller `(v ~T0 @X0 1 sf ]
-"257
+"115
 {
 [e :U _init_display_controller ]
 [f ]
-"258
+"116
 [e ( __delay (1 -> * -> -> 30 `i `d / -> -> 20000000 `ul `d .4000.0 `ul ]
-"260
+"117
 [e ( _clcd_write (2 , -> -> 51 `ui `uc -> -> 0 `i `uc ]
-"261
 [e ( __delay (1 -> * -> -> 4100 `i `d / -> -> 20000000 `ul `d .4000000.0 `ul ]
-"263
+"118
 [e ( _clcd_write (2 , -> -> 51 `ui `uc -> -> 0 `i `uc ]
-"264
 [e ( __delay (1 -> * -> -> 100 `i `d / -> -> 20000000 `ul `d .4000000.0 `ul ]
-"266
+"119
 [e ( _clcd_write (2 , -> -> 51 `ui `uc -> -> 0 `i `uc ]
-"267
 [e ( __delay (1 -> * -> -> 1 `i `d / -> -> 20000000 `ul `d .4000000.0 `ul ]
-"269
+"120
 [e ( _clcd_write (2 , -> -> 56 `ui `uc -> -> 0 `i `uc ]
-"270
 [e ( __delay (1 -> * -> -> 100 `i `d / -> -> 20000000 `ul `d .4000000.0 `ul ]
-"272
+"121
 [e ( _clcd_write (2 , -> -> 1 `ui `uc -> -> 0 `i `uc ]
-"273
 [e ( __delay (1 -> * -> -> 500 `i `d / -> -> 20000000 `ul `d .4000000.0 `ul ]
-"275
+"122
 [e ( _clcd_write (2 , -> -> 12 `ui `uc -> -> 0 `i `uc ]
-"276
 [e ( __delay (1 -> * -> -> 100 `i `d / -> -> 20000000 `ul `d .4000000.0 `ul ]
-"277
-[e :UE 125 ]
+"123
+[e :UE 127 ]
 }
-"282
+"125
 [v _init_clcd `(v ~T0 @X0 1 ef ]
-"283
+"126
 {
 [e :U _init_clcd ]
 [f ]
-"284
+"127
 [e = _TRISD -> -> 0 `i `uc ]
-"285
+"128
 [e = _TRISE2 -> -> 0 `i `b ]
-"286
+"129
 [e = _TRISE1 -> -> 0 `i `b ]
-"288
+"130
 [e ( _init_display_controller ..  ]
-"289
-[e :UE 126 ]
-}
-"294
-[v _clcd_putch `(v ~T0 @X0 1 ef2`Cuc`uc ]
-"295
-{
-[e :U _clcd_putch ]
-"294
-[v _data `Cuc ~T0 @X0 1 r1 ]
-[v _addr `uc ~T0 @X0 1 r2 ]
-"295
-[f ]
-"296
-[e ( _clcd_write (2 , _addr -> -> 0 `i `uc ]
-"297
-[e ( _clcd_write (2 , -> _data `uc -> -> 1 `i `uc ]
-"298
-[e :UE 127 ]
-}
-"303
-[v _clcd_print `(v ~T0 @X0 1 ef2`*Cuc`uc ]
-"304
-{
-[e :U _clcd_print ]
-"303
-[v _str `*Cuc ~T0 @X0 1 r1 ]
-[v _addr `uc ~T0 @X0 1 r2 ]
-"304
-[f ]
-"305
-[e ( _clcd_write (2 , _addr -> -> 0 `i `uc ]
-"307
-[e $U 129  ]
-[e :U 130 ]
-"308
-{
-"309
-[e ( _clcd_write (2 , -> *U _str `uc -> -> 1 `i `uc ]
-"310
-[e ++ _str * -> -> 1 `i `x -> -> # *U _str `i `x ]
-"311
-}
-[e :U 129 ]
-"307
-[e $ != -> *U _str `ui -> 0 `ui 130  ]
-[e :U 131 ]
-"312
+"131
 [e :UE 128 ]
 }
-"320
+"133
+[v _clcd_putch `(v ~T0 @X0 1 ef2`Cuc`uc ]
+"134
+{
+[e :U _clcd_putch ]
+"133
+[v _data `Cuc ~T0 @X0 1 r1 ]
+[v _addr `uc ~T0 @X0 1 r2 ]
+"134
+[f ]
+"135
+[e ( _clcd_write (2 , _addr -> -> 0 `i `uc ]
+"136
+[e ( _clcd_write (2 , -> _data `uc -> -> 1 `i `uc ]
+"137
+[e :UE 129 ]
+}
+"139
+[v _clcd_print `(v ~T0 @X0 1 ef2`*Cuc`uc ]
+"140
+{
+[e :U _clcd_print ]
+"139
+[v _str `*Cuc ~T0 @X0 1 r1 ]
+[v _addr `uc ~T0 @X0 1 r2 ]
+"140
+[f ]
+"141
+[e ( _clcd_write (2 , _addr -> -> 0 `i `uc ]
+"142
+[e $U 131  ]
+[e :U 132 ]
+{
+[e ( _clcd_write (2 , -> *U _str `uc -> -> 1 `i `uc ]
+[e ++ _str * -> -> 1 `i `x -> -> # *U _str `i `x ]
+}
+[e :U 131 ]
+[e $ != -> *U _str `ui -> 0 `ui 132  ]
+[e :U 133 ]
+"143
+[e :UE 130 ]
+}
+"145
 [v _clcd_clear `(v ~T0 @X0 1 ef ]
-"321
+"146
 {
 [e :U _clcd_clear ]
 [f ]
-"322
+"147
 [e ( _clcd_write (2 , -> -> 1 `ui `uc -> -> 0 `i `uc ]
-"323
+"148
 [e ( __delay (1 -> * -> -> 2 `i `d / -> -> 20000000 `ul `d .4000.0 `ul ]
-"324
-[e :UE 132 ]
+"149
+[e :UE 134 ]
 }
-"344
+"156
 [v _init_rtc `(v ~T0 @X0 1 ef ]
-"345
+"157
 {
 [e :U _init_rtc ]
 [f ]
-"346
+"158
 [v _sec_reg `uc ~T0 @X0 1 a ]
-"348
 [e = _sec_reg ( _ds1307_i2c_read (1 -> -> 0 `ui `uc ]
-"349
-[e = _sec_reg -> & -> _sec_reg `ui -> 127 `ui `uc ]
-"350
-[e ( _ds1307_i2c_write (2 , _sec_reg -> -> 0 `ui `uc ]
-"351
-[e :UE 133 ]
-}
-"360
-[v _ds1307_i2c_read `(uc ~T0 @X0 1 ef1`uc ]
-"361
-{
-[e :U _ds1307_i2c_read ]
-"360
-[v _address `uc ~T0 @X0 1 r1 ]
-"361
-[f ]
-"362
-[v _data `uc ~T0 @X0 1 a ]
-"364
-[e ( _i2c_start ..  ]
-"365
-[e ( _i2c_write (1 -> -> 208 `ui `uc ]
-"366
-[e ( _i2c_write (1 _address ]
-"367
-[e ( _i2c_repeat_start ..  ]
-"368
-[e ( _i2c_write (1 -> -> 209 `ui `uc ]
-"371
-[e = _data ( _i2c_read (1 -> -> 1 `i `uc ]
-"373
-[e ( _i2c_stop ..  ]
-"374
-[e ) _data ]
-[e $UE 134  ]
-"375
-[e :UE 134 ]
-}
-"383
-[v _ds1307_i2c_write `(v ~T0 @X0 1 ef2`uc`uc ]
-"384
-{
-[e :U _ds1307_i2c_write ]
-"383
-[v _data `uc ~T0 @X0 1 r1 ]
-[v _address `uc ~T0 @X0 1 r2 ]
-"384
-[f ]
-"385
-[e ( _i2c_start ..  ]
-"386
-[e ( _i2c_write (1 -> -> 208 `ui `uc ]
-"387
-[e ( _i2c_write (1 _address ]
-"388
-[e ( _i2c_write (1 _data ]
-"389
-[e ( _i2c_stop ..  ]
-"390
+"159
+[e ( _ds1307_i2c_write (2 , -> & -> _sec_reg `ui -> 127 `ui `uc -> -> 0 `ui `uc ]
+"160
 [e :UE 135 ]
 }
-"406
+"162
+[v _ds1307_i2c_read `(uc ~T0 @X0 1 ef1`uc ]
+"163
+{
+[e :U _ds1307_i2c_read ]
+"162
+[v _address `uc ~T0 @X0 1 r1 ]
+"163
+[f ]
+"164
+[v _data `uc ~T0 @X0 1 a ]
+"165
+[e ( _i2c_start ..  ]
+"166
+[e ( _i2c_write (1 -> -> 208 `ui `uc ]
+"167
+[e ( _i2c_write (1 _address ]
+"168
+[e ( _i2c_repeat_start ..  ]
+"169
+[e ( _i2c_write (1 -> -> 209 `ui `uc ]
+"170
+[e = _data ( _i2c_read (1 -> -> 1 `i `uc ]
+"171
+[e ( _i2c_stop ..  ]
+"172
+[e ) _data ]
+[e $UE 136  ]
+"173
+[e :UE 136 ]
+}
+"175
+[v _ds1307_i2c_write `(v ~T0 @X0 1 ef2`uc`uc ]
+"176
+{
+[e :U _ds1307_i2c_write ]
+"175
+[v _data `uc ~T0 @X0 1 r1 ]
+[v _address `uc ~T0 @X0 1 r2 ]
+"176
+[f ]
+"177
+[e ( _i2c_start ..  ]
+"178
+[e ( _i2c_write (1 -> -> 208 `ui `uc ]
+"179
+[e ( _i2c_write (1 _address ]
+"180
+[e ( _i2c_write (1 _data ]
+"181
+[e ( _i2c_stop ..  ]
+"182
+[e :UE 137 ]
+}
+"189
 [v _init_digital_keypad `(v ~T0 @X0 1 ef ]
-"407
+"190
 {
 [e :U _init_digital_keypad ]
 [f ]
-"408
+"191
 [e = _TRISB -> -> 255 `i `uc ]
-"409
+"192
 [e = _PORTB -> -> 255 `i `uc ]
-"410
-[e :UE 136 ]
+"193
+[e :UE 138 ]
 }
-"416
+"195
 [v _read_digital_keypad `(uc ~T0 @X0 1 ef1`uc ]
-"417
+"196
 {
 [e :U _read_digital_keypad ]
-"416
+"195
 [v _trigger_method `uc ~T0 @X0 1 r1 ]
-"417
+"196
 [f ]
-"418
-[v F1106 `uc ~T0 @X0 1 s once ]
-[i F1106
+"197
+[v F1172 `uc ~T0 @X0 1 s once ]
+[i F1172
 -> -> 1 `i `uc
 ]
-"420
-[e $ ! == -> _trigger_method `i -> 1 `i 138  ]
-"421
-{
-"422
+"199
+[e $ ! == -> _trigger_method `i -> 1 `i 140  ]
+"200
 [e ) -> & -> _PORTB `ui -> 63 `ui `uc ]
-[e $UE 137  ]
-"423
-}
-[e $U 139  ]
-"424
-[e :U 138 ]
-[e $ ! == -> _trigger_method `i -> 0 `i 140  ]
-"425
+[e $UE 139  ]
+[e :U 140 ]
+"202
+[e $ ! && != & -> _PORTB `ui -> 63 `ui -> 63 `ui != -> F1172 `i -> 0 `i 141  ]
+"203
 {
-"426
-[e $ ! && != & -> _PORTB `ui -> 63 `ui -> 63 `ui != -> F1106 `i -> 0 `i 141  ]
-"427
-{
-"429
+"204
 {
 [v _i `ui ~T0 @X0 1 a ]
 [e = _i -> 0 `ui ]
@@ -768,97 +732,86 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $ < _i -> 500 `ui 142  ]
 [e :U 143 ]
 }
-"431
+"205
 [e $ ! != & -> _PORTB `ui -> 63 `ui -> 63 `ui 145  ]
-"432
+"206
 {
-"433
-[e = F1106 -> -> 0 `i `uc ]
-"434
+"207
+[e = F1172 -> -> 0 `i `uc ]
+"208
 [e ) -> & -> _PORTB `ui -> 63 `ui `uc ]
-[e $UE 137  ]
-"435
+[e $UE 139  ]
+"209
 }
 [e :U 145 ]
-"436
+"210
 }
 [e $U 146  ]
-"437
+"211
 [e :U 141 ]
 [e $ ! == & -> _PORTB `ui -> 63 `ui -> 63 `ui 147  ]
-"438
+"212
 {
-"439
-[e = F1106 -> -> 1 `i `uc ]
-"440
+"213
+[e = F1172 -> -> 1 `i `uc ]
+"214
 }
 [e :U 147 ]
 [e :U 146 ]
-"441
-}
-[e :U 140 ]
-[e :U 139 ]
-"443
+"215
 [e ) -> -> 63 `ui `uc ]
-[e $UE 137  ]
-"444
-[e :UE 137 ]
+[e $UE 139  ]
+"216
+[e :UE 139 ]
 }
-"467
+"223
 [v _initADC `(v ~T0 @X0 1 ef ]
-"468
+"224
 {
 [e :U _initADC ]
 [f ]
-"470
+"225
 [e = _ADCS0 -> -> 0 `i `b ]
-"471
 [e = _ADCS1 -> -> 1 `i `b ]
-"472
 [e = _ADCS2 -> -> 0 `i `b ]
-"475
+"226
 [e = _CHS0 -> -> 0 `i `b ]
-"476
 [e = _CHS1 -> -> 0 `i `b ]
-"477
 [e = _CHS2 -> -> 0 `i `b ]
-"479
+"227
 [e = _ADFM -> -> 1 `i `b ]
-"482
+"228
 [e = _PCFG0 -> -> 0 `i `b ]
-"483
 [e = _PCFG1 -> -> 0 `i `b ]
-"484
 [e = _PCFG2 -> -> 0 `i `b ]
-"485
 [e = _PCFG3 -> -> 0 `i `b ]
-"487
+"229
 [e = _ADON -> -> 1 `i `b ]
-"495
+"230
 [e :UE 148 ]
 }
-"503
+"232
 [v _read_adc `(us ~T0 @X0 1 ef1`uc ]
-"504
+"233
 {
 [e :U _read_adc ]
-"503
+"232
 [v _channel `uc ~T0 @X0 1 r1 ]
-"504
+"233
 [f ]
-"506
+"234
 [e = _ADCON0 -> | & -> _ADCON0 `ui -> 199 `ui -> -> << -> _channel `i -> 3 `i `uc `ui `uc ]
-"508
+"235
 [e = _GO -> -> 1 `i `b ]
-"510
+"236
 [e $U 150  ]
 [e :U 151 ]
 [e :U 150 ]
 [e $ _nDONE 151  ]
 [e :U 152 ]
-"512
+"237
 [e ) -> | << -> _ADRESH `i -> 8 `i -> _ADRESL `i `us ]
 [e $UE 149  ]
-"513
+"238
 [e :UE 149 ]
 }

@@ -1,135 +1,141 @@
 /**
  * @file    dashboard.c
  * @author  krubro
- * @date    2026-05-05
- * @brief   CLCD dashboard — time, gear/event state, and scaled speed.
+ * @date    2026-05-09
+ * @brief   Dashboard — update (hardware reads + state) and render (LCD writes).
+ *
+ * Design rule enforced here:
+ *   dashboard_update()  owns hardware access and sys mutation. Zero LCD writes.
+ *   dashboard_render()  owns LCD writes. Zero hardware reads, zero sys mutation.
+ *   main.c calls them in order: update → render.
  */
 
 #include "main_config.h"
 
-static unsigned short prev_speed = 0xFFFFU; // Sentinel: forces first draw
+static const char * const gear_labels[] = {"GR", "GN", "G1", "G2", "G3", "G4"};
 
-/**
- * @brief  Resets the speed cache so the dashboard redraws on next entry.
- */
+static unsigned char prev_speed = 0xFFU; /* Cache — 0xFF = uninitialized     */
+static unsigned char prev_gear_render = 0xFFU;
+static unsigned char prev_flags_render = 0xFFU;
+
 void invalidate_dashboard_cache(void)
 {
-    prev_speed = 0xFFFFU;
+    prev_speed        = 0xFFU;
+    prev_gear_render  = 0xFFU;
+    prev_flags_render = 0xFFU;
 }
 
-/**
- * @brief  Reads HH:MM:SS from the DS1307 into a 3-byte BCD array.
- */
-static void get_time(unsigned char *clock_reg)
+/* =========================================================================
+ * UPDATE — reads hardware, mutates sys. No LCD.
+ * ========================================================================= */
+
+void dashboard_update(EVENT evt)
 {
-    clock_reg[0] = ds1307_i2c_read(SEC_ADDRESS);
-    clock_reg[1] = ds1307_i2c_read(MIN_ADDRESS);
-    clock_reg[2] = ds1307_i2c_read(HOUR_ADDRESS);
+    static unsigned char prev_flags_uart = 0;
+    static GEAR_STATE    prev_gear_uart  = GR;
+
+    /* Read time from RTC — always fresh. */
+    sys.seconds = ds1307_i2c_read(SEC_ADDRESS);
+    sys.minutes = ds1307_i2c_read(MIN_ADDRESS);
+    sys.hours   = ds1307_i2c_read(HOUR_ADDRESS);
+
+    /* Read speed from ADC — always fresh. */
+    sys.speed = (unsigned char)((unsigned long)read_adc(CHANNEL0) * 100UL / 1023UL);
+
+    /* Process gear and crash events — only while not crashed. */
+    if (!(sys.flags & FLAG_CRASH))
+    {
+        if (evt == EVENT_SW1)
+        {
+            sys.flags |= FLAG_IGNITION_ON | FLAG_CRASH;
+            sys.log_pending = 1;
+        }
+        else if (evt == EVENT_SW2 && sys.gear < G4)
+        {
+            sys.gear++;
+            sys.flags |= FLAG_IGNITION_ON;
+            sys.log_pending = 1;
+        }
+        else if (evt == EVENT_SW3 && sys.gear > GR)
+        {
+            sys.gear--;
+            sys.flags |= FLAG_IGNITION_ON;
+            sys.log_pending = 1;
+        }
+    }
+
+    /* UART telemetry — only on change, not every cycle. */
+    if ((sys.flags & FLAG_CRASH) && !(prev_flags_uart & FLAG_CRASH))
+    {
+        uart_puts("[DASH] CRASH\n");
+    }
+    else if (sys.gear != prev_gear_uart)
+    {
+        uart_puts("[DASH] GEAR: ");
+        uart_puts(gear_labels[sys.gear]);
+        uart_puts("\n");
+    }
+    else if ((sys.flags & FLAG_IGNITION_ON) && !(prev_flags_uart & FLAG_IGNITION_ON))
+    {
+        uart_puts("[DASH] IGNITION ON\n");
+    }
+
+    prev_flags_uart = sys.flags;
+    prev_gear_uart  = sys.gear;
 }
 
-/**
- * @brief  Renders "TIME" label on LINE1 and HH:MM:SS on LINE2.
- */
-static void display_time(unsigned char *clock_reg)
-{
-    char time[9];
+/* =========================================================================
+ * RENDER — reads sys, writes LCD. No hardware reads, no sys mutation.
+ * ========================================================================= */
 
+void dashboard_render(void)
+{
+    char time_buf[9];
+    unsigned char speed_buf[4];
+
+    /* --- Time label (static text — drawn every frame, cheap) --- */
     clcd_print("TIME", LINE1(0));
 
-    // Unpack BCD digits into ASCII characters
-    time[0] = (char)(((clock_reg[2] >> 4) & 0x03U) + '0');
-    time[1] = (char)((clock_reg[2] & 0x0FU) + '0');
-    time[2] = ':';
-    time[3] = (char)(((clock_reg[1] >> 4) & 0x07U) + '0');
-    time[4] = (char)((clock_reg[1] & 0x0FU) + '0');
-    time[5] = ':';
-    time[6] = (char)(((clock_reg[0] >> 4) & 0x07U) + '0');
-    time[7] = (char)((clock_reg[0] & 0x0FU) + '0');
-    time[8] = '\0';
+    /* --- Time value (unpack BCD from sys) --- */
+    time_buf[0] = (char)(((sys.hours   >> 4) & 0x03U) + '0');
+    time_buf[1] = (char)((sys.hours    & 0x0FU) + '0');
+    time_buf[2] = ':';
+    time_buf[3] = (char)(((sys.minutes >> 4) & 0x07U) + '0');
+    time_buf[4] = (char)((sys.minutes  & 0x0FU) + '0');
+    time_buf[5] = ':';
+    time_buf[6] = (char)(((sys.seconds >> 4) & 0x07U) + '0');
+    time_buf[7] = (char)((sys.seconds  & 0x0FU) + '0');
+    time_buf[8] = '\0';
+    clcd_print(time_buf, LINE2(0));
 
-    clcd_print(time, LINE2(0));
-}
-
-/**
- * @brief  Handles gear/crash state updates and renders the event label.
- * @param[in] key  Current keypad reading (SWx mask or ALL_RELEASED).
- */
-static void display_event(unsigned char key)
-{
-    const char * const event[] = {"GR", "GN", "G1", "G2", "G3", "G4"};
-    static unsigned char gear_index    = 1; // Start in Neutral
-    static unsigned char ignition_on   = 0;
-    static unsigned char crash_detected = 0;
-
+    /* --- Event label (static text) --- */
     clcd_print("EV", LINE1(10));
 
-    // Update state — inputs are locked out after a crash
-    if (key == SW1 && crash_detected == 0)
+    /* --- Gear/crash (redraw only when changed) --- */
+    if (sys.gear != prev_gear_render || sys.flags != prev_flags_render)
     {
-        ignition_on    = 1;
-        crash_detected = 1;
-    }
-    else if (key == SW2 && crash_detected == 0)
-    {
-        ignition_on = 1;
-        if (gear_index < 5U) gear_index++;
-    }
-    else if (key == SW3 && crash_detected == 0)
-    {
-        ignition_on = 1;
-        if (gear_index > 0U) gear_index--;
+        prev_gear_render  = sys.gear;
+        prev_flags_render = sys.flags;
+
+        if (sys.flags & FLAG_CRASH)
+            clcd_print("C ", LINE2(10));
+        else if (sys.flags & FLAG_IGNITION_ON)
+            clcd_print(gear_labels[sys.gear], LINE2(10));
+        else
+            clcd_print("ON", LINE2(10));
     }
 
-    // Render state
-    if (crash_detected == 1)
-        clcd_print("C ", LINE2(10));
-    else if (ignition_on == 1)
-        clcd_print(event[gear_index], LINE2(10));
-    else
-        clcd_print("ON", LINE2(10));
-}
-
-/**
- * @brief  Converts a 0–100 speed value to a null-terminated ASCII string.
- */
-void convert_adc_val_to_char(unsigned short reg_val, unsigned char *buff)
-{
-    buff[0] = (unsigned char)((reg_val / 100U) + '0');
-    buff[1] = (unsigned char)(((reg_val / 10U) % 10U) + '0');
-    buff[2] = (unsigned char)((reg_val % 10U) + '0');
-    buff[3] = '\0';
-}
-
-/**
- * @brief  Samples the ADC, scales to 0–100, and redraws only on change.
- */
-static void display_speed(void)
-{
-    static unsigned short curr_speed;
-    unsigned char buff[4];
-
+    /* --- Speed label (static) --- */
     clcd_print("SD", LINE1(13));
 
-    curr_speed = (unsigned short)((unsigned long)read_adc(CHANNEL0) * 100UL / 1023UL);
-
-    if (curr_speed != prev_speed) // Skip redraw if value unchanged
+    /* --- Speed value (redraw only when changed) --- */
+    if (sys.speed != prev_speed)
     {
-        prev_speed = curr_speed;
-        convert_adc_val_to_char(curr_speed, buff);
-        clcd_print((const char *)buff, LINE2(13));
+        prev_speed    = sys.speed;
+        speed_buf[0]  = (unsigned char)((sys.speed / 100U) + '0');
+        speed_buf[1]  = (unsigned char)(((sys.speed / 10U) % 10U) + '0');
+        speed_buf[2]  = (unsigned char)((sys.speed % 10U) + '0');
+        speed_buf[3]  = '\0';
+        clcd_print((const char *)speed_buf, LINE2(13));
     }
-}
-
-/**
- * @brief  Composes and refreshes the full CLCD dashboard for one loop cycle.
- * @param[in] key  Current keypad reading passed from the main router.
- */
-void clcd_dashboard(unsigned char key)
-{
-    unsigned char clock_reg[3];
-
-    get_time(clock_reg);
-    display_time(clock_reg);
-    display_event(key);
-    display_speed();
 }

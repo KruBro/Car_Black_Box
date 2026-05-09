@@ -1,25 +1,27 @@
 Version 4.0 HI-TECH Software Intermediate Code
 "10 /home/krubro/MPLABProjects/Car_Black_Box/state.c
-[c E1047 0 1 2 3 4 5 6 7 .. ]
-[n E1047 . DASHBOARD LOGIN MENU VIEW_LOGS CLEAR_LOGS DOWNLOAD_LOGS SET_TIME CHANGE_PASSWORD  ]
-"97 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
+[c E1085 0 1 2 3 4 5 6 7 .. ]
+[n E1085 . DASHBOARD LOGIN MENU VIEW_LOGS CLEAR_LOGS DOWNLOAD_LOGS SET_TIME CHANGE_PASSWORD  ]
+"67 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
 [v _clcd_clear `(v ~T0 @X0 0 ef ]
-"15 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
-[p x FOSC    =  HS        ]
+"24
+[v _uart_puts `(v ~T0 @X0 0 ef1`*Cuc ]
+"11 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
+[p x FOSC    =  HS ]
+"12
+[p x WDTE    =  OFF ]
+"13
+[p x PWRTE  =  OFF ]
+"14
+[p x BOREN  =  ON ]
+"15
+[p x LVP      =  OFF ]
 "16
-[p x WDTE    =  OFF       ]
+[p x CPD      =  OFF ]
 "17
-[p x PWRTE  =  OFF       ]
+[p x WRT      =  OFF ]
 "18
-[p x BOREN  =  ON        ]
-"19
-[p x LVP      =  OFF       ]
-"20
-[p x CPD      =  OFF       ]
-"21
-[p x WRT      =  OFF       ]
-"22
-[p x CP        =  OFF       ]
+[p x CP        =  OFF ]
 "38 /home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8/pic/include/proc/pic16f877a.h
 [; <" INDF equ 00h ;# ">
 "45
@@ -141,35 +143,66 @@ Version 4.0 HI-TECH Software Intermediate Code
 "2347
 [; <" EECON2 equ 018Dh ;# ">
 "10 /home/krubro/MPLABProjects/Car_Black_Box/state.c
-[v _current_state `E1047 ~T0 @X0 1 s ]
+[v _current_state `E1085 ~T0 @X0 1 s ]
 [i _current_state
-. `E1047 0
+. `E1085 0
 ]
-"15
-[v _set_status `(v ~T0 @X0 1 ef1`E1047 ]
-"16
+[v F1133 `*Cuc ~T0 @X0 1 t ]
+"13
+[v _state_names `C*Cuc ~T0 @X0 -> 8 `i s ]
+[i _state_names
+:U ..
+:s 1C
+:s 2C
+:s 3C
+:s 4C
+:s 5C
+:s 6C
+:s 7C
+:s 8C
+..
+]
+"18
+[v _set_status `(v ~T0 @X0 1 ef1`E1085 ]
+"19
 {
 [e :U _set_status ]
-"15
-[v _new_state `E1047 ~T0 @X0 1 r1 ]
-"16
-[f ]
-"17
-[e ( _clcd_clear ..  ]
 "18
-[e = _current_state _new_state ]
+[v _new_state `E1085 ~T0 @X0 1 r1 ]
 "19
-[e :UE 99 ]
-}
+[f ]
+"20
+[e ( _clcd_clear ..  ]
+"21
+[e ( _uart_puts (1 :s 9C ]
+"22
+[e ( _uart_puts (1 *U + &U _state_names * -> _new_state `ux -> -> # *U &U _state_names `ui `ux ]
+"23
+[e ( _uart_puts (1 :s 10C ]
 "24
-[v _get_status `(E1047 ~T0 @X0 1 ef ]
+[e = _current_state _new_state ]
 "25
+[e :UE 101 ]
+}
+"27
+[v _get_status `(E1085 ~T0 @X0 1 ef ]
+"28
 {
 [e :U _get_status ]
 [f ]
-"26
+"29
 [e ) _current_state ]
-[e $UE 100  ]
-"27
-[e :UE 100 ]
+[e $UE 102  ]
+"30
+[e :UE 102 ]
 }
+[a 3C 77 69 78 85 0 ]
+[a 4C 86 73 69 87 95 76 79 71 83 0 ]
+[a 5C 67 76 69 65 82 95 76 79 71 83 0 ]
+[a 6C 68 79 87 78 76 79 65 68 95 76 79 71 83 0 ]
+[a 2C 76 79 71 73 78 0 ]
+[a 7C 83 69 84 95 84 73 77 69 0 ]
+[a 8C 67 72 65 78 71 69 95 80 65 83 83 87 79 82 68 0 ]
+[a 1C 68 65 83 72 66 79 65 82 68 0 ]
+[a 9C 91 83 84 65 84 69 93 32 0 ]
+[a 10C 10 0 ]

@@ -1,26 +1,29 @@
 /**
  * @file    state.c
  * @author  krubro
- * @date    2026-05-05
- * @brief   Global state machine — tracks and transitions the active application screen.
+ * @date    2026-05-09
+ * @brief   Global state machine with UART transition logging.
  */
 
 #include "main_config.h"
 
 static STATE current_state = DASHBOARD;
 
-/**
- * @brief  Clears the LCD and transitions to a new application state.
- */
+/* Names match the STATE enum order in state.h. */
+static const char * const state_names[] = {
+    "DASHBOARD", "LOGIN", "MENU", "VIEW_LOGS",
+    "CLEAR_LOGS", "DOWNLOAD_LOGS", "SET_TIME", "CHANGE_PASSWORD"
+};
+
 void set_status(STATE new_state)
 {
     clcd_clear();
+    uart_puts("[STATE] ");
+    uart_puts(state_names[new_state]);
+    uart_puts("\n");
     current_state = new_state;
 }
 
-/**
- * @brief  Returns the currently active application state.
- */
 STATE get_status(void)
 {
     return current_state;

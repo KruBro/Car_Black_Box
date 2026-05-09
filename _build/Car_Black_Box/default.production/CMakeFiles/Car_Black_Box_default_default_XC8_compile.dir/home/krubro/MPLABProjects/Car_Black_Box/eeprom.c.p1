@@ -1,0 +1,528 @@
+Version 4.0 HI-TECH Software Intermediate Code
+"32 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
+[v _i2c_start `(v ~T0 @X0 0 ef ]
+"35
+[v _i2c_write `(i ~T0 @X0 0 ef1`uc ]
+"33
+[v _i2c_stop `(v ~T0 @X0 0 ef ]
+[v F190 `(v ~T0 @X0 1 tf1`ul ]
+"20 /opt/microchip/xc8/v3.10/pic/include/builtins.h
+[v __delay `JF190 ~T0 @X0 0 e ]
+[p i __delay ]
+"34 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
+[v _i2c_repeat_start `(v ~T0 @X0 0 ef ]
+"36
+[v _i2c_read `(uc ~T0 @X0 0 ef1`uc ]
+"43 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
+[s S1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 ]
+[n S1 . hours minutes seconds speed gear flags ]
+"11 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
+[p x FOSC    =  HS ]
+"12
+[p x WDTE    =  OFF ]
+"13
+[p x PWRTE  =  OFF ]
+"14
+[p x BOREN  =  ON ]
+"15
+[p x LVP      =  OFF ]
+"16
+[p x CPD      =  OFF ]
+"17
+[p x WRT      =  OFF ]
+"18
+[p x CP        =  OFF ]
+"38 /home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8/pic/include/proc/pic16f877a.h
+[; <" INDF equ 00h ;# ">
+"45
+[; <" TMR0 equ 01h ;# ">
+"52
+[; <" PCL equ 02h ;# ">
+"59
+[; <" STATUS equ 03h ;# ">
+"145
+[; <" FSR equ 04h ;# ">
+"152
+[; <" PORTA equ 05h ;# ">
+"202
+[; <" PORTB equ 06h ;# ">
+"264
+[; <" PORTC equ 07h ;# ">
+"326
+[; <" PORTD equ 08h ;# ">
+"388
+[; <" PORTE equ 09h ;# ">
+"420
+[; <" PCLATH equ 0Ah ;# ">
+"440
+[; <" INTCON equ 0Bh ;# ">
+"518
+[; <" PIR1 equ 0Ch ;# ">
+"580
+[; <" PIR2 equ 0Dh ;# ">
+"620
+[; <" TMR1 equ 0Eh ;# ">
+"627
+[; <" TMR1L equ 0Eh ;# ">
+"634
+[; <" TMR1H equ 0Fh ;# ">
+"641
+[; <" T1CON equ 010h ;# ">
+"716
+[; <" TMR2 equ 011h ;# ">
+"723
+[; <" T2CON equ 012h ;# ">
+"794
+[; <" SSPBUF equ 013h ;# ">
+"801
+[; <" SSPCON equ 014h ;# ">
+"871
+[; <" CCPR1 equ 015h ;# ">
+"878
+[; <" CCPR1L equ 015h ;# ">
+"885
+[; <" CCPR1H equ 016h ;# ">
+"892
+[; <" CCP1CON equ 017h ;# ">
+"950
+[; <" RCSTA equ 018h ;# ">
+"1045
+[; <" TXREG equ 019h ;# ">
+"1052
+[; <" RCREG equ 01Ah ;# ">
+"1059
+[; <" CCPR2 equ 01Bh ;# ">
+"1066
+[; <" CCPR2L equ 01Bh ;# ">
+"1073
+[; <" CCPR2H equ 01Ch ;# ">
+"1080
+[; <" CCP2CON equ 01Dh ;# ">
+"1138
+[; <" ADRESH equ 01Eh ;# ">
+"1145
+[; <" ADCON0 equ 01Fh ;# ">
+"1241
+[; <" OPTION_REG equ 081h ;# ">
+"1311
+[; <" TRISA equ 085h ;# ">
+"1361
+[; <" TRISB equ 086h ;# ">
+"1423
+[; <" TRISC equ 087h ;# ">
+"1485
+[; <" TRISD equ 088h ;# ">
+"1547
+[; <" TRISE equ 089h ;# ">
+"1604
+[; <" PIE1 equ 08Ch ;# ">
+"1666
+[; <" PIE2 equ 08Dh ;# ">
+"1706
+[; <" PCON equ 08Eh ;# ">
+"1740
+[; <" SSPCON2 equ 091h ;# ">
+"1802
+[; <" PR2 equ 092h ;# ">
+"1809
+[; <" SSPADD equ 093h ;# ">
+"1816
+[; <" SSPSTAT equ 094h ;# ">
+"1985
+[; <" TXSTA equ 098h ;# ">
+"2066
+[; <" SPBRG equ 099h ;# ">
+"2073
+[; <" CMCON equ 09Ch ;# ">
+"2143
+[; <" CVRCON equ 09Dh ;# ">
+"2208
+[; <" ADRESL equ 09Eh ;# ">
+"2215
+[; <" ADCON1 equ 09Fh ;# ">
+"2274
+[; <" EEDATA equ 010Ch ;# ">
+"2281
+[; <" EEADR equ 010Dh ;# ">
+"2288
+[; <" EEDATH equ 010Eh ;# ">
+"2295
+[; <" EEADRH equ 010Fh ;# ">
+"2302
+[; <" EECON1 equ 018Ch ;# ">
+"2347
+[; <" EECON2 equ 018Dh ;# ">
+"28 /home/krubro/MPLABProjects/Car_Black_Box/eeprom.c
+[v _get_device_addr `(uc ~T0 @X0 1 sf2`ui`uc ]
+"29
+{
+[e :U _get_device_addr ]
+"28
+[v _addr `ui ~T0 @X0 1 r1 ]
+[v _base `uc ~T0 @X0 1 r2 ]
+"29
+[f ]
+"31
+[e ) -> | -> _base `i -> -> & >> _addr -> 7 `i -> 2 `ui `uc `i `uc ]
+[e $UE 101  ]
+"35
+[e :UE 101 ]
+}
+"41
+[v _ack_poll `(uc ~T0 @X0 1 sf1`uc ]
+"42
+{
+[e :U _ack_poll ]
+"41
+[v _dev_addr `uc ~T0 @X0 1 r1 ]
+"42
+[f ]
+"43
+[v _attempts `uc ~T0 @X0 1 a ]
+[e = _attempts -> -> 0 `i `uc ]
+"44
+[e $U 103  ]
+[e :U 104 ]
+"45
+{
+"46
+[e ( _i2c_start ..  ]
+"47
+[e $ ! != ( _i2c_write (1 _dev_addr -> 0 `i 106  ]
+{
+[e ( _i2c_stop ..  ]
+[e ) -> -> 1 `i `uc ]
+[e $UE 102  ]
+}
+[e :U 106 ]
+"48
+[e ( _i2c_stop ..  ]
+"49
+[e ++ _attempts -> -> 1 `i `uc ]
+"50
+[e ( __delay (1 -> * -> -> 100 `i `d / -> -> 20000000 `ul `d .4000000.0 `ul ]
+"51
+}
+[e :U 103 ]
+"44
+[e $ < -> _attempts `ui -> 50 `ui 104  ]
+[e :U 105 ]
+"52
+[e ) -> -> 0 `i `uc ]
+[e $UE 102  ]
+"53
+[e :UE 102 ]
+}
+"59
+[v _eeprom_write_byte `(uc ~T0 @X0 1 ef2`ui`uc ]
+"60
+{
+[e :U _eeprom_write_byte ]
+"59
+[v _addr `ui ~T0 @X0 1 r1 ]
+[v _data `uc ~T0 @X0 1 r2 ]
+"60
+[f ]
+"61
+[v _dev `uc ~T0 @X0 1 a ]
+[e = _dev ( _get_device_addr (2 , _addr -> -> 160 `ui `uc ]
+"62
+[e ( _i2c_start ..  ]
+"63
+[e ( _i2c_write (1 _dev ]
+"64
+[e ( _i2c_write (1 -> & _addr -> 255 `ui `uc ]
+"65
+[e ( _i2c_write (1 _data ]
+"66
+[e ( _i2c_stop ..  ]
+"67
+[e ) ( _ack_poll (1 _dev ]
+[e $UE 107  ]
+"68
+[e :UE 107 ]
+}
+"70
+[v _eeprom_read_byte `(uc ~T0 @X0 1 ef1`ui ]
+"71
+{
+[e :U _eeprom_read_byte ]
+"70
+[v _addr `ui ~T0 @X0 1 r1 ]
+"71
+[f ]
+"72
+[v _data `uc ~T0 @X0 1 a ]
+"73
+[v _dev_w `uc ~T0 @X0 1 a ]
+[e = _dev_w ( _get_device_addr (2 , _addr -> -> 160 `ui `uc ]
+"74
+[v _dev_r `uc ~T0 @X0 1 a ]
+[e = _dev_r ( _get_device_addr (2 , _addr -> -> 161 `ui `uc ]
+"75
+[e ( _i2c_start ..  ]
+"76
+[e ( _i2c_write (1 _dev_w ]
+"77
+[e ( _i2c_write (1 -> & _addr -> 255 `ui `uc ]
+"78
+[e ( _i2c_repeat_start ..  ]
+"79
+[e ( _i2c_write (1 _dev_r ]
+"80
+[e = _data ( _i2c_read (1 -> -> 1 `i `uc ]
+"81
+[e ( _i2c_stop ..  ]
+"82
+[e ) _data ]
+[e $UE 108  ]
+"83
+[e :UE 108 ]
+}
+"89
+[v _read_head `(uc ~T0 @X0 1 sf ]
+{
+[e :U _read_head ]
+[f ]
+[e ) ( _eeprom_read_byte (1 -> 0 `ui ]
+[e $UE 109  ]
+[e :UE 109 ]
+}
+"90
+[v _read_count `(uc ~T0 @X0 1 sf ]
+{
+[e :U _read_count ]
+[f ]
+[e ) ( _eeprom_read_byte (1 -> 1 `ui ]
+[e $UE 110  ]
+[e :UE 110 ]
+}
+"102
+[v _bcd_to_ascii `(v ~T0 @X0 1 sf3`uc`*uc`*uc ]
+"103
+{
+[e :U _bcd_to_ascii ]
+"102
+[v _bcd `uc ~T0 @X0 1 r1 ]
+[v _hi `*uc ~T0 @X0 1 r2 ]
+[v _lo `*uc ~T0 @X0 1 r3 ]
+"103
+[f ]
+"104
+[e = *U _hi -> + & -> >> -> _bcd `i -> 4 `i `ui -> 15 `ui -> 48 `ui `uc ]
+"105
+[e = *U _lo -> + & -> _bcd `ui -> 15 `ui -> 48 `ui `uc ]
+"106
+[e :UE 111 ]
+}
+"109
+[v _speed_to_ascii `(v ~T0 @X0 1 sf4`uc`*uc`*uc`*uc ]
+"110
+{
+[e :U _speed_to_ascii ]
+"109
+[v _spd `uc ~T0 @X0 1 r1 ]
+[v _h `*uc ~T0 @X0 1 r2 ]
+[v _t `*uc ~T0 @X0 1 r3 ]
+[v _u `*uc ~T0 @X0 1 r4 ]
+"110
+[f ]
+"111
+[e = *U _h -> + / -> _spd `ui -> 100 `ui -> 48 `ui `uc ]
+"112
+[e = *U _t -> + % / -> _spd `ui -> 10 `ui -> 10 `ui -> 48 `ui `uc ]
+"113
+[e = *U _u -> + % -> _spd `ui -> 10 `ui -> 48 `ui `uc ]
+"114
+[e :UE 112 ]
+}
+"116
+[v _write_slot `(uc ~T0 @X0 1 sf2`uc`*CS1 ]
+"117
+{
+[e :U _write_slot ]
+"116
+[v _slot_index `uc ~T0 @X0 1 r1 ]
+[v _entry `*CS1 ~T0 @X0 1 r2 ]
+"117
+[f ]
+"118
+[v _rec `uc ~T0 @X0 -> 11 `i a ]
+"119
+[v _addr `ui ~T0 @X0 1 a ]
+[e = _addr + -> 2 `ui * -> _slot_index `ui -> 11 `ui ]
+"122
+[e ( _bcd_to_ascii (3 , , . *U _entry 0 &U *U + &U _rec * -> -> -> 0 `i `ui `ux -> -> # *U &U _rec `ui `ux &U *U + &U _rec * -> -> -> 1 `i `ui `ux -> -> # *U &U _rec `ui `ux ]
+"123
+[e ( _bcd_to_ascii (3 , , . *U _entry 1 &U *U + &U _rec * -> -> -> 2 `i `ui `ux -> -> # *U &U _rec `ui `ux &U *U + &U _rec * -> -> -> 3 `i `ui `ux -> -> # *U &U _rec `ui `ux ]
+"124
+[e ( _bcd_to_ascii (3 , , . *U _entry 2 &U *U + &U _rec * -> -> -> 4 `i `ui `ux -> -> # *U &U _rec `ui `ux &U *U + &U _rec * -> -> -> 5 `i `ui `ux -> -> # *U &U _rec `ui `ux ]
+"126
+[e = *U + &U _rec * -> -> -> 6 `i `ui `ux -> -> # *U &U _rec `ui `ux -> -> 71 `ui `uc ]
+"128
+[e = *U + &U _rec * -> -> -> 7 `i `ui `ux -> -> # *U &U _rec `ui `ux -> ? != & -> . *U _entry 5 `ui -> 2 `ui -> -> 0 `i `ui : -> 67 `ui -> -> + -> 48 `ui & -> . *U _entry 4 `ui -> 7 `ui `uc `ui `uc ]
+"132
+[e ( _speed_to_ascii (4 , , , . *U _entry 3 &U *U + &U _rec * -> -> -> 8 `i `ui `ux -> -> # *U &U _rec `ui `ux &U *U + &U _rec * -> -> -> 9 `i `ui `ux -> -> # *U &U _rec `ui `ux &U *U + &U _rec * -> -> -> 10 `i `ui `ux -> -> # *U &U _rec `ui `ux ]
+"135
+[v _i `uc ~T0 @X0 1 a ]
+"136
+{
+[e = _i -> -> 0 `i `uc ]
+[e $ < -> _i `ui -> 11 `ui 114  ]
+[e $U 115  ]
+[e :U 114 ]
+"137
+{
+"138
+[e $ ! ! != -> ( _eeprom_write_byte (2 , + _addr -> _i `ui -> *U + &U _rec * -> _i `ux -> -> # *U &U _rec `ui `ux `uc `i -> 0 `i 117  ]
+"139
+[e ) -> -> 0 `i `uc ]
+[e $UE 113  ]
+[e :U 117 ]
+"140
+}
+[e ++ _i -> -> 1 `i `uc ]
+[e $ < -> _i `ui -> 11 `ui 114  ]
+[e :U 115 ]
+}
+"141
+[e ) -> -> 1 `i `uc ]
+[e $UE 113  ]
+"142
+[e :UE 113 ]
+}
+"159
+[v _eeprom_write_log `(uc ~T0 @X0 1 ef1`*CS1 ]
+"160
+{
+[e :U _eeprom_write_log ]
+"159
+[v _entry `*CS1 ~T0 @X0 1 r1 ]
+"160
+[f ]
+"161
+[v _head `uc ~T0 @X0 1 a ]
+[e = _head ( _read_head ..  ]
+"162
+[v _count `uc ~T0 @X0 1 a ]
+[e = _count ( _read_count ..  ]
+"165
+[e $ ! >= -> _head `ui -> 10 `ui 119  ]
+[e = _head -> -> 0 `i `uc ]
+[e :U 119 ]
+"167
+[e $ ! ! != -> ( _write_slot (2 , _head _entry `i -> 0 `i 120  ]
+[e ) -> -> 0 `i `uc ]
+[e $UE 118  ]
+[e :U 120 ]
+"170
+[e = _head -> % + -> _head `ui -> 1 `ui -> 10 `ui `uc ]
+"173
+[e $ ! < -> _count `ui -> 10 `ui 121  ]
+[e ++ _count -> -> 1 `i `uc ]
+[e :U 121 ]
+"175
+[e $ ! ! != -> ( _eeprom_write_byte (2 , -> 0 `ui _head `i -> 0 `i 122  ]
+[e ) -> -> 0 `i `uc ]
+[e $UE 118  ]
+[e :U 122 ]
+"176
+[e $ ! ! != -> ( _eeprom_write_byte (2 , -> 1 `ui _count `i -> 0 `i 123  ]
+[e ) -> -> 0 `i `uc ]
+[e $UE 118  ]
+[e :U 123 ]
+"177
+[e ) -> -> 1 `i `uc ]
+[e $UE 118  ]
+"178
+[e :UE 118 ]
+}
+"189
+[v _eeprom_read_log `(v ~T0 @X0 1 ef2`uc`*uc ]
+"190
+{
+[e :U _eeprom_read_log ]
+"189
+[v _index `uc ~T0 @X0 1 r1 ]
+[v _buf `*uc ~T0 @X0 1 r2 ]
+"190
+[f ]
+"191
+[v _head `uc ~T0 @X0 1 a ]
+[e = _head ( _read_head ..  ]
+"192
+[v _count `uc ~T0 @X0 1 a ]
+[e = _count ( _read_count ..  ]
+"193
+[v _i `uc ~T0 @X0 1 a ]
+"195
+[e $ ! >= -> _head `ui -> 10 `ui 125  ]
+[e = _head -> -> 0 `i `uc ]
+[e :U 125 ]
+"196
+[e $ ! > -> _count `ui -> 10 `ui 126  ]
+[e = _count -> -> 10 `ui `uc ]
+[e :U 126 ]
+"199
+[v _oldest `uc ~T0 @X0 1 a ]
+[e = _oldest -> % + -> - -> _head `i -> _count `i `ui -> 10 `ui -> 10 `ui `uc ]
+"200
+[v _slot `uc ~T0 @X0 1 a ]
+[e = _slot -> % -> + -> _oldest `i -> _index `i `ui -> 10 `ui `uc ]
+"201
+[v _addr `ui ~T0 @X0 1 a ]
+[e = _addr + -> 2 `ui * -> _slot `ui -> 11 `ui ]
+"204
+{
+[e = _i -> -> 0 `i `uc ]
+[e $ < -> _i `ui -> 11 `ui 127  ]
+[e $U 128  ]
+[e :U 127 ]
+"205
+[e = *U + _buf * -> _i `ux -> -> # *U _buf `ui `ux -> ( _eeprom_read_byte (1 + _addr -> _i `ui `uc ]
+[e ++ _i -> -> 1 `i `uc ]
+[e $ < -> _i `ui -> 11 `ui 127  ]
+[e :U 128 ]
+}
+"206
+[e = *U + _buf * -> -> 11 `ui `ux -> -> # *U _buf `ui `ux -> -> 0 `ui `uc ]
+"207
+[e :UE 124 ]
+}
+"209
+[v _eeprom_get_entry_count `(uc ~T0 @X0 1 ef ]
+"210
+{
+[e :U _eeprom_get_entry_count ]
+[f ]
+"211
+[v _count `uc ~T0 @X0 1 a ]
+[e = _count ( _read_count ..  ]
+"212
+[e ) -> ? > -> _count `ui -> 10 `ui : -> 10 `ui -> _count `ui `uc ]
+[e $UE 130  ]
+"213
+[e :UE 130 ]
+}
+"215
+[v _eeprom_clear_log `(uc ~T0 @X0 1 ef ]
+"216
+{
+[e :U _eeprom_clear_log ]
+[f ]
+"217
+[e $ ! ! != -> ( _eeprom_write_byte (2 , -> 0 `ui -> -> 0 `ui `uc `i -> 0 `i 132  ]
+[e ) -> -> 0 `i `uc ]
+[e $UE 131  ]
+[e :U 132 ]
+"218
+[e $ ! ! != -> ( _eeprom_write_byte (2 , -> 1 `ui -> -> 0 `ui `uc `i -> 0 `i 133  ]
+[e ) -> -> 0 `i `uc ]
+[e $UE 131  ]
+[e :U 133 ]
+"219
+[e ) -> -> 1 `i `uc ]
+[e $UE 131  ]
+"220
+[e :UE 131 ]
+}

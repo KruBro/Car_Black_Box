@@ -1,0 +1,599 @@
+Version 4.0 HI-TECH Software Intermediate Code
+"65 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
+[v _clcd_putch `(v ~T0 @X0 0 ef2`Cuc`uc ]
+"66 /home/krubro/MPLABProjects/Car_Black_Box/view_logs.c
+[c E1069 0 1 2 3 4 5 6 .. ]
+[n E1069 . EVENT_NONE EVENT_SW1 EVENT_SW2 EVENT_SW3 EVENT_SW4 EVENT_SW5 EVENT_SW6  ]
+"74 /home/krubro/MPLABProjects/Car_Black_Box/eeprom.h
+[v _eeprom_get_entry_count `(uc ~T0 @X0 0 ef ]
+"24 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
+[v _uart_puts `(v ~T0 @X0 0 ef1`*Cuc ]
+"76 /home/krubro/MPLABProjects/Car_Black_Box/view_logs.c
+[c E1085 0 1 2 3 4 5 6 7 .. ]
+[n E1085 . DASHBOARD LOGIN MENU VIEW_LOGS CLEAR_LOGS DOWNLOAD_LOGS SET_TIME CHANGE_PASSWORD  ]
+"16 /home/krubro/MPLABProjects/Car_Black_Box/state.h
+[v _set_status `(v ~T0 @X0 0 ef1`E1085 ]
+"67 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
+[v _clcd_clear `(v ~T0 @X0 0 ef ]
+"66
+[v _clcd_print `(v ~T0 @X0 0 ef2`*Cuc`uc ]
+"71 /home/krubro/MPLABProjects/Car_Black_Box/eeprom.h
+[v _eeprom_read_log `(v ~T0 @X0 0 ef2`uc`*uc ]
+"23 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
+[v _uart_putchar `(v ~T0 @X0 0 ef1`uc ]
+[v F190 `(v ~T0 @X0 1 tf1`ul ]
+"20 /opt/microchip/xc8/v3.10/pic/include/builtins.h
+[v __delay `JF190 ~T0 @X0 0 e ]
+[p i __delay ]
+"77 /home/krubro/MPLABProjects/Car_Black_Box/eeprom.h
+[v _eeprom_clear_log `(uc ~T0 @X0 0 ef ]
+"11 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
+[p x FOSC    =  HS ]
+"12
+[p x WDTE    =  OFF ]
+"13
+[p x PWRTE  =  OFF ]
+"14
+[p x BOREN  =  ON ]
+"15
+[p x LVP      =  OFF ]
+"16
+[p x CPD      =  OFF ]
+"17
+[p x WRT      =  OFF ]
+"18
+[p x CP        =  OFF ]
+"38 /home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8/pic/include/proc/pic16f877a.h
+[; <" INDF equ 00h ;# ">
+"45
+[; <" TMR0 equ 01h ;# ">
+"52
+[; <" PCL equ 02h ;# ">
+"59
+[; <" STATUS equ 03h ;# ">
+"145
+[; <" FSR equ 04h ;# ">
+"152
+[; <" PORTA equ 05h ;# ">
+"202
+[; <" PORTB equ 06h ;# ">
+"264
+[; <" PORTC equ 07h ;# ">
+"326
+[; <" PORTD equ 08h ;# ">
+"388
+[; <" PORTE equ 09h ;# ">
+"420
+[; <" PCLATH equ 0Ah ;# ">
+"440
+[; <" INTCON equ 0Bh ;# ">
+"518
+[; <" PIR1 equ 0Ch ;# ">
+"580
+[; <" PIR2 equ 0Dh ;# ">
+"620
+[; <" TMR1 equ 0Eh ;# ">
+"627
+[; <" TMR1L equ 0Eh ;# ">
+"634
+[; <" TMR1H equ 0Fh ;# ">
+"641
+[; <" T1CON equ 010h ;# ">
+"716
+[; <" TMR2 equ 011h ;# ">
+"723
+[; <" T2CON equ 012h ;# ">
+"794
+[; <" SSPBUF equ 013h ;# ">
+"801
+[; <" SSPCON equ 014h ;# ">
+"871
+[; <" CCPR1 equ 015h ;# ">
+"878
+[; <" CCPR1L equ 015h ;# ">
+"885
+[; <" CCPR1H equ 016h ;# ">
+"892
+[; <" CCP1CON equ 017h ;# ">
+"950
+[; <" RCSTA equ 018h ;# ">
+"1045
+[; <" TXREG equ 019h ;# ">
+"1052
+[; <" RCREG equ 01Ah ;# ">
+"1059
+[; <" CCPR2 equ 01Bh ;# ">
+"1066
+[; <" CCPR2L equ 01Bh ;# ">
+"1073
+[; <" CCPR2H equ 01Ch ;# ">
+"1080
+[; <" CCP2CON equ 01Dh ;# ">
+"1138
+[; <" ADRESH equ 01Eh ;# ">
+"1145
+[; <" ADCON0 equ 01Fh ;# ">
+"1241
+[; <" OPTION_REG equ 081h ;# ">
+"1311
+[; <" TRISA equ 085h ;# ">
+"1361
+[; <" TRISB equ 086h ;# ">
+"1423
+[; <" TRISC equ 087h ;# ">
+"1485
+[; <" TRISD equ 088h ;# ">
+"1547
+[; <" TRISE equ 089h ;# ">
+"1604
+[; <" PIE1 equ 08Ch ;# ">
+"1666
+[; <" PIE2 equ 08Dh ;# ">
+"1706
+[; <" PCON equ 08Eh ;# ">
+"1740
+[; <" SSPCON2 equ 091h ;# ">
+"1802
+[; <" PR2 equ 092h ;# ">
+"1809
+[; <" SSPADD equ 093h ;# ">
+"1816
+[; <" SSPSTAT equ 094h ;# ">
+"1985
+[; <" TXSTA equ 098h ;# ">
+"2066
+[; <" SPBRG equ 099h ;# ">
+"2073
+[; <" CMCON equ 09Ch ;# ">
+"2143
+[; <" CVRCON equ 09Dh ;# ">
+"2208
+[; <" ADRESL equ 09Eh ;# ">
+"2215
+[; <" ADCON1 equ 09Fh ;# ">
+"2274
+[; <" EEDATA equ 010Ch ;# ">
+"2281
+[; <" EEADR equ 010Dh ;# ">
+"2288
+[; <" EEDATH equ 010Eh ;# ">
+"2295
+[; <" EEADRH equ 010Fh ;# ">
+"2302
+[; <" EECON1 equ 018Ch ;# ">
+"2347
+[; <" EECON2 equ 018Dh ;# ">
+"26 /home/krubro/MPLABProjects/Car_Black_Box/view_logs.c
+[v _gear_label `(*Cuc ~T0 @X0 1 sf1`uc ]
+"27
+{
+[e :U _gear_label ]
+"26
+[v _g `uc ~T0 @X0 1 r1 ]
+"27
+[f ]
+"28
+[e $U 103  ]
+"29
+{
+"30
+[e :U 104 ]
+[e ) :s 1C ]
+[e $UE 101  ]
+"31
+[e :U 105 ]
+[e ) :s 2C ]
+[e $UE 101  ]
+"32
+[e :U 106 ]
+[e ) :s 3C ]
+[e $UE 101  ]
+"33
+[e :U 107 ]
+[e ) :s 4C ]
+[e $UE 101  ]
+"34
+[e :U 108 ]
+[e ) :s 5C ]
+[e $UE 101  ]
+"35
+[e :U 109 ]
+[e ) :s 6C ]
+[e $UE 101  ]
+"36
+[e :U 110 ]
+[e ) :s 7C ]
+[e $UE 101  ]
+"37
+[e :U 111 ]
+[e ) :s 8C ]
+[e $UE 101  ]
+"38
+}
+[e $U 102  ]
+[e :U 103 ]
+[e [\ _g , $ -> -> 48 `ui `i 104
+ , $ -> -> 49 `ui `i 105
+ , $ -> -> 50 `ui `i 106
+ , $ -> -> 51 `ui `i 107
+ , $ -> -> 52 `ui `i 108
+ , $ -> -> 53 `ui `i 109
+ , $ -> -> 67 `ui `i 110
+ 111 ]
+[e :U 102 ]
+"39
+[e :UE 101 ]
+}
+"41
+[v _print_two_digits `(v ~T0 @X0 1 sf2`uc`uc ]
+"42
+{
+[e :U _print_two_digits ]
+"41
+[v _val `uc ~T0 @X0 1 r1 ]
+[v _addr `uc ~T0 @X0 1 r2 ]
+"42
+[f ]
+"43
+[e ( _clcd_putch (2 , -> + / -> _val `ui -> 10 `ui -> 48 `ui `uc _addr ]
+"44
+[e ( _clcd_putch (2 , -> + % -> _val `ui -> 10 `ui -> 48 `ui `uc -> + -> _addr `ui -> 1 `ui `uc ]
+"45
+[e :UE 112 ]
+}
+"51
+[v _log_index `uc ~T0 @X0 1 s ]
+[i _log_index
+-> -> 0 `i `uc
+]
+"52
+[v _needs_draw `uc ~T0 @X0 1 s ]
+[i _needs_draw
+-> -> 1 `i `uc
+]
+"53
+[v _empty_shown `uc ~T0 @X0 1 s ]
+[i _empty_shown
+-> -> 0 `i `uc
+]
+"55
+[v _view_logs_reset `(v ~T0 @X0 1 ef ]
+"56
+{
+[e :U _view_logs_reset ]
+[f ]
+"57
+[e = _log_index -> -> 0 `i `uc ]
+"58
+[e = _needs_draw -> -> 1 `i `uc ]
+"59
+[e = _empty_shown -> -> 0 `i `uc ]
+"60
+[e :UE 113 ]
+}
+"66
+[v _view_logs_update `(v ~T0 @X0 1 ef1`E1069 ]
+"67
+{
+[e :U _view_logs_update ]
+"66
+[v _evt `E1069 ~T0 @X0 1 r1 ]
+"67
+[f ]
+"68
+[v _count `uc ~T0 @X0 1 a ]
+[e = _count ( _eeprom_get_entry_count ..  ]
+"70
+[e $ ! == -> _count `i -> 0 `i 115  ]
+"71
+{
+"72
+[e $ ! == -> _evt `ui -> . `E1069 1 `ui 116  ]
+"73
+{
+"74
+[e ( _uart_puts (1 :s 9C ]
+"75
+[e ( _view_logs_reset ..  ]
+"76
+[e ( _set_status (1 . `E1085 2 ]
+"77
+}
+[e :U 116 ]
+"78
+[e $UE 114  ]
+"79
+}
+[e :U 115 ]
+"81
+[e $ ! && == -> _evt `ui -> . `E1069 2 `ui < -> _log_index `ui - -> _count `ui -> 1 `ui 117  ]
+"82
+{
+"83
+[e ++ _log_index -> -> 1 `i `uc ]
+"84
+[e = _needs_draw -> -> 1 `i `uc ]
+"85
+[e ( _uart_puts (1 :s 10C ]
+"86
+}
+[e $U 118  ]
+"87
+[e :U 117 ]
+[e $ ! && == -> _evt `ui -> . `E1069 3 `ui > -> _log_index `ui -> 0 `ui 119  ]
+"88
+{
+"89
+[e -- _log_index -> -> 1 `i `uc ]
+"90
+[e = _needs_draw -> -> 1 `i `uc ]
+"91
+[e ( _uart_puts (1 :s 11C ]
+"92
+}
+[e $U 120  ]
+"93
+[e :U 119 ]
+[e $ ! == -> _evt `ui -> . `E1069 1 `ui 121  ]
+"94
+{
+"95
+[e ( _uart_puts (1 :s 12C ]
+"96
+[e ( _view_logs_reset ..  ]
+"97
+[e ( _set_status (1 . `E1085 2 ]
+"98
+}
+[e :U 121 ]
+[e :U 120 ]
+[e :U 118 ]
+"99
+[e :UE 114 ]
+}
+"105
+[v _view_logs_render `(v ~T0 @X0 1 ef ]
+"106
+{
+[e :U _view_logs_render ]
+[f ]
+"107
+[v _count `uc ~T0 @X0 1 a ]
+[e = _count ( _eeprom_get_entry_count ..  ]
+"108
+[v _buf `uc ~T0 @X0 -> 12 `i a ]
+"109
+[v _gl `*Cuc ~T0 @X0 1 a ]
+"111
+[e $ ! == -> _count `i -> 0 `i 123  ]
+"112
+{
+"113
+[e $ ! ! != -> _empty_shown `i -> 0 `i 124  ]
+"114
+{
+"115
+[e ( _clcd_clear ..  ]
+"116
+[e ( _clcd_print (2 , :s 13C -> + -> 128 `ui -> -> 0 `i `ui `uc ]
+"117
+[e ( _clcd_print (2 , :s 14C -> + -> 192 `ui -> -> 0 `i `ui `uc ]
+"118
+[e ( _uart_puts (1 :s 15C ]
+"119
+[e = _empty_shown -> -> 1 `i `uc ]
+"120
+}
+[e :U 124 ]
+"121
+[e $UE 122  ]
+"122
+}
+[e :U 123 ]
+"124
+[e = _empty_shown -> -> 0 `i `uc ]
+"126
+[e $ ! ! != -> _needs_draw `i -> 0 `i 125  ]
+[e $UE 122  ]
+[e :U 125 ]
+"127
+[e = _needs_draw -> -> 0 `i `uc ]
+"129
+[e ( _eeprom_read_log (2 , _log_index &U _buf ]
+"130
+[e = _gl ( _gear_label (1 *U + &U _buf * -> -> -> 7 `i `ui `ux -> -> # *U &U _buf `ui `ux ]
+"133
+[e ( _clcd_print (2 , :s 16C -> + -> 128 `ui -> -> 0 `i `ui `uc ]
+"134
+[e ( _print_two_digits (2 , -> + -> _log_index `ui -> 1 `ui `uc -> + -> 128 `ui -> -> 4 `i `ui `uc ]
+"135
+[e ( _clcd_putch (2 , -> -> 47 `ui `uc -> + -> 128 `ui -> -> 6 `i `ui `uc ]
+"136
+[e ( _print_two_digits (2 , _count -> + -> 128 `ui -> -> 7 `i `ui `uc ]
+"137
+[e ( _clcd_print (2 , :s 17C -> + -> 128 `ui -> -> 9 `i `ui `uc ]
+"140
+[e ( _clcd_putch (2 , *U + &U _buf * -> -> -> 0 `i `ui `ux -> -> # *U &U _buf `ui `ux -> + -> 192 `ui -> -> 0 `i `ui `uc ]
+"141
+[e ( _clcd_putch (2 , *U + &U _buf * -> -> -> 1 `i `ui `ux -> -> # *U &U _buf `ui `ux -> + -> 192 `ui -> -> 1 `i `ui `uc ]
+"142
+[e ( _clcd_putch (2 , -> -> 58 `ui `uc -> + -> 192 `ui -> -> 2 `i `ui `uc ]
+"143
+[e ( _clcd_putch (2 , *U + &U _buf * -> -> -> 2 `i `ui `ux -> -> # *U &U _buf `ui `ux -> + -> 192 `ui -> -> 3 `i `ui `uc ]
+"144
+[e ( _clcd_putch (2 , *U + &U _buf * -> -> -> 3 `i `ui `ux -> -> # *U &U _buf `ui `ux -> + -> 192 `ui -> -> 4 `i `ui `uc ]
+"145
+[e ( _clcd_putch (2 , -> -> 58 `ui `uc -> + -> 192 `ui -> -> 5 `i `ui `uc ]
+"146
+[e ( _clcd_putch (2 , *U + &U _buf * -> -> -> 4 `i `ui `ux -> -> # *U &U _buf `ui `ux -> + -> 192 `ui -> -> 6 `i `ui `uc ]
+"147
+[e ( _clcd_putch (2 , *U + &U _buf * -> -> -> 5 `i `ui `ux -> -> # *U &U _buf `ui `ux -> + -> 192 `ui -> -> 7 `i `ui `uc ]
+"148
+[e ( _clcd_putch (2 , -> -> 32 `ui `uc -> + -> 192 `ui -> -> 8 `i `ui `uc ]
+"149
+[e ( _clcd_putch (2 , *U + _gl * -> -> 0 `i `x -> -> # *U _gl `i `x -> + -> 192 `ui -> -> 9 `i `ui `uc ]
+"150
+[e ( _clcd_putch (2 , *U + _gl * -> -> 1 `i `x -> -> # *U _gl `i `x -> + -> 192 `ui -> -> 10 `i `ui `uc ]
+"151
+[e ( _clcd_putch (2 , -> -> 32 `ui `uc -> + -> 192 `ui -> -> 11 `i `ui `uc ]
+"152
+[e ( _clcd_putch (2 , *U + &U _buf * -> -> -> 8 `i `ui `ux -> -> # *U &U _buf `ui `ux -> + -> 192 `ui -> -> 12 `i `ui `uc ]
+"153
+[e ( _clcd_putch (2 , *U + &U _buf * -> -> -> 9 `i `ui `ux -> -> # *U &U _buf `ui `ux -> + -> 192 `ui -> -> 13 `i `ui `uc ]
+"154
+[e ( _clcd_putch (2 , *U + &U _buf * -> -> -> 10 `i `ui `ux -> -> # *U &U _buf `ui `ux -> + -> 192 `ui -> -> 14 `i `ui `uc ]
+"155
+[e ( _clcd_putch (2 , -> -> 32 `ui `uc -> + -> 192 `ui -> -> 15 `i `ui `uc ]
+"156
+[e :UE 122 ]
+}
+"162
+[v _download_logs `(v ~T0 @X0 1 ef ]
+"163
+{
+[e :U _download_logs ]
+[f ]
+"164
+[v _count `uc ~T0 @X0 1 a ]
+[e = _count ( _eeprom_get_entry_count ..  ]
+"165
+[v _k `uc ~T0 @X0 1 a ]
+"166
+[v _buf `uc ~T0 @X0 -> 12 `i a ]
+"167
+[v _gl `*Cuc ~T0 @X0 1 a ]
+"169
+[e ( _clcd_clear ..  ]
+"171
+[e $ ! == -> _count `i -> 0 `i 127  ]
+"172
+{
+"173
+[e ( _clcd_print (2 , :s 18C -> + -> 128 `ui -> -> 0 `i `ui `uc ]
+"174
+[e ( _uart_puts (1 :s 19C ]
+"175
+}
+[e $U 128  ]
+"176
+[e :U 127 ]
+"177
+{
+"178
+[e ( _clcd_print (2 , :s 20C -> + -> 128 `ui -> -> 0 `i `ui `uc ]
+"179
+[e ( _print_two_digits (2 , _count -> + -> 192 `ui -> -> 0 `i `ui `uc ]
+"180
+[e ( _clcd_print (2 , :s 21C -> + -> 192 `ui -> -> 2 `i `ui `uc ]
+"182
+[e ( _uart_puts (1 :s 22C ]
+"183
+[e ( _uart_puts (1 :s 23C ]
+"185
+{
+[e = _k -> -> 0 `i `uc ]
+[e $U 132  ]
+[e :U 129 ]
+"186
+{
+"187
+[e ( _eeprom_read_log (2 , _k &U _buf ]
+"188
+[e = _gl ( _gear_label (1 *U + &U _buf * -> -> -> 7 `i `ui `ux -> -> # *U &U _buf `ui `ux ]
+"190
+[e ( _uart_putchar (1 -> -> + / + -> _k `ui -> 1 `ui -> 10 `ui -> 48 `ui `uc `uc ]
+"191
+[e ( _uart_putchar (1 -> -> + % + -> _k `ui -> 1 `ui -> 10 `ui -> 48 `ui `uc `uc ]
+"192
+[e ( _uart_putchar (1 -> -> 32 `ui `uc ]
+"193
+[e ( _uart_putchar (1 -> *U + &U _buf * -> -> -> 0 `i `ui `ux -> -> # *U &U _buf `ui `ux `uc ]
+[e ( _uart_putchar (1 -> *U + &U _buf * -> -> -> 1 `i `ui `ux -> -> # *U &U _buf `ui `ux `uc ]
+"194
+[e ( _uart_putchar (1 -> -> 58 `ui `uc ]
+"195
+[e ( _uart_putchar (1 -> *U + &U _buf * -> -> -> 2 `i `ui `ux -> -> # *U &U _buf `ui `ux `uc ]
+[e ( _uart_putchar (1 -> *U + &U _buf * -> -> -> 3 `i `ui `ux -> -> # *U &U _buf `ui `ux `uc ]
+"196
+[e ( _uart_putchar (1 -> -> 58 `ui `uc ]
+"197
+[e ( _uart_putchar (1 -> *U + &U _buf * -> -> -> 4 `i `ui `ux -> -> # *U &U _buf `ui `ux `uc ]
+[e ( _uart_putchar (1 -> *U + &U _buf * -> -> -> 5 `i `ui `ux -> -> # *U &U _buf `ui `ux `uc ]
+"198
+[e ( _uart_putchar (1 -> -> 32 `ui `uc ]
+"199
+[e ( _uart_putchar (1 -> *U + _gl * -> -> 0 `i `x -> -> # *U _gl `i `x `uc ]
+[e ( _uart_putchar (1 -> *U + _gl * -> -> 1 `i `x -> -> # *U _gl `i `x `uc ]
+"200
+[e ( _uart_putchar (1 -> -> 32 `ui `uc ]
+"201
+[e ( _uart_putchar (1 -> *U + &U _buf * -> -> -> 8 `i `ui `ux -> -> # *U &U _buf `ui `ux `uc ]
+[e ( _uart_putchar (1 -> *U + &U _buf * -> -> -> 9 `i `ui `ux -> -> # *U &U _buf `ui `ux `uc ]
+[e ( _uart_putchar (1 -> *U + &U _buf * -> -> -> 10 `i `ui `ux -> -> # *U &U _buf `ui `ux `uc ]
+"202
+[e ( _uart_puts (1 :s 24C ]
+"203
+}
+[e ++ _k -> -> 1 `i `uc ]
+[e :U 132 ]
+[e $ < -> _k `i -> _count `i 129  ]
+[e :U 130 ]
+}
+"204
+[e ( _uart_puts (1 :s 25C ]
+"205
+}
+[e :U 128 ]
+"207
+[e ( __delay (1 -> * -> -> 1500 `i `d / -> -> 20000000 `ul `d .4000.0 `ul ]
+"208
+[e ( _set_status (1 . `E1085 2 ]
+"209
+[e :UE 126 ]
+}
+"215
+[v _clear_logs `(v ~T0 @X0 1 ef ]
+"216
+{
+[e :U _clear_logs ]
+[f ]
+"217
+[e ( _clcd_clear ..  ]
+"218
+[e ( _clcd_print (2 , :s 26C -> + -> 128 `ui -> -> 0 `i `ui `uc ]
+"219
+[e ( _uart_puts (1 :s 27C ]
+"220
+[e ( __delay (1 -> * -> -> 300 `i `d / -> -> 20000000 `ul `d .4000.0 `ul ]
+"221
+[e ( _eeprom_clear_log ..  ]
+"222
+[e :UE 133 ]
+}
+[a 1C 71 82 0 ]
+[a 7C 67 82 0 ]
+[a 2C 71 78 0 ]
+[a 8C 63 63 0 ]
+[a 6C 71 52 0 ]
+[a 5C 71 51 0 ]
+[a 4C 71 50 0 ]
+[a 3C 71 49 0 ]
+[a 16C 76 79 71 32 0 ]
+[a 20C 83 101 110 100 105 110 103 32 76 111 103 115 46 46 46 32 0 ]
+[a 13C 78 111 32 76 111 103 115 32 70 111 117 110 100 32 32 32 0 ]
+[a 18C 78 111 32 76 111 103 115 32 70 111 117 110 100 32 32 32 0 ]
+[a 26C 76 79 71 83 32 67 76 69 65 82 69 68 32 32 32 32 0 ]
+[a 14C 83 87 49 58 32 66 97 99 107 32 32 32 32 32 32 32 0 ]
+[a 21C 32 101 110 116 114 105 101 115 32 32 32 32 32 32 32 32 0 ]
+[a 17C 32 32 32 32 32 32 32 0 ]
+[a 15C 91 76 79 71 83 93 32 101 109 112 116 121 10 0 ]
+[a 11C 91 76 79 71 83 93 32 80 82 69 86 10 0 ]
+[a 10C 91 76 79 71 83 93 32 78 69 88 84 10 0 ]
+[a 9C 91 76 79 71 83 93 32 66 65 67 75 10 0 ]
+[a 12C 91 76 79 71 83 93 32 66 65 67 75 10 0 ]
+[a 23C 35 35 32 72 72 58 77 77 58 83 83 32 71 69 65 82 32 83 80 68 10 0 ]
+[a 27C 91 76 79 71 83 93 32 67 76 69 65 82 69 68 10 0 ]
+[a 25C 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 10 0 ]
+[a 22C 61 61 61 32 67 65 82 32 66 76 65 67 75 32 66 79 88 32 76 79 71 32 61 61 61 10 0 ]
+[a 19C 91 68 79 87 78 76 79 65 68 93 32 78 111 32 108 111 103 115 32 115 116 111 114 101 100 46 10 0 ]
+[a 24C 13 10 0 ]

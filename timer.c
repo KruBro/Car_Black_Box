@@ -50,8 +50,15 @@ void init_timers(void)
     GIE  = 1;   // Enable global interrupts
 }
 
-void reset_blink_tick(void)   { blink_tick   = 0; }
-void reset_timeout_tick(void) { timeout_tick = 0; }
+void reset_blink_tick(void)   
+{ 
+    blink_tick   = 0; 
+}
+
+void reset_timeout_tick(void)
+{ 
+    timeout_tick = 0; 
+}
 
 /**
  * @brief  Single ISR entry point — services Timer0 and Timer1 overflow flags.

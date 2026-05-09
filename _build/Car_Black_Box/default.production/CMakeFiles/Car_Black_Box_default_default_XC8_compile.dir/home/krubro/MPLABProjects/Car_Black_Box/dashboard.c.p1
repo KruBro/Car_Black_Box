@@ -1,26 +1,39 @@
 Version 4.0 HI-TECH Software Intermediate Code
-"117 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
+"32 /home/krubro/MPLABProjects/Car_Black_Box/dashboard.c
+[c E1069 0 1 2 3 4 5 6 .. ]
+[n E1069 . EVENT_NONE EVENT_SW1 EVENT_SW2 EVENT_SW3 EVENT_SW4 EVENT_SW5 EVENT_SW6  ]
+"35
+[c E2 0 1 2 3 4 5 .. ]
+[n E2 . GR GN G1 G2 G3 G4  ]
+"65 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
+[s S2 `uc 1 `uc 1 `uc 1 `E2 1 `uc 1 `uc 1 `uc 1 ]
+[n S2 . hours minutes seconds gear speed flags log_pending ]
+"75
+[v _sys `S2 ~T0 @X0 0 e ]
+"81 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
 [v _ds1307_i2c_read `(uc ~T0 @X0 0 ef1`uc ]
-"94
-[v _clcd_print `(v ~T0 @X0 0 ef2`*Cuc`uc ]
-"159
+"114
 [v _read_adc `(us ~T0 @X0 0 ef1`uc ]
-"15 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
-[p x FOSC    =  HS        ]
+"24
+[v _uart_puts `(v ~T0 @X0 0 ef1`*Cuc ]
+"66
+[v _clcd_print `(v ~T0 @X0 0 ef2`*Cuc`uc ]
+"11 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
+[p x FOSC    =  HS ]
+"12
+[p x WDTE    =  OFF ]
+"13
+[p x PWRTE  =  OFF ]
+"14
+[p x BOREN  =  ON ]
+"15
+[p x LVP      =  OFF ]
 "16
-[p x WDTE    =  OFF       ]
+[p x CPD      =  OFF ]
 "17
-[p x PWRTE  =  OFF       ]
+[p x WRT      =  OFF ]
 "18
-[p x BOREN  =  ON        ]
-"19
-[p x LVP      =  OFF       ]
-"20
-[p x CPD      =  OFF       ]
-"21
-[p x WRT      =  OFF       ]
-"22
-[p x CP        =  OFF       ]
+[p x CP        =  OFF ]
 "38 /home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8/pic/include/proc/pic16f877a.h
 [; <" INDF equ 00h ;# ">
 "45
@@ -141,257 +154,264 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; <" EECON1 equ 018Ch ;# ">
 "2347
 [; <" EECON2 equ 018Dh ;# ">
-"10 /home/krubro/MPLABProjects/Car_Black_Box/dashboard.c
-[v _prev_speed `us ~T0 @X0 1 s ]
-[i _prev_speed
--> -> 65535 `ui `us
-]
-"15
-[v _invalidate_dashboard_cache `(v ~T0 @X0 1 ef ]
-"16
-{
-[e :U _invalidate_dashboard_cache ]
-[f ]
-"17
-[e = _prev_speed -> -> 65535 `ui `us ]
-"18
-[e :UE 99 ]
-}
-"23
-[v _get_time `(v ~T0 @X0 1 sf1`*uc ]
-"24
-{
-[e :U _get_time ]
-"23
-[v _clock_reg `*uc ~T0 @X0 1 r1 ]
-"24
-[f ]
-"25
-[e = *U + _clock_reg * -> -> 0 `i `x -> -> # *U _clock_reg `i `x ( _ds1307_i2c_read (1 -> -> 0 `ui `uc ]
-"26
-[e = *U + _clock_reg * -> -> 1 `i `x -> -> # *U _clock_reg `i `x ( _ds1307_i2c_read (1 -> -> 1 `ui `uc ]
-"27
-[e = *U + _clock_reg * -> -> 2 `i `x -> -> # *U _clock_reg `i `x ( _ds1307_i2c_read (1 -> -> 2 `ui `uc ]
-"28
-[e :UE 100 ]
-}
-"33
-[v _display_time `(v ~T0 @X0 1 sf1`*uc ]
-"34
-{
-[e :U _display_time ]
-"33
-[v _clock_reg `*uc ~T0 @X0 1 r1 ]
-"34
-[f ]
-"35
-[v _time `uc ~T0 @X0 -> 9 `i a ]
-"37
-[e ( _clcd_print (2 , :s 1C -> + -> 128 `ui -> -> 0 `i `ui `uc ]
-"40
-[e = *U + &U _time * -> -> -> 0 `i `ui `ux -> -> # *U &U _time `ui `ux -> + & -> >> -> *U + _clock_reg * -> -> 2 `i `x -> -> # *U _clock_reg `i `x `i -> 4 `i `ui -> 3 `ui -> 48 `ui `uc ]
-"41
-[e = *U + &U _time * -> -> -> 1 `i `ui `ux -> -> # *U &U _time `ui `ux -> + & -> *U + _clock_reg * -> -> 2 `i `x -> -> # *U _clock_reg `i `x `ui -> 15 `ui -> 48 `ui `uc ]
-"42
-[e = *U + &U _time * -> -> -> 2 `i `ui `ux -> -> # *U &U _time `ui `ux -> -> 58 `ui `uc ]
-"43
-[e = *U + &U _time * -> -> -> 3 `i `ui `ux -> -> # *U &U _time `ui `ux -> + & -> >> -> *U + _clock_reg * -> -> 1 `i `x -> -> # *U _clock_reg `i `x `i -> 4 `i `ui -> 7 `ui -> 48 `ui `uc ]
-"44
-[e = *U + &U _time * -> -> -> 4 `i `ui `ux -> -> # *U &U _time `ui `ux -> + & -> *U + _clock_reg * -> -> 1 `i `x -> -> # *U _clock_reg `i `x `ui -> 15 `ui -> 48 `ui `uc ]
-"45
-[e = *U + &U _time * -> -> -> 5 `i `ui `ux -> -> # *U &U _time `ui `ux -> -> 58 `ui `uc ]
-"46
-[e = *U + &U _time * -> -> -> 6 `i `ui `ux -> -> # *U &U _time `ui `ux -> + & -> >> -> *U + _clock_reg * -> -> 0 `i `x -> -> # *U _clock_reg `i `x `i -> 4 `i `ui -> 7 `ui -> 48 `ui `uc ]
-"47
-[e = *U + &U _time * -> -> -> 7 `i `ui `ux -> -> # *U &U _time `ui `ux -> + & -> *U + _clock_reg * -> -> 0 `i `x -> -> # *U _clock_reg `i `x `ui -> 15 `ui -> 48 `ui `uc ]
-"48
-[e = *U + &U _time * -> -> -> 8 `i `ui `ux -> -> # *U &U _time `ui `ux -> -> 0 `ui `uc ]
-"50
-[e ( _clcd_print (2 , -> &U _time `*Cuc -> + -> 192 `ui -> -> 0 `i `ui `uc ]
-"51
-[e :UE 101 ]
-}
-"57
-[v _display_event `(v ~T0 @X0 1 sf1`uc ]
-"58
-{
-[e :U _display_event ]
-"57
-[v _key `uc ~T0 @X0 1 r1 ]
-"58
-[f ]
-[v F1076 `*Cuc ~T0 @X0 1 t ]
-"59
-[v F1074 `C*Cuc ~T0 @X0 -> 6 `i s event ]
-[i F1074
+[v F1132 `*Cuc ~T0 @X0 1 t ]
+"15 /home/krubro/MPLABProjects/Car_Black_Box/dashboard.c
+[v _gear_labels `C*Cuc ~T0 @X0 -> 6 `i s ]
+[i _gear_labels
 :U ..
+:s 1C
 :s 2C
 :s 3C
 :s 4C
 :s 5C
 :s 6C
-:s 7C
 ..
 ]
-"60
-[v F1077 `uc ~T0 @X0 1 s gear_index ]
-[i F1077
--> -> 1 `i `uc
+"17
+[v _prev_speed `uc ~T0 @X0 1 s ]
+[i _prev_speed
+-> -> 255 `ui `uc
 ]
-"61
-[v F1078 `uc ~T0 @X0 1 s ignition_on ]
-[i F1078
--> -> 0 `i `uc
+"18
+[v _prev_gear_render `uc ~T0 @X0 1 s ]
+[i _prev_gear_render
+-> -> 255 `ui `uc
 ]
-"62
-[v F1079 `uc ~T0 @X0 1 s crash_detected ]
-[i F1079
--> -> 0 `i `uc
+"19
+[v _prev_flags_render `uc ~T0 @X0 1 s ]
+[i _prev_flags_render
+-> -> 255 `ui `uc
 ]
-"64
-[e ( _clcd_print (2 , :s 8C -> + -> 128 `ui -> -> 10 `i `ui `uc ]
-"67
-[e $ ! && == -> _key `ui -> 62 `ui == -> F1079 `i -> 0 `i 103  ]
-"68
+"21
+[v _invalidate_dashboard_cache `(v ~T0 @X0 1 ef ]
+"22
 {
-"69
-[e = F1078 -> -> 1 `i `uc ]
-"70
-[e = F1079 -> -> 1 `i `uc ]
-"71
+[e :U _invalidate_dashboard_cache ]
+[f ]
+"23
+[e = _prev_speed -> -> 255 `ui `uc ]
+"24
+[e = _prev_gear_render -> -> 255 `ui `uc ]
+"25
+[e = _prev_flags_render -> -> 255 `ui `uc ]
+"26
+[e :UE 101 ]
 }
-[e $U 104  ]
-"72
-[e :U 103 ]
-[e $ ! && == -> _key `ui -> 61 `ui == -> F1079 `i -> 0 `i 105  ]
-"73
+"32
+[v _dashboard_update `(v ~T0 @X0 1 ef1`E1069 ]
+"33
 {
-"74
-[e = F1078 -> -> 1 `i `uc ]
-"75
-[e $ ! < -> F1077 `ui -> 5 `ui 106  ]
-[e ++ F1077 -> -> 1 `i `uc ]
-[e :U 106 ]
-"76
+[e :U _dashboard_update ]
+"32
+[v _evt `E1069 ~T0 @X0 1 r1 ]
+"33
+[f ]
+"34
+[v F1139 `uc ~T0 @X0 1 s prev_flags_uart ]
+[i F1139
+-> -> 0 `i `uc
+]
+"35
+[v F1140 `E2 ~T0 @X0 1 s prev_gear_uart ]
+[i F1140
+. `E2 0
+]
+"38
+[e = . _sys 2 ( _ds1307_i2c_read (1 -> -> 0 `ui `uc ]
+"39
+[e = . _sys 1 ( _ds1307_i2c_read (1 -> -> 1 `ui `uc ]
+"40
+[e = . _sys 0 ( _ds1307_i2c_read (1 -> -> 2 `ui `uc ]
+"43
+[e = . _sys 4 -> / * -> ( _read_adc (1 -> -> 0 `i `uc `ul -> 100 `ul -> 1023 `ul `uc ]
+"46
+[e $ ! ! != & -> . _sys 5 `ui -> 2 `ui -> -> 0 `i `ui 103  ]
+"47
+{
+"48
+[e $ ! == -> _evt `ui -> . `E1069 1 `ui 104  ]
+"49
+{
+"50
+[e =| . _sys 5 -> | -> 1 `ui -> 2 `ui `uc ]
+"51
+[e = . _sys 6 -> -> 1 `i `uc ]
+"52
+}
+[e $U 105  ]
+"53
+[e :U 104 ]
+[e $ ! && == -> _evt `ui -> . `E1069 2 `ui < -> . _sys 3 `ui -> . `E2 5 `ui 106  ]
+"54
+{
+"55
+[e ++ . _sys 3 -> -> 1 `i `E2 ]
+"56
+[e =| . _sys 5 -> -> 1 `ui `uc ]
+"57
+[e = . _sys 6 -> -> 1 `i `uc ]
+"58
 }
 [e $U 107  ]
-"77
-[e :U 105 ]
-[e $ ! && == -> _key `ui -> 59 `ui == -> F1079 `i -> 0 `i 108  ]
-"78
+"59
+[e :U 106 ]
+[e $ ! && == -> _evt `ui -> . `E1069 3 `ui > -> . _sys 3 `ui -> . `E2 0 `ui 108  ]
+"60
 {
-"79
-[e = F1078 -> -> 1 `i `uc ]
-"80
-[e $ ! > -> F1077 `ui -> 0 `ui 109  ]
-[e -- F1077 -> -> 1 `i `uc ]
-[e :U 109 ]
-"81
+"61
+[e -- . _sys 3 -> -> 1 `i `E2 ]
+"62
+[e =| . _sys 5 -> -> 1 `ui `uc ]
+"63
+[e = . _sys 6 -> -> 1 `i `uc ]
+"64
 }
 [e :U 108 ]
 [e :U 107 ]
-[e :U 104 ]
-"84
-[e $ ! == -> F1079 `i -> 1 `i 110  ]
-"85
-[e ( _clcd_print (2 , :s 9C -> + -> 192 `ui -> -> 10 `i `ui `uc ]
-[e $U 111  ]
-"86
-[e :U 110 ]
-[e $ ! == -> F1078 `i -> 1 `i 112  ]
-"87
-[e ( _clcd_print (2 , *U + &U F1074 * -> F1077 `ux -> -> # *U &U F1074 `ui `ux -> + -> 192 `ui -> -> 10 `i `ui `uc ]
-[e $U 113  ]
-"88
-[e :U 112 ]
-"89
-[e ( _clcd_print (2 , :s 10C -> + -> 192 `ui -> -> 10 `i `ui `uc ]
-[e :U 113 ]
+[e :U 105 ]
+"65
+}
+[e :U 103 ]
+"68
+[e $ ! && != & -> . _sys 5 `ui -> 2 `ui -> -> 0 `i `ui ! != & -> F1139 `ui -> 2 `ui -> -> 0 `i `ui 109  ]
+"69
+{
+"70
+[e ( _uart_puts (1 :s 7C ]
+"71
+}
+[e $U 110  ]
+"72
+[e :U 109 ]
+[e $ ! != -> . _sys 3 `ui -> F1140 `ui 111  ]
+"73
+{
+"74
+[e ( _uart_puts (1 :s 8C ]
+"75
+[e ( _uart_puts (1 *U + &U _gear_labels * -> . _sys 3 `ux -> -> # *U &U _gear_labels `ui `ux ]
+"76
+[e ( _uart_puts (1 :s 9C ]
+"77
+}
+[e $U 112  ]
+"78
 [e :U 111 ]
-"90
+[e $ ! && != & -> . _sys 5 `ui -> 1 `ui -> -> 0 `i `ui ! != & -> F1139 `ui -> 1 `ui -> -> 0 `i `ui 113  ]
+"79
+{
+"80
+[e ( _uart_puts (1 :s 10C ]
+"81
+}
+[e :U 113 ]
+[e :U 112 ]
+[e :U 110 ]
+"83
+[e = F1139 . _sys 5 ]
+"84
+[e = F1140 . _sys 3 ]
+"85
 [e :UE 102 ]
 }
-"95
-[v _convert_adc_val_to_char `(v ~T0 @X0 1 ef2`us`*uc ]
-"96
+"91
+[v _dashboard_render `(v ~T0 @X0 1 ef ]
+"92
 {
-[e :U _convert_adc_val_to_char ]
-"95
-[v _reg_val `us ~T0 @X0 1 r1 ]
-[v _buff `*uc ~T0 @X0 1 r2 ]
-"96
+[e :U _dashboard_render ]
 [f ]
+"93
+[v _time_buf `uc ~T0 @X0 -> 9 `i a ]
+"94
+[v _speed_buf `uc ~T0 @X0 -> 4 `i a ]
 "97
-[e = *U + _buff * -> -> 0 `i `x -> -> # *U _buff `i `x -> + / -> _reg_val `ui -> 100 `ui -> 48 `ui `uc ]
-"98
-[e = *U + _buff * -> -> 1 `i `x -> -> # *U _buff `i `x -> + % / -> _reg_val `ui -> 10 `ui -> 10 `ui -> 48 `ui `uc ]
-"99
-[e = *U + _buff * -> -> 2 `i `x -> -> # *U _buff `i `x -> + % -> _reg_val `ui -> 10 `ui -> 48 `ui `uc ]
+[e ( _clcd_print (2 , :s 11C -> + -> 128 `ui -> -> 0 `i `ui `uc ]
 "100
-[e = *U + _buff * -> -> 3 `i `x -> -> # *U _buff `i `x -> -> 0 `ui `uc ]
+[e = *U + &U _time_buf * -> -> -> 0 `i `ui `ux -> -> # *U &U _time_buf `ui `ux -> + & -> >> -> . _sys 0 `i -> 4 `i `ui -> 3 `ui -> 48 `ui `uc ]
 "101
-[e :UE 114 ]
-}
+[e = *U + &U _time_buf * -> -> -> 1 `i `ui `ux -> -> # *U &U _time_buf `ui `ux -> + & -> . _sys 0 `ui -> 15 `ui -> 48 `ui `uc ]
+"102
+[e = *U + &U _time_buf * -> -> -> 2 `i `ui `ux -> -> # *U &U _time_buf `ui `ux -> -> 58 `ui `uc ]
+"103
+[e = *U + &U _time_buf * -> -> -> 3 `i `ui `ux -> -> # *U &U _time_buf `ui `ux -> + & -> >> -> . _sys 1 `i -> 4 `i `ui -> 7 `ui -> 48 `ui `uc ]
+"104
+[e = *U + &U _time_buf * -> -> -> 4 `i `ui `ux -> -> # *U &U _time_buf `ui `ux -> + & -> . _sys 1 `ui -> 15 `ui -> 48 `ui `uc ]
+"105
+[e = *U + &U _time_buf * -> -> -> 5 `i `ui `ux -> -> # *U &U _time_buf `ui `ux -> -> 58 `ui `uc ]
 "106
-[v _display_speed `(v ~T0 @X0 1 sf ]
+[e = *U + &U _time_buf * -> -> -> 6 `i `ui `ux -> -> # *U &U _time_buf `ui `ux -> + & -> >> -> . _sys 2 `i -> 4 `i `ui -> 7 `ui -> 48 `ui `uc ]
 "107
-{
-[e :U _display_speed ]
-[f ]
+[e = *U + &U _time_buf * -> -> -> 7 `i `ui `ux -> -> # *U &U _time_buf `ui `ux -> + & -> . _sys 2 `ui -> 15 `ui -> 48 `ui `uc ]
 "108
-[v F1087 `us ~T0 @X0 1 s curr_speed ]
+[e = *U + &U _time_buf * -> -> -> 8 `i `ui `ux -> -> # *U &U _time_buf `ui `ux -> -> 0 `ui `uc ]
 "109
-[v _buff `uc ~T0 @X0 -> 4 `i a ]
-"111
-[e ( _clcd_print (2 , :s 11C -> + -> 128 `ui -> -> 13 `i `ui `uc ]
-"113
-[e = F1087 -> / * -> ( _read_adc (1 -> -> 0 `i `uc `ul -> 100 `ul -> 1023 `ul `us ]
+[e ( _clcd_print (2 , -> &U _time_buf `*Cuc -> + -> 192 `ui -> -> 0 `i `ui `uc ]
+"112
+[e ( _clcd_print (2 , :s 12C -> + -> 128 `ui -> -> 10 `i `ui `uc ]
 "115
-[e $ ! != -> F1087 `ui -> _prev_speed `ui 116  ]
+[e $ ! || != -> . _sys 3 `ui -> _prev_gear_render `ui != -> . _sys 5 `i -> _prev_flags_render `i 115  ]
 "116
 {
 "117
-[e = _prev_speed F1087 ]
+[e = _prev_gear_render -> . _sys 3 `uc ]
 "118
-[e ( _convert_adc_val_to_char (2 , F1087 &U _buff ]
-"119
-[e ( _clcd_print (2 , -> &U _buff `*Cuc -> + -> 192 `ui -> -> 13 `i `ui `uc ]
+[e = _prev_flags_render . _sys 5 ]
 "120
-}
-[e :U 116 ]
+[e $ ! != & -> . _sys 5 `ui -> 2 `ui -> -> 0 `i `ui 116  ]
 "121
-[e :UE 115 ]
+[e ( _clcd_print (2 , :s 13C -> + -> 192 `ui -> -> 10 `i `ui `uc ]
+[e $U 117  ]
+"122
+[e :U 116 ]
+[e $ ! != & -> . _sys 5 `ui -> 1 `ui -> -> 0 `i `ui 118  ]
+"123
+[e ( _clcd_print (2 , *U + &U _gear_labels * -> . _sys 3 `ux -> -> # *U &U _gear_labels `ui `ux -> + -> 192 `ui -> -> 10 `i `ui `uc ]
+[e $U 119  ]
+"124
+[e :U 118 ]
+"125
+[e ( _clcd_print (2 , :s 14C -> + -> 192 `ui -> -> 10 `i `ui `uc ]
+[e :U 119 ]
+[e :U 117 ]
+"126
 }
-"127
-[v _clcd_dashboard `(v ~T0 @X0 1 ef1`uc ]
-"128
-{
-[e :U _clcd_dashboard ]
-"127
-[v _key `uc ~T0 @X0 1 r1 ]
-"128
-[f ]
+[e :U 115 ]
 "129
-[v _clock_reg `uc ~T0 @X0 -> 3 `i a ]
-"131
-[e ( _get_time (1 &U _clock_reg ]
+[e ( _clcd_print (2 , :s 15C -> + -> 128 `ui -> -> 13 `i `ui `uc ]
 "132
-[e ( _display_time (1 &U _clock_reg ]
+[e $ ! != -> . _sys 4 `i -> _prev_speed `i 120  ]
 "133
-[e ( _display_event (1 _key ]
+{
 "134
-[e ( _display_speed ..  ]
+[e = _prev_speed . _sys 4 ]
 "135
-[e :UE 117 ]
+[e = *U + &U _speed_buf * -> -> -> 0 `i `ui `ux -> -> # *U &U _speed_buf `ui `ux -> + / -> . _sys 4 `ui -> 100 `ui -> 48 `ui `uc ]
+"136
+[e = *U + &U _speed_buf * -> -> -> 1 `i `ui `ux -> -> # *U &U _speed_buf `ui `ux -> + % / -> . _sys 4 `ui -> 10 `ui -> 10 `ui -> 48 `ui `uc ]
+"137
+[e = *U + &U _speed_buf * -> -> -> 2 `i `ui `ux -> -> # *U &U _speed_buf `ui `ux -> + % -> . _sys 4 `ui -> 10 `ui -> 48 `ui `uc ]
+"138
+[e = *U + &U _speed_buf * -> -> -> 3 `i `ui `ux -> -> # *U &U _speed_buf `ui `ux -> -> 0 `ui `uc ]
+"139
+[e ( _clcd_print (2 , -> &U _speed_buf `*Cuc -> + -> 192 `ui -> -> 13 `i `ui `uc ]
+"140
 }
-[a 8C 69 86 0 ]
-[a 2C 71 82 0 ]
-[a 10C 79 78 0 ]
-[a 3C 71 78 0 ]
-[a 1C 84 73 77 69 0 ]
-[a 11C 83 68 0 ]
-[a 7C 71 52 0 ]
-[a 6C 71 51 0 ]
-[a 5C 71 50 0 ]
-[a 4C 71 49 0 ]
-[a 9C 67 32 0 ]
+[e :U 120 ]
+"141
+[e :UE 114 ]
+}
+[a 12C 69 86 0 ]
+[a 1C 71 82 0 ]
+[a 14C 79 78 0 ]
+[a 2C 71 78 0 ]
+[a 11C 84 73 77 69 0 ]
+[a 15C 83 68 0 ]
+[a 6C 71 52 0 ]
+[a 5C 71 51 0 ]
+[a 4C 71 50 0 ]
+[a 3C 71 49 0 ]
+[a 13C 67 32 0 ]
+[a 8C 91 68 65 83 72 93 32 71 69 65 82 58 32 0 ]
+[a 10C 91 68 65 83 72 93 32 73 71 78 73 84 73 79 78 32 79 78 10 0 ]
+[a 7C 91 68 65 83 72 93 32 67 82 65 83 72 10 0 ]
+[a 9C 10 0 ]

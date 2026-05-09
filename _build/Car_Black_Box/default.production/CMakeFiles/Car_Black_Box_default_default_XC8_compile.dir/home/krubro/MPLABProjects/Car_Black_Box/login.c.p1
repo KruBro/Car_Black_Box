@@ -1,47 +1,55 @@
 Version 4.0 HI-TECH Software Intermediate Code
-"27 /home/krubro/MPLABProjects/Car_Black_Box/timer.h
+"43 /home/krubro/MPLABProjects/Car_Black_Box/login.c
+[c E1130 0 1 2 3 4 .. ]
+[n E1130 . PHASE_ENTERING PHASE_FAIL PHASE_LOCKOUT PHASE_SUCCESS PHASE_LOCKED  ]
+"24 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
+[v _uart_puts `(v ~T0 @X0 0 ef1`*Cuc ]
+"24 /home/krubro/MPLABProjects/Car_Black_Box/timer.h
+[v _reset_blink_tick `(v ~T0 @X0 0 ef ]
+"27
 [v _reset_timeout_tick `(v ~T0 @X0 0 ef ]
-"18
-[v _timeout_tick `Vui ~T0 @X0 0 e ]
-"47 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
-[v _invalidate_dashboard_cache `(v ~T0 @X0 0 ef ]
-"53 /home/krubro/MPLABProjects/Car_Black_Box/login.c
-[c E1047 0 1 2 3 4 5 6 7 .. ]
-[n E1047 . DASHBOARD LOGIN MENU VIEW_LOGS CLEAR_LOGS DOWNLOAD_LOGS SET_TIME CHANGE_PASSWORD  ]
-"16 /home/krubro/MPLABProjects/Car_Black_Box/state.h
-[v _set_status `(v ~T0 @X0 0 ef1`E1047 ]
+"91 /home/krubro/MPLABProjects/Car_Black_Box/login.c
+[c E1069 0 1 2 3 4 5 6 .. ]
+[n E1069 . EVENT_NONE EVENT_SW1 EVENT_SW2 EVENT_SW3 EVENT_SW4 EVENT_SW5 EVENT_SW6  ]
 "17 /home/krubro/MPLABProjects/Car_Black_Box/timer.h
 [v _blink_tick `Vuc ~T0 @X0 0 e ]
-"24
-[v _reset_blink_tick `(v ~T0 @X0 0 ef ]
-"91 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
-[v _clcd_putch `(v ~T0 @X0 0 ef2`Cuc`uc ]
-"31
-[v _uart_puts `(v ~T0 @X0 0 ef1`*Cuc ]
-"97
-[v _clcd_clear `(v ~T0 @X0 0 ef ]
-"94
-[v _clcd_print `(v ~T0 @X0 0 ef2`*Cuc`uc ]
-[v F164 `(v ~T0 @X0 1 tf1`ul ]
-"20 /opt/microchip/xc8/v3.10/pic/include/builtins.h
-[v __delay `JF164 ~T0 @X0 0 e ]
-[p i __delay ]
-"15 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
-[p x FOSC    =  HS        ]
-"16
-[p x WDTE    =  OFF       ]
-"17
-[p x PWRTE  =  OFF       ]
 "18
-[p x BOREN  =  ON        ]
-"19
-[p x LVP      =  OFF       ]
-"20
-[p x CPD      =  OFF       ]
-"21
-[p x WRT      =  OFF       ]
-"22
-[p x CP        =  OFF       ]
+[v _timeout_tick `Vui ~T0 @X0 0 e ]
+"23 /home/krubro/MPLABProjects/Car_Black_Box/dashboard.h
+[v _invalidate_dashboard_cache `(v ~T0 @X0 0 ef ]
+"131 /home/krubro/MPLABProjects/Car_Black_Box/login.c
+[c E1085 0 1 2 3 4 5 6 7 .. ]
+[n E1085 . DASHBOARD LOGIN MENU VIEW_LOGS CLEAR_LOGS DOWNLOAD_LOGS SET_TIME CHANGE_PASSWORD  ]
+"16 /home/krubro/MPLABProjects/Car_Black_Box/state.h
+[v _set_status `(v ~T0 @X0 0 ef1`E1085 ]
+"23 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
+[v _uart_putchar `(v ~T0 @X0 0 ef1`uc ]
+"66
+[v _clcd_print `(v ~T0 @X0 0 ef2`*Cuc`uc ]
+"67
+[v _clcd_clear `(v ~T0 @X0 0 ef ]
+[v F190 `(v ~T0 @X0 1 tf1`ul ]
+"20 /opt/microchip/xc8/v3.10/pic/include/builtins.h
+[v __delay `JF190 ~T0 @X0 0 e ]
+[p i __delay ]
+"65 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
+[v _clcd_putch `(v ~T0 @X0 0 ef2`Cuc`uc ]
+"11 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
+[p x FOSC    =  HS ]
+"12
+[p x WDTE    =  OFF ]
+"13
+[p x PWRTE  =  OFF ]
+"14
+[p x BOREN  =  ON ]
+"15
+[p x LVP      =  OFF ]
+"16
+[p x CPD      =  OFF ]
+"17
+[p x WRT      =  OFF ]
+"18
+[p x CP        =  OFF ]
 "38 /home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8/pic/include/proc/pic16f877a.h
 [; <" INDF equ 00h ;# ">
 "45
@@ -162,14 +170,19 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; <" EECON1 equ 018Ch ;# ">
 "2347
 [; <" EECON2 equ 018Dh ;# ">
-"14 /home/krubro/MPLABProjects/Car_Black_Box/login.c
-[v _i `uc ~T0 @X0 1 s ]
-[i _i
--> -> 0 `i `uc
+"39 /home/krubro/MPLABProjects/Car_Black_Box/login.c
+[v _lockout_durations `Cuc ~T0 @X0 -> 4 `i s ]
+[i _lockout_durations
+:U ..
+-> -> 0 `ui `uc
+-> -> 15 `ui `uc
+-> -> 30 `ui `uc
+-> -> 60 `ui `uc
+..
 ]
-"15
-[v _user_pass `uc ~T0 @X0 -> 5 `i s ]
-[i _user_pass
+"41
+[v _my_pass `Cuc ~T0 @X0 -> 5 `i s ]
+[i _my_pass
 :U ..
 -> 49 `c
 -> 49 `c
@@ -178,332 +191,486 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-"16
-[v _my_pass `uc ~T0 @X0 -> 5 `i s ]
-"17
-[v _attempts_left `uc ~T0 @X0 1 s ]
-[i _attempts_left
--> -> 4 `i `uc
+"43
+[v _phase `E1130 ~T0 @X0 1 s ]
+[i _phase
+. `E1130 0
 ]
-"18
+"44
+[v _fail_count `uc ~T0 @X0 1 s ]
+[i _fail_count
+-> -> 0 `i `uc
+]
+"45
+[v _digit_count `uc ~T0 @X0 1 s ]
+[i _digit_count
+-> -> 0 `i `uc
+]
+"46
+[v _entered `uc ~T0 @X0 -> 5 `i s ]
+"47
 [v _cursor_visible `uc ~T0 @X0 1 s ]
 [i _cursor_visible
 -> -> 0 `i `uc
 ]
-"19
-[v _login_successful `uc ~T0 @X0 1 s ]
-[i _login_successful
--> -> 0 `i `uc
-]
-"20
-[v _entry_cooldown `uc ~T0 @X0 1 s ]
-[i _entry_cooldown
--> -> 0 `i `uc
-]
-"21
-[v _screen_initialized `uc ~T0 @X0 1 s ]
-[i _screen_initialized
--> -> 0 `i `uc
-]
-"26
-[v _my_strcmp `(i ~T0 @X0 1 ef2`*Cuc`*Cuc ]
-"27
-{
-[e :U _my_strcmp ]
-"26
-[v _s1 `*Cuc ~T0 @X0 1 r1 ]
-[v _s2 `*Cuc ~T0 @X0 1 r2 ]
-"27
-[f ]
-"28
-[v _index `ui ~T0 @X0 1 a ]
-[e = _index -> -> 0 `i `ui ]
-"29
-[e $U 100  ]
-[e :U 101 ]
-"30
-[e ++ _index -> -> 1 `i `ui ]
-[e :U 100 ]
-"29
-[e $ && != -> *U + _s1 * -> _index `ux -> -> # *U _s1 `ui `ux `ui -> 0 `ui == -> *U + _s1 * -> _index `ux -> -> # *U _s1 `ui `ux `i -> *U + _s2 * -> _index `ux -> -> # *U _s2 `ui `ux `i 101  ]
-[e :U 102 ]
-"31
-[e ) - -> -> *U + _s1 * -> _index `ux -> -> # *U _s1 `ui `ux `uc `i -> -> *U + _s2 * -> _index `ux -> -> # *U _s2 `ui `ux `uc `i ]
-[e $UE 99  ]
-"32
-[e :UE 99 ]
-}
-"38
-[v _time_out `(v ~T0 @X0 1 sf1`uc ]
-"39
-{
-[e :U _time_out ]
-"38
-[v _key `uc ~T0 @X0 1 r1 ]
-"39
-[f ]
-"40
-[e $ ! != -> _key `ui -> 63 `ui 104  ]
-"41
-{
-"42
-[e ( _reset_timeout_tick ..  ]
-"43
-[e $UE 103  ]
-"44
-}
-[e :U 104 ]
-"46
-[e $ ! && >= _timeout_tick -> 50 `ui == -> _login_successful `i -> 0 `i 105  ]
-"47
-{
 "48
-[e ( _reset_timeout_tick ..  ]
+[v _screen_ready `uc ~T0 @X0 1 s ]
+[i _screen_ready
+-> -> 0 `i `uc
+]
 "49
-[e = _i -> -> 0 `i `uc ]
+[v _cooldown_ticks `uc ~T0 @X0 1 s ]
+[i _cooldown_ticks
+-> -> 0 `i `uc
+]
 "50
-[e = _entry_cooldown -> -> 0 `i `uc ]
+[v _lockout_secs_remaining `uc ~T0 @X0 1 s ]
+[i _lockout_secs_remaining
+-> -> 0 `i `uc
+]
 "51
-[e = _screen_initialized -> -> 0 `i `uc ]
-"52
-[e ( _invalidate_dashboard_cache ..  ]
-"53
-[e ( _set_status (1 . `E1047 0 ]
-"54
+[v _logged_in_flag `uc ~T0 @X0 1 s ]
+[i _logged_in_flag
+-> -> 0 `i `uc
+]
+"57
+[v _is_logged_in `(uc ~T0 @X0 1 ef ]
+{
+[e :U _is_logged_in ]
+[f ]
+[e ) _logged_in_flag ]
+[e $UE 101  ]
+[e :UE 101 ]
 }
+"58
+[v _do_logout `(v ~T0 @X0 1 ef ]
+{
+[e :U _do_logout ]
+[f ]
+[e = _logged_in_flag -> -> 0 `i `uc ]
+[e ( _uart_puts (1 :s 1C ]
+[e :UE 102 ]
+}
+"64
+[v _pass_match `(i ~T0 @X0 1 sf ]
+"65
+{
+[e :U _pass_match ]
+[f ]
+"66
+[v _k `uc ~T0 @X0 1 a ]
+"67
+{
+[e = _k -> -> 0 `i `uc ]
+[e $ < -> _k `i -> 4 `i 104  ]
+[e $U 105  ]
+[e :U 104 ]
+"68
+[e $ ! != -> *U + &U _entered * -> _k `ux -> -> # *U &U _entered `ui `ux `i -> *U + &U _my_pass * -> _k `ux -> -> # *U &U _my_pass `ui `ux `i 107  ]
+[e ) -> 0 `i ]
+[e $UE 103  ]
+[e :U 107 ]
+[e ++ _k -> -> 1 `i `uc ]
+[e $ < -> _k `i -> 4 `i 104  ]
 [e :U 105 ]
-"55
+}
+"69
+[e ) -> 1 `i ]
+[e $UE 103  ]
+"70
 [e :UE 103 ]
 }
-"61
-[v _handle_blinker `(v ~T0 @X0 1 sf ]
-"62
-{
-[e :U _handle_blinker ]
-[f ]
-"63
-[e $ ! < -> _blink_tick `ui -> 20 `ui 107  ]
-"64
-[e $UE 106  ]
-[e :U 107 ]
-"66
-[e ( _reset_blink_tick ..  ]
-"67
-[e = _cursor_visible -> -> ! != -> _cursor_visible `i -> 0 `i `i `uc ]
-"69
-[e $ ! < -> _i `i -> 4 `i 108  ]
-"70
-[e ( _clcd_putch (2 , -> ? != -> _cursor_visible `i -> 0 `i : -> 95 `ui -> 32 `ui `uc -> + -> 192 `ui -> _i `ui `uc ]
-[e :U 108 ]
-"71
-[e :UE 106 ]
-}
 "76
-[v _process_keypress `(v ~T0 @X0 1 sf1`uc ]
+[v _login_reset `(v ~T0 @X0 1 ef ]
 "77
 {
-[e :U _process_keypress ]
-"76
-[v _key `uc ~T0 @X0 1 r1 ]
-"77
+[e :U _login_reset ]
 [f ]
 "78
-[e $ ! < -> _entry_cooldown `i -> 50 `i 110  ]
+[e = _digit_count -> -> 0 `i `uc ]
 "79
-{
+[e = _cursor_visible -> -> 0 `i `uc ]
 "80
-[e ++ _entry_cooldown -> -> 1 `i `uc ]
+[e = _screen_ready -> -> 0 `i `uc ]
 "81
-[e $UE 109  ]
+[e = _cooldown_ticks -> -> 0 `i `uc ]
 "82
-}
-[e :U 110 ]
-"84
-[e $ ! || == -> _key `ui -> 55 `ui == -> _key `ui -> 47 `ui 111  ]
-"85
-{
-"86
-[e = *U + &U _my_pass * -> _i `ux -> -> # *U &U _my_pass `ui `ux -> ? == -> _key `ui -> 55 `ui : -> 48 `ui -> 49 `ui `uc ]
-"87
-[e ( _clcd_putch (2 , -> -> 42 `ui `uc -> + -> 192 `ui -> _i `ui `uc ]
-"88
-[e ++ _i -> -> 1 `i `uc ]
-"90
+[e = _phase -> ? >= -> _fail_count `ui -> 5 `ui : . `E1130 4 . `E1130 0 `E1130 ]
+"83
 [e ( _reset_blink_tick ..  ]
+"84
+[e ( _reset_timeout_tick ..  ]
+"85
+[e :UE 108 ]
+}
 "91
-[e = _cursor_visible -> -> 1 `i `uc ]
+[v _login_update `(v ~T0 @X0 1 ef1`E1069 ]
+"92
+{
+[e :U _login_update ]
+"91
+[v _evt `E1069 ~T0 @X0 1 r1 ]
+"92
+[f ]
 "93
-[e $ ! < -> _i `i -> 4 `i 112  ]
+[e $ ! || == -> _phase `ui -> . `E1130 4 `ui == -> _phase `ui -> . `E1130 3 `ui 110  ]
 "94
-[e ( _clcd_putch (2 , -> -> 95 `ui `uc -> + -> 192 `ui -> _i `ui `uc ]
+[e $UE 109  ]
+[e :U 110 ]
+"97
+[e $ ! >= -> _blink_tick `ui -> 20 `ui 111  ]
+"98
+{
+"99
+[e ( _reset_blink_tick ..  ]
+"100
+[e = _cursor_visible -> -> ! != -> _cursor_visible `i -> 0 `i `i `uc ]
+"101
+[e $ ! < -> _cooldown_ticks `ui -> 2 `ui 112  ]
+[e ++ _cooldown_ticks -> -> 1 `i `uc ]
 [e :U 112 ]
-"95
+"102
 }
 [e :U 111 ]
-"96
-[e :UE 109 ]
-}
-"101
-[v _verify_password `(v ~T0 @X0 1 sf ]
-"102
-{
-[e :U _verify_password ]
-[f ]
-"103
-[e $ ! != -> _i `i -> 4 `i 114  ]
-"104
-[e $UE 113  ]
-[e :U 114 ]
+"105
+[e $ ! == -> _phase `ui -> . `E1130 2 `ui 113  ]
 "106
-[e = *U + &U _my_pass * -> -> -> 4 `i `ui `ux -> -> # *U &U _my_pass `ui `ux -> -> 0 `ui `uc ]
-"108
-[e $ ! == ( _my_strcmp (2 , -> &U _user_pass `*Cuc -> &U _my_pass `*Cuc -> 0 `i 115  ]
-"109
 {
+"107
+[v _elapsed `uc ~T0 @X0 1 a ]
+[e = _elapsed -> / _timeout_tick -> 10 `ui `uc ]
+"108
+[v _dur `uc ~T0 @X0 1 a ]
+[e = _dur *U + &U _lockout_durations * -> - -> _fail_count `ui -> 1 `ui `ux -> -> # *U &U _lockout_durations `ui `ux ]
 "110
-[e = _login_successful -> -> 1 `i `uc ]
-"111
-[e $UE 113  ]
+[e = _lockout_secs_remaining -> ? < -> _elapsed `i -> _dur `i : -> -> - -> _dur `i -> _elapsed `i `uc `ui -> 0 `ui `uc ]
 "112
-}
-[e :U 115 ]
+[e $ ! == -> _lockout_secs_remaining `ui -> 0 `ui 114  ]
+"113
+{
+"114
+[e ( _uart_puts (1 :s 2C ]
 "115
-[e ( _uart_puts (1 :s 1C ]
+[e = _phase . `E1130 0 ]
 "116
-[e -- _attempts_left -> -> 1 `i `uc ]
+[e = _screen_ready -> -> 0 `i `uc ]
+"117
+[e = _cooldown_ticks -> -> 2 `ui `uc ]
 "118
-[e ( _clcd_clear ..  ]
-"119
-[e ( _clcd_print (2 , :s 2C -> + -> 128 `ui -> -> 0 `i `ui `uc ]
-"120
-[e ( _clcd_putch (2 , -> + -> _attempts_left `ui -> 48 `ui `uc -> + -> 192 `ui -> -> 0 `i `ui `uc ]
-"121
-[e ( _clcd_print (2 , :s 3C -> + -> 192 `ui -> -> 1 `i `ui `uc ]
-"122
-[e ( __delay (1 -> * -> -> 2000 `i `d / -> -> 20000000 `ul `d .4000.0 `ul ]
-"124
-[e = _i -> -> 0 `i `uc ]
-"125
-[e = _entry_cooldown -> -> 0 `i `uc ]
-"126
-[e = _screen_initialized -> -> 0 `i `uc ]
-"127
 [e ( _reset_blink_tick ..  ]
+"119
+[e ( _reset_timeout_tick ..  ]
+"120
+}
+[e :U 114 ]
+"121
+[e $UE 109  ]
+"122
+}
+[e :U 113 ]
+"125
+[e $ ! && == -> _evt `ui -> . `E1069 0 `ui >= _timeout_tick -> 50 `ui 115  ]
+"126
+{
+"127
+[e ( _uart_puts (1 :s 3C ]
 "128
 [e ( _reset_timeout_tick ..  ]
 "129
-[e ( _clcd_clear ..  ]
+[e ( _login_reset ..  ]
 "130
-[e :UE 113 ]
+[e ( _invalidate_dashboard_cache ..  ]
+"131
+[e ( _set_status (1 . `E1085 0 ]
+"132
+[e $UE 109  ]
+"133
 }
-"135
-[v _handle_lockout `(v ~T0 @X0 1 sf ]
+[e :U 115 ]
 "136
-{
-[e :U _handle_lockout ]
-[f ]
-"137
-[e ( _clcd_print (2 , :s 4C -> + -> 128 `ui -> -> 0 `i `ui `uc ]
-"138
-[e ( _clcd_print (2 , :s 5C -> + -> 192 `ui -> -> 0 `i `ui `uc ]
+[e $ ! < -> _cooldown_ticks `ui -> 2 `ui 116  ]
+[e $UE 109  ]
+[e :U 116 ]
 "139
-[e :UE 116 ]
-}
+[e $ ! && < -> _digit_count `i -> 4 `i || == -> _evt `ui -> . `E1069 4 `ui == -> _evt `ui -> . `E1069 5 `ui 117  ]
+"140
+{
+"141
+[e = *U + &U _entered * -> _digit_count `ux -> -> # *U &U _entered `ui `ux -> ? == -> _evt `ui -> . `E1069 4 `ui : -> 48 `ui -> 49 `ui `uc ]
+"142
+[e ++ _digit_count -> -> 1 `i `uc ]
+"143
+[e ( _reset_blink_tick ..  ]
 "144
-[v _get_attempts_left `(uc ~T0 @X0 1 ef ]
+[e ( _reset_timeout_tick ..  ]
 "145
-{
-[e :U _get_attempts_left ]
-[f ]
-"146
-[e ) _attempts_left ]
-[e $UE 117  ]
+[e = _cursor_visible -> -> 1 `i `uc ]
 "147
-[e :UE 117 ]
+[e ( _uart_puts (1 :s 4C ]
+"148
+[e ( _uart_putchar (1 -> -> + -> 48 `ui -> _digit_count `ui `uc `uc ]
+"149
+[e ( _uart_puts (1 :s 5C ]
+"150
 }
+[e :U 117 ]
 "153
-[v _show_login_screen `(v ~T0 @X0 1 ef1`uc ]
+[e $ ! == -> _digit_count `i -> 4 `i 118  ]
 "154
 {
-[e :U _show_login_screen ]
-"153
-[v _key `uc ~T0 @X0 1 r1 ]
-"154
-[f ]
 "155
-[e $ ! == -> _attempts_left `i -> 0 `i 119  ]
+[e $ ! != ( _pass_match ..  -> 0 `i 119  ]
 "156
 {
 "157
-[e ( _handle_lockout ..  ]
+[e ( _uart_puts (1 :s 6C ]
 "158
-[e $UE 118  ]
+[e = _phase . `E1130 3 ]
 "159
 }
+[e $U 120  ]
+"160
 [e :U 119 ]
-"162
-[e $ ! == -> _screen_initialized `i -> 0 `i 120  ]
-"163
+"161
 {
+"162
+[e ++ _fail_count -> -> 1 `i `uc ]
+"163
+[e ( _uart_puts (1 :s 7C ]
 "164
-[e ( _clcd_clear ..  ]
+[e ( _uart_putchar (1 -> -> + -> 48 `ui -> _fail_count `ui `uc `uc ]
 "165
-[e ( _clcd_print (2 , :s 6C -> + -> 128 `ui -> -> 0 `i `ui `uc ]
+[e ( _uart_puts (1 :s 8C ]
 "166
-[e ( _reset_blink_tick ..  ]
+[e ( _uart_putchar (1 -> -> + -> 48 `ui -> 5 `ui `uc `uc ]
 "167
-[e ( _reset_timeout_tick ..  ]
+[e ( _uart_puts (1 :s 9C ]
 "168
-[e = _screen_initialized -> -> 1 `i `uc ]
+[e = _phase . `E1130 1 ]
 "169
 }
 [e :U 120 ]
+"170
+}
+[e :U 118 ]
 "171
-[e ( _handle_blinker ..  ]
-"172
-[e ( _process_keypress (1 _key ]
-"173
-[e ( _verify_password ..  ]
-"174
-[e ( _time_out (1 _key ]
-"176
-[e $ ! == -> _login_successful `i -> 1 `i 121  ]
-"177
-{
+[e :UE 109 ]
+}
 "178
-[e ( _clcd_clear ..  ]
+[v _login_render `(v ~T0 @X0 1 ef ]
 "179
-[e ( _clcd_print (2 , :s 7C -> + -> 128 `ui -> -> 0 `i `ui `uc ]
+{
+[e :U _login_render ]
+[f ]
 "180
-[e ( _clcd_print (2 , :s 8C -> + -> 192 `ui -> -> 0 `i `ui `uc ]
-"181
-[e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 20000000 `ul `d .4000.0 `ul ]
+[v _k `uc ~T0 @X0 1 a ]
 "183
-[e ( _uart_puts (1 :s 9C ]
+[e $ ! == -> _phase `ui -> . `E1130 4 `ui 122  ]
 "184
-[e = _login_successful -> -> 0 `i `uc ]
+{
 "185
-[e = _i -> -> 0 `i `uc ]
+[e ( _clcd_print (2 , :s 10C -> + -> 128 `ui -> -> 0 `i `ui `uc ]
 "186
-[e = _entry_cooldown -> -> 0 `i `uc ]
+[e ( _clcd_print (2 , :s 11C -> + -> 192 `ui -> -> 0 `i `ui `uc ]
 "187
-[e = _screen_initialized -> -> 0 `i `uc ]
+[e $UE 121  ]
 "188
-[e ( _reset_timeout_tick ..  ]
-"189
-[e ( _set_status (1 . `E1047 2 ]
-"190
 }
-[e :U 121 ]
+[e :U 122 ]
 "191
-[e :UE 118 ]
+[e $ ! == -> _phase `ui -> . `E1130 3 `ui 123  ]
+"192
+{
+"193
+[e ( _clcd_clear ..  ]
+"194
+[e ( _clcd_print (2 , :s 12C -> + -> 128 `ui -> -> 0 `i `ui `uc ]
+"195
+[e ( _clcd_print (2 , :s 13C -> + -> 192 `ui -> -> 0 `i `ui `uc ]
+"196
+[e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 20000000 `ul `d .4000.0 `ul ]
+"197
+[e ( _uart_puts (1 :s 14C ]
+"198
+[e = _logged_in_flag -> -> 1 `i `uc ]
+"199
+[e = _lockout_secs_remaining *U + &U _lockout_durations * -> -> -> 0 `i `ui `ux -> -> # *U &U _lockout_durations `ui `ux ]
+"200
+[e = _fail_count -> -> 0 `i `uc ]
+"201
+[e ( _login_reset ..  ]
+"202
+[e ( _set_status (1 . `E1085 2 ]
+"203
+[e $UE 121  ]
+"204
 }
-[a 8C 65 99 99 101 115 115 32 71 114 97 110 116 101 100 32 32 0 ]
-[a 7C 67 111 114 114 101 99 116 32 69 110 116 114 121 32 32 32 0 ]
-[a 2C 73 110 118 97 108 105 100 32 69 110 116 114 121 32 32 32 0 ]
-[a 5C 67 111 110 116 97 99 116 32 65 100 109 105 110 32 32 32 0 ]
-[a 4C 68 101 118 105 99 101 32 76 111 99 107 101 100 32 32 32 0 ]
-[a 6C 80 97 115 115 87 111 114 100 58 32 32 32 32 32 32 32 0 ]
-[a 3C 32 76 101 102 116 33 32 32 32 32 32 32 32 32 0 ]
-[a 1C 73 110 118 97 108 105 100 32 69 110 116 114 121 10 0 ]
-[a 9C 76 111 103 105 110 32 83 117 99 99 101 115 115 102 117 108 10 0 ]
+[e :U 123 ]
+"207
+[e $ ! == -> _phase `ui -> . `E1130 1 `ui 124  ]
+"208
+{
+"209
+[v _tries_left `uc ~T0 @X0 1 a ]
+[e = _tries_left -> - -> 5 `ui -> _fail_count `ui `uc ]
+"211
+[e ( _clcd_clear ..  ]
+"212
+[e ( _clcd_print (2 , :s 15C -> + -> 128 `ui -> -> 0 `i `ui `uc ]
+"214
+[e $ ! >= -> _fail_count `ui -> 5 `ui 125  ]
+"215
+{
+"216
+[e ( _clcd_print (2 , :s 16C -> + -> 192 `ui -> -> 0 `i `ui `uc ]
+"217
+[e ( __delay (1 -> * -> -> 2000 `i `d / -> -> 20000000 `ul `d .4000.0 `ul ]
+"218
+[e = _phase . `E1130 4 ]
+"219
+}
+[e $U 126  ]
+"220
+[e :U 125 ]
+"221
+{
+"222
+[e ( _clcd_putch (2 , -> + -> 48 `ui -> _tries_left `ui `uc -> + -> 192 `ui -> -> 0 `i `ui `uc ]
+"223
+[e ( _clcd_print (2 , :s 17C -> + -> 192 `ui -> -> 1 `i `ui `uc ]
+"224
+[e ( __delay (1 -> * -> -> 1500 `i `d / -> -> 20000000 `ul `d .4000.0 `ul ]
+"226
+[e ( _reset_timeout_tick ..  ]
+"227
+[e = _lockout_secs_remaining *U + &U _lockout_durations * -> - -> _fail_count `ui -> 1 `ui `ux -> -> # *U &U _lockout_durations `ui `ux ]
+"228
+[e = _phase . `E1130 2 ]
+"229
+[e = _screen_ready -> -> 0 `i `uc ]
+"230
+[e = _digit_count -> -> 0 `i `uc ]
+"231
+}
+[e :U 126 ]
+"232
+[e ( _clcd_clear ..  ]
+"233
+[e $UE 121  ]
+"234
+}
+[e :U 124 ]
+"237
+[e $ ! == -> _phase `ui -> . `E1130 2 `ui 127  ]
+"238
+{
+"239
+[v F1160 `uc ~T0 @X0 1 s last_shown ]
+[i F1160
+-> -> 255 `ui `uc
+]
+"241
+[e $ ! ! != -> _screen_ready `i -> 0 `i 128  ]
+"242
+{
+"243
+[e ( _clcd_clear ..  ]
+"244
+[e ( _clcd_print (2 , :s 18C -> + -> 128 `ui -> -> 0 `i `ui `uc ]
+"245
+[e = _screen_ready -> -> 1 `i `uc ]
+"246
+[e = F1160 -> -> 255 `ui `uc ]
+"247
+}
+[e :U 128 ]
+"249
+[e $ ! != -> _lockout_secs_remaining `i -> F1160 `i 129  ]
+"250
+{
+"251
+[e = F1160 _lockout_secs_remaining ]
+"252
+[e ( _clcd_print (2 , :s 19C -> + -> 192 `ui -> -> 0 `i `ui `uc ]
+"253
+[e ( _clcd_putch (2 , -> + / -> _lockout_secs_remaining `ui -> 100 `ui -> 48 `ui `uc -> + -> 192 `ui -> -> 10 `i `ui `uc ]
+"254
+[e ( _clcd_putch (2 , -> + % / -> _lockout_secs_remaining `ui -> 10 `ui -> 10 `ui -> 48 `ui `uc -> + -> 192 `ui -> -> 11 `i `ui `uc ]
+"255
+[e ( _clcd_putch (2 , -> + % -> _lockout_secs_remaining `ui -> 10 `ui -> 48 `ui `uc -> + -> 192 `ui -> -> 12 `i `ui `uc ]
+"256
+[e ( _clcd_putch (2 , -> -> 115 `ui `uc -> + -> 192 `ui -> -> 13 `i `ui `uc ]
+"257
+[e ( _clcd_print (2 , :s 20C -> + -> 192 `ui -> -> 14 `i `ui `uc ]
+"258
+}
+[e :U 129 ]
+"259
+[e $UE 121  ]
+"260
+}
+[e :U 127 ]
+"263
+[e $ ! ! != -> _screen_ready `i -> 0 `i 130  ]
+"264
+{
+"265
+[e ( _clcd_clear ..  ]
+"266
+[e ( _clcd_print (2 , :s 21C -> + -> 128 `ui -> -> 0 `i `ui `uc ]
+"267
+{
+[e = _k -> -> 0 `i `uc ]
+[e $ < -> _k `i -> 4 `i 131  ]
+[e $U 132  ]
+[e :U 131 ]
+[e ( _clcd_putch (2 , -> -> 32 `ui `uc -> + -> 192 `ui -> _k `ui `uc ]
+[e ++ _k -> -> 1 `i `uc ]
+[e $ < -> _k `i -> 4 `i 131  ]
+[e :U 132 ]
+}
+"268
+[e = _screen_ready -> -> 1 `i `uc ]
+"269
+}
+[e :U 130 ]
+"271
+{
+[e = _k -> -> 0 `i `uc ]
+[e $U 137  ]
+[e :U 134 ]
+[e ( _clcd_putch (2 , -> -> 42 `ui `uc -> + -> 192 `ui -> _k `ui `uc ]
+[e ++ _k -> -> 1 `i `uc ]
+[e :U 137 ]
+[e $ < -> _k `i -> _digit_count `i 134  ]
+[e :U 135 ]
+}
+"273
+[e $ ! < -> _digit_count `i -> 4 `i 138  ]
+"274
+[e ( _clcd_putch (2 , -> ? != -> _cursor_visible `i -> 0 `i : -> 95 `ui -> 32 `ui `uc -> + -> 192 `ui -> _digit_count `ui `uc ]
+[e :U 138 ]
+"275
+[e :UE 121 ]
+}
+[a 8C 47 0 ]
+[a 4C 91 76 79 71 73 78 93 32 100 105 103 105 116 32 0 ]
+[a 7C 91 76 79 71 73 78 93 32 70 65 73 76 32 0 ]
+[a 19C 82 101 116 114 121 32 105 110 58 32 0 ]
+[a 13C 65 99 99 101 115 115 32 71 114 97 110 116 101 100 32 32 0 ]
+[a 16C 68 101 118 105 99 101 32 76 111 99 107 101 100 33 32 32 0 ]
+[a 12C 67 111 114 114 101 99 116 32 69 110 116 114 121 32 32 32 0 ]
+[a 15C 73 110 118 97 108 105 100 32 69 110 116 114 121 32 32 32 0 ]
+[a 11C 67 111 110 116 97 99 116 32 65 100 109 105 110 32 32 32 0 ]
+[a 10C 68 101 118 105 99 101 32 76 111 99 107 101 100 32 32 32 0 ]
+[a 17C 32 116 114 105 101 115 32 108 101 102 116 32 32 32 32 32 0 ]
+[a 21C 80 97 115 115 87 111 114 100 58 32 32 32 32 32 32 32 0 ]
+[a 18C 32 32 76 111 99 107 101 100 33 32 32 32 32 32 32 32 0 ]
+[a 20C 32 32 0 ]
+[a 3C 91 76 79 71 73 78 93 32 84 73 77 69 79 85 84 13 10 0 ]
+[a 1C 91 76 79 71 73 78 93 32 76 79 71 71 69 68 32 79 85 84 13 10 0 ]
+[a 6C 91 76 79 71 73 78 93 32 67 79 82 82 69 67 84 13 10 0 ]
+[a 14C 91 76 79 71 73 78 93 32 65 67 67 69 83 83 32 71 82 65 78 84 69 68 13 10 0 ]
+[a 2C 91 76 79 71 73 78 93 32 76 79 67 75 79 85 84 32 69 88 80 73 82 69 68 13 10 0 ]
+[a 5C 13 10 0 ]
+[a 9C 13 10 0 ]

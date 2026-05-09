@@ -23,22 +23,22 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _GIE `Vb ~T0 @X0 0 e@95 ]
 [t ~ __interrupt . k ]
 [t T1 __interrupt ]
-"15 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
-[p x FOSC    =  HS        ]
+"11 /home/krubro/MPLABProjects/Car_Black_Box/main_config.h
+[p x FOSC    =  HS ]
+"12
+[p x WDTE    =  OFF ]
+"13
+[p x PWRTE  =  OFF ]
+"14
+[p x BOREN  =  ON ]
+"15
+[p x LVP      =  OFF ]
 "16
-[p x WDTE    =  OFF       ]
+[p x CPD      =  OFF ]
 "17
-[p x PWRTE  =  OFF       ]
+[p x WRT      =  OFF ]
 "18
-[p x BOREN  =  ON        ]
-"19
-[p x LVP      =  OFF       ]
-"20
-[p x CPD      =  OFF       ]
-"21
-[p x WRT      =  OFF       ]
-"22
-[p x CP        =  OFF       ]
+[p x CP        =  OFF ]
 "38 /home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8/pic/include/proc/pic16f877a.h
 [; <" INDF equ 00h ;# ">
 "45
@@ -198,61 +198,67 @@ Version 4.0 HI-TECH Software Intermediate Code
 "50
 [e = _GIE -> -> 1 `i `b ]
 "51
-[e :UE 99 ]
+[e :UE 101 ]
 }
 "53
 [v _reset_blink_tick `(v ~T0 @X0 1 ef ]
+"54
 {
 [e :U _reset_blink_tick ]
 [f ]
+"55
 [e = _blink_tick -> -> 0 `i `uc ]
-[e :UE 100 ]
+"56
+[e :UE 102 ]
 }
-"54
+"58
 [v _reset_timeout_tick `(v ~T0 @X0 1 ef ]
+"59
 {
 [e :U _reset_timeout_tick ]
 [f ]
+"60
 [e = _timeout_tick -> -> 0 `i `ui ]
-[e :UE 101 ]
+"61
+[e :UE 103 ]
 }
 [v $root$_isr `(v ~T0 @X0 0 e ]
-"59
+"66
 [v _isr `(v ~T1 @X0 1 ef ]
-"60
+"67
 {
 [e :U _isr ]
 [f ]
-"61
-[e $ ! _TMR0IF 103  ]
-"62
-{
-"63
-[e = _TMR0 -> -> 61 `ui `uc ]
-"64
-[e = _TMR0IF -> -> 0 `i `b ]
-"65
-[e ++ _blink_tick -> -> 1 `i `Vuc ]
-"66
-}
-[e :U 103 ]
 "68
-[e $ ! _TMR1IF 104  ]
+[e $ ! _TMR0IF 105  ]
 "69
 {
 "70
-[e = _TMR1H -> >> -> 3036 `ui -> 8 `i `uc ]
+[e = _TMR0 -> -> 61 `ui `uc ]
 "71
-[e = _TMR1L -> & -> 3036 `ui -> 255 `ui `uc ]
+[e = _TMR0IF -> -> 0 `i `b ]
 "72
-[e = _TMR1IF -> -> 0 `i `b ]
+[e ++ _blink_tick -> -> 1 `i `Vuc ]
 "73
-[e $ ! < _timeout_tick -> 65535 `ui 105  ]
-[e ++ _timeout_tick -> -> 1 `i `Vui ]
-[e :U 105 ]
-"74
 }
-[e :U 104 ]
+[e :U 105 ]
 "75
-[e :UE 102 ]
+[e $ ! _TMR1IF 106  ]
+"76
+{
+"77
+[e = _TMR1H -> >> -> 3036 `ui -> 8 `i `uc ]
+"78
+[e = _TMR1L -> & -> 3036 `ui -> 255 `ui `uc ]
+"79
+[e = _TMR1IF -> -> 0 `i `b ]
+"80
+[e $ ! < _timeout_tick -> 65535 `ui 107  ]
+[e ++ _timeout_tick -> -> 1 `i `Vui ]
+[e :U 107 ]
+"81
+}
+[e :U 106 ]
+"82
+[e :UE 104 ]
 }

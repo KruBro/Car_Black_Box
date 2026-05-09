@@ -1,0 +1,303 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "/home/krubro/MPLABProjects/Car_Black_Box/out/Car_Black_Box/default.elf"
+		}
+	],
+	"backtrace" : 3,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_executable",
+			"include",
+			"target_link_options",
+			"Car_Black_Box_default_link_rule",
+			"target_compile_definitions"
+		],
+		"files" : 
+		[
+			".generated/main.cmake",
+			"CMakeLists.txt",
+			".generated/rule.cmake"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 1
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 15,
+				"parent" : 0
+			},
+			{
+				"file" : 0,
+				"parent" : 1
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 32,
+				"parent" : 2
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 42,
+				"parent" : 2
+			},
+			{
+				"command" : 2,
+				"file" : 2,
+				"line" : 130,
+				"parent" : 4
+			},
+			{
+				"command" : 4,
+				"file" : 2,
+				"line" : 131,
+				"parent" : 4
+			}
+		]
+	},
+	"codemodelVersion" : 
+	{
+		"major" : 2,
+		"minor" : 9
+	},
+	"dependencies" : 
+	[
+		{
+			"id" : "Car_Black_Box_default_default_XC8_compile::@6890427a1f51a3e7e1df"
+		}
+	],
+	"id" : "Car_Black_Box_default_image_WXJPTfBy::@6890427a1f51a3e7e1df",
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"backtrace" : 5,
+				"fragment" : "-Wl,-Map=mem.map",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "-mcpu=16F877A",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "-Wl,--defsym=__MPLAB_BUILD=1",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "-mdfp=/home/krubro/.mchp_packs/Microchip/PIC16Fxxx_DFP/1.8.167/xc8",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "-fno-short-double",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "-fno-short-float",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "-O0",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "-maddrqual=ignore",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "-mwarn=-3",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "-msummary=-psect,-class,+mem,-hex,-file",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "-ginhx32",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "-Wl,--data-init",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "-mno-keep-startup",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "-mno-osccal",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "-mno-resetbits",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "-mno-save-resetbits",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "-mno-download",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "-mno-stackcall",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "-mno-default-config-bits",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "-std=c99",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "-gdwarf-3",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "-mstack=compiled:auto:auto",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "-Wl,--memorysummary,memoryfile.xml",
+				"role" : "flags"
+			}
+		],
+		"language" : "C"
+	},
+	"name" : "Car_Black_Box_default_image_WXJPTfBy",
+	"nameOnDisk" : "default.elf",
+	"objectDependencies" : 
+	[
+		{
+			"backtrace" : 3,
+			"id" : "Car_Black_Box_default_default_XC8_compile::@6890427a1f51a3e7e1df"
+		}
+	],
+	"orderDependencies" : 
+	[
+		{
+			"id" : "Car_Black_Box_default_default_XC8_compile::@6890427a1f51a3e7e1df"
+		}
+	],
+	"paths" : 
+	{
+		"build" : ".",
+		"source" : "."
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Object Libraries",
+			"sourceIndexes" : 
+			[
+				0,
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 3,
+			"isGenerated" : true,
+			"path" : "/home/krubro/MPLABProjects/Car_Black_Box/_build/Car_Black_Box/default/CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.c.p1",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 3,
+			"isGenerated" : true,
+			"path" : "/home/krubro/MPLABProjects/Car_Black_Box/_build/Car_Black_Box/default/CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/dashboard.c.p1",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 3,
+			"isGenerated" : true,
+			"path" : "/home/krubro/MPLABProjects/Car_Black_Box/_build/Car_Black_Box/default/CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/eeprom.c.p1",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 3,
+			"isGenerated" : true,
+			"path" : "/home/krubro/MPLABProjects/Car_Black_Box/_build/Car_Black_Box/default/CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/events.c.p1",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 3,
+			"isGenerated" : true,
+			"path" : "/home/krubro/MPLABProjects/Car_Black_Box/_build/Car_Black_Box/default/CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/login.c.p1",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 3,
+			"isGenerated" : true,
+			"path" : "/home/krubro/MPLABProjects/Car_Black_Box/_build/Car_Black_Box/default/CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/main.c.p1",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 3,
+			"isGenerated" : true,
+			"path" : "/home/krubro/MPLABProjects/Car_Black_Box/_build/Car_Black_Box/default/CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/menu.c.p1",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 3,
+			"isGenerated" : true,
+			"path" : "/home/krubro/MPLABProjects/Car_Black_Box/_build/Car_Black_Box/default/CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/state.c.p1",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 3,
+			"isGenerated" : true,
+			"path" : "/home/krubro/MPLABProjects/Car_Black_Box/_build/Car_Black_Box/default/CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/timer.c.p1",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 3,
+			"isGenerated" : true,
+			"path" : "/home/krubro/MPLABProjects/Car_Black_Box/_build/Car_Black_Box/default/CMakeFiles/Car_Black_Box_default_default_XC8_compile.dir/home/krubro/MPLABProjects/Car_Black_Box/view_logs.c.p1",
+			"sourceGroupIndex" : 0
+		}
+	],
+	"type" : "EXECUTABLE"
+}
