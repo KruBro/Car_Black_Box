@@ -154,7 +154,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; <" EECON1 equ 018Ch ;# ">
 "2347
 [; <" EECON2 equ 018Dh ;# ">
-[v F1140 `*Cuc ~T0 @X0 1 t ]
+[v F1141 `*Cuc ~T0 @X0 1 t ]
 "15 /home/krubro/MPLABProjects/Car_Black_Box/dashboard.c
 [v _gear_labels `C*Cuc ~T0 @X0 -> 6 `i s ]
 [i _gear_labels
@@ -207,13 +207,13 @@ Version 4.0 HI-TECH Software Intermediate Code
 "33
 [f ]
 "34
-[v F1147 `uc ~T0 @X0 1 s prev_flags_uart ]
-[i F1147
+[v F1148 `uc ~T0 @X0 1 s prev_flags_uart ]
+[i F1148
 -> -> 0 `i `uc
 ]
 "35
-[v F1148 `E2 ~T0 @X0 1 s prev_gear_uart ]
-[i F1148
+[v F1149 `E2 ~T0 @X0 1 s prev_gear_uart ]
+[i F1149
 . `E2 0
 ]
 "38
@@ -273,7 +273,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e :U 103 ]
 "68
-[e $ ! && != & -> . _sys 5 `ui -> 2 `ui -> -> 0 `i `ui ! != & -> F1147 `ui -> 2 `ui -> -> 0 `i `ui 109  ]
+[e $ ! && != & -> . _sys 5 `ui -> 2 `ui -> -> 0 `i `ui ! != & -> F1148 `ui -> 2 `ui -> -> 0 `i `ui 109  ]
 "69
 {
 "70
@@ -283,7 +283,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $U 110  ]
 "72
 [e :U 109 ]
-[e $ ! != -> . _sys 3 `ui -> F1148 `ui 111  ]
+[e $ ! != -> . _sys 3 `ui -> F1149 `ui 111  ]
 "73
 {
 "74
@@ -297,7 +297,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $U 112  ]
 "78
 [e :U 111 ]
-[e $ ! && != & -> . _sys 5 `ui -> 1 `ui -> -> 0 `i `ui ! != & -> F1147 `ui -> 1 `ui -> -> 0 `i `ui 113  ]
+[e $ ! && != & -> . _sys 5 `ui -> 1 `ui -> -> 0 `i `ui ! != & -> F1148 `ui -> 1 `ui -> -> 0 `i `ui 113  ]
 "79
 {
 "80
@@ -308,9 +308,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U 112 ]
 [e :U 110 ]
 "83
-[e = F1147 . _sys 5 ]
+[e = F1148 . _sys 5 ]
 "84
-[e = F1148 . _sys 3 ]
+[e = F1149 . _sys 3 ]
 "85
 [e :UE 102 ]
 }

@@ -50,14 +50,24 @@ void init_timers(void)
     GIE  = 1;   // Enable global interrupts
 }
 
-void reset_blink_tick(void)   
-{ 
-    blink_tick   = 0; 
+void reset_blink_tick(void) { blink_tick = 0; }
+
+/* Atomic write — 16-bit zero write can be torn by ISR on PIC16 */
+void reset_timeout_tick(void)
+{
+    GIE = 0;
+    timeout_tick = 0;
+    GIE = 1;
 }
 
-void reset_timeout_tick(void)
-{ 
-    timeout_tick = 0; 
+/* Atomic 16-bit read — prevents torn reads when ISR fires mid-read */
+unsigned int get_timeout_tick(void)
+{
+    unsigned int t;
+    GIE = 0;
+    t = timeout_tick;
+    GIE = 1;
+    return t;
 }
 
 /**

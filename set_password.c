@@ -23,6 +23,7 @@
  */
 
 #include "main_config.h"
+#include <builtins.h>
 
 #define CP_BLINK_THRESHOLD  20U     // ~200 ms per blink toggle (same cadence as login)
 #define CP_TIMEOUT_TICKS   100U     // 100 × 100 ms = 10 s inactivity timeout
@@ -180,6 +181,7 @@ void set_password_render(void)
         uart_puts("[CP] EEPROM write complete\r\n");
         __delay_ms(1500);
 
+        set_password_reset();
         menu_reset();
         set_status(MENU);
         return;

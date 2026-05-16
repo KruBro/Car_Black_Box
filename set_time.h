@@ -27,7 +27,7 @@
 /*
  * FIX [2026-05-09] — Dead Code Removal (Compiler Warning: unused function)
  *
- * set_time_reset() is never called in the current codebase. It is commented
+ * set_time_reset() is never called in the current codebase. It is commentedzzz
  * out here (declaration) and in set_time.c (definition + bcd_to_dec helper).
  *
  * void set_time_reset(void); // Call once on transition INTO SET_TIME state

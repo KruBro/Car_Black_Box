@@ -659,8 +659,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 "224
 [f ]
 "225
-[v F1178 `uc ~T0 @X0 1 s once ]
-[i F1178
+[v F1179 `uc ~T0 @X0 1 s once ]
+[i F1179
 -> -> 1 `i `uc
 ]
 "227
@@ -670,7 +670,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $UE 134  ]
 [e :U 135 ]
 "230
-[e $ ! && != & -> _PORTB `ui -> 63 `ui -> 63 `ui != -> F1178 `i -> 0 `i 136  ]
+[e $ ! && != & -> _PORTB `ui -> 63 `ui -> 63 `ui != -> F1179 `i -> 0 `i 136  ]
 "231
 {
 "232
@@ -689,7 +689,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "234
 {
 "235
-[e = F1178 -> -> 0 `i `uc ]
+[e = F1179 -> -> 0 `i `uc ]
 "236
 [e ) -> & -> _PORTB `ui -> 63 `ui `uc ]
 [e $UE 134  ]
@@ -705,7 +705,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "240
 {
 "241
-[e = F1178 -> -> 1 `i `uc ]
+[e = F1179 -> -> 1 `i `uc ]
 "242
 }
 [e :U 142 ]

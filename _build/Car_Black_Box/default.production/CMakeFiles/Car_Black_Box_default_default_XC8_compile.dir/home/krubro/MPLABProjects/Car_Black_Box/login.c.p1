@@ -1,7 +1,7 @@
 Version 4.0 HI-TECH Software Intermediate Code
 "49 /home/krubro/MPLABProjects/Car_Black_Box/login.c
-[c E1138 0 1 2 3 4 .. ]
-[n E1138 . PHASE_ENTERING PHASE_FAIL PHASE_LOCKOUT PHASE_SUCCESS PHASE_LOCKED  ]
+[c E1139 0 1 2 3 4 .. ]
+[n E1139 . PHASE_ENTERING PHASE_FAIL PHASE_LOCKOUT PHASE_SUCCESS PHASE_LOCKED  ]
 "80 /home/krubro/MPLABProjects/Car_Black_Box/eeprom.h
 [v _eeprom_read_byte `(uc ~T0 @X0 0 ef1`ui ]
 "24 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
@@ -22,10 +22,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 "23 /home/krubro/MPLABProjects/Car_Black_Box/dashboard.h
 [v _invalidate_dashboard_cache `(v ~T0 @X0 0 ef ]
 "190 /home/krubro/MPLABProjects/Car_Black_Box/login.c
-[c E1095 0 1 2 3 4 5 6 7 .. ]
-[n E1095 . DASHBOARD LOGIN MENU VIEW_LOGS CLEAR_LOGS DOWNLOAD_LOGS SET_TIME CHANGE_PASSWORD  ]
+[c E1096 0 1 2 3 4 5 6 7 .. ]
+[n E1096 . DASHBOARD LOGIN MENU VIEW_LOGS CLEAR_LOGS DOWNLOAD_LOGS SET_TIME CHANGE_PASSWORD  ]
 "23 /home/krubro/MPLABProjects/Car_Black_Box/state.h
-[v _set_status `(v ~T0 @X0 0 ef1`E1095 ]
+[v _set_status `(v ~T0 @X0 0 ef1`E1096 ]
 "23 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
 [v _uart_putchar `(v ~T0 @X0 0 ef1`uc ]
 "64
@@ -197,9 +197,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 "47
 [v _my_pass `uc ~T0 @X0 -> 4 `i s ]
 "49
-[v _phase `E1138 ~T0 @X0 1 s ]
+[v _phase `E1139 ~T0 @X0 1 s ]
 [i _phase
-. `E1138 0
+. `E1139 0
 ]
 "50
 [v _fail_count `uc ~T0 @X0 1 s ]
@@ -400,7 +400,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "140
 [e = _cooldown_ticks -> -> 0 `i `uc ]
 "141
-[e = _phase -> ? >= -> _fail_count `ui -> 5 `ui : . `E1138 4 . `E1138 0 `E1138 ]
+[e = _phase -> ? >= -> _fail_count `ui -> 5 `ui : . `E1139 4 . `E1139 0 `E1139 ]
 "142
 [e ( _reset_blink_tick ..  ]
 "143
@@ -418,7 +418,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "151
 [f ]
 "152
-[e $ ! || == -> _phase `ui -> . `E1138 4 `ui == -> _phase `ui -> . `E1138 3 `ui 124  ]
+[e $ ! || == -> _phase `ui -> . `E1139 4 `ui == -> _phase `ui -> . `E1139 3 `ui 124  ]
 "153
 [e $UE 123  ]
 [e :U 124 ]
@@ -438,7 +438,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e :U 125 ]
 "164
-[e $ ! == -> _phase `ui -> . `E1138 2 `ui 127  ]
+[e $ ! == -> _phase `ui -> . `E1139 2 `ui 127  ]
 "165
 {
 "166
@@ -456,7 +456,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "173
 [e ( _uart_puts (1 :s 4C ]
 "174
-[e = _phase . `E1138 0 ]
+[e = _phase . `E1139 0 ]
 "175
 [e = _screen_ready -> -> 0 `i `uc ]
 "176
@@ -486,7 +486,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "189
 [e ( _invalidate_dashboard_cache ..  ]
 "190
-[e ( _set_status (1 . `E1095 0 ]
+[e ( _set_status (1 . `E1096 0 ]
 "191
 [e $UE 123  ]
 "192
@@ -530,7 +530,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "216
 [e ( _uart_puts (1 :s 8C ]
 "217
-[e = _phase . `E1138 3 ]
+[e = _phase . `E1139 3 ]
 "218
 }
 [e $U 134  ]
@@ -551,7 +551,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "226
 [e ( _uart_puts (1 :s 11C ]
 "227
-[e = _phase . `E1138 1 ]
+[e = _phase . `E1139 1 ]
 "228
 }
 [e :U 134 ]
@@ -570,7 +570,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "239
 [v _k `uc ~T0 @X0 1 a ]
 "242
-[e $ ! == -> _phase `ui -> . `E1138 4 `ui 136  ]
+[e $ ! == -> _phase `ui -> . `E1139 4 `ui 136  ]
 "243
 {
 "244
@@ -583,7 +583,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e :U 136 ]
 "250
-[e $ ! == -> _phase `ui -> . `E1138 3 `ui 137  ]
+[e $ ! == -> _phase `ui -> . `E1139 3 `ui 137  ]
 "251
 {
 "252
@@ -605,14 +605,14 @@ Version 4.0 HI-TECH Software Intermediate Code
 "260
 [e ( _login_reset ..  ]
 "261
-[e ( _set_status (1 . `E1095 2 ]
+[e ( _set_status (1 . `E1096 2 ]
 "262
 [e $UE 135  ]
 "263
 }
 [e :U 137 ]
 "266
-[e $ ! == -> _phase `ui -> . `E1138 1 `ui 138  ]
+[e $ ! == -> _phase `ui -> . `E1139 1 `ui 138  ]
 "267
 {
 "268
@@ -631,7 +631,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "276
 [e ( __delay (1 -> * -> -> 2000 `i `d / -> -> 20000000 `ul `d .4000.0 `ul ]
 "277
-[e = _phase . `E1138 4 ]
+[e = _phase . `E1139 4 ]
 "278
 }
 [e $U 140  ]
@@ -650,7 +650,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "286
 [e = _lockout_secs_remaining *U + &U _lockout_durations * -> - -> _fail_count `ui -> 1 `ui `ux -> -> # *U &U _lockout_durations `ui `ux ]
 "287
-[e = _phase . `E1138 2 ]
+[e = _phase . `E1139 2 ]
 "288
 [e = _screen_ready -> -> 0 `i `uc ]
 "289
@@ -666,12 +666,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e :U 138 ]
 "296
-[e $ ! == -> _phase `ui -> . `E1138 2 `ui 141  ]
+[e $ ! == -> _phase `ui -> . `E1139 2 `ui 141  ]
 "297
 {
 "298
-[v F1175 `uc ~T0 @X0 1 s last_shown ]
-[i F1175
+[v F1176 `uc ~T0 @X0 1 s last_shown ]
+[i F1176
 -> -> 255 `ui `uc
 ]
 "300
@@ -685,16 +685,16 @@ Version 4.0 HI-TECH Software Intermediate Code
 "304
 [e = _screen_ready -> -> 1 `i `uc ]
 "305
-[e = F1175 -> -> 255 `ui `uc ]
+[e = F1176 -> -> 255 `ui `uc ]
 "306
 }
 [e :U 142 ]
 "308
-[e $ ! != -> _lockout_secs_remaining `i -> F1175 `i 143  ]
+[e $ ! != -> _lockout_secs_remaining `i -> F1176 `i 143  ]
 "309
 {
 "310
-[e = F1175 _lockout_secs_remaining ]
+[e = F1176 _lockout_secs_remaining ]
 "311
 [e ( _clcd_print (2 , :s 21C -> + -> 192 `ui -> -> 0 `i `ui `uc ]
 "312

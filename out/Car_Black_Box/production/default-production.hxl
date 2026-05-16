@@ -1,28 +1,28 @@
 ### HEXMate logfile and output summary ###
 
 ### Command-line arguments ###
- /tmp/xcXljkMBD/driver_tmp_3.o
+ /tmp/xcXGIPHFP/driver_tmp_3.o
  -O/home/krubro/MPLABProjects/Car_Black_Box/out/Car_Black_Box/production/default-production.hex
  -logfile=/home/krubro/MPLABProjects/Car_Black_Box/out/Car_Black_Box/production/default-production.hxl
  -addressing=2
 
 ### Memory Usage ###
  Input file ranges:
-  0h - 5h		(/tmp/xcXljkMBD/driver_tmp_3.o)
-  8h - 1FFFh		(/tmp/xcXljkMBD/driver_tmp_3.o)
-  2002h - 2FFFh		(/tmp/xcXljkMBD/driver_tmp_3.o)
-  354Ch - 3FFFh		(/tmp/xcXljkMBD/driver_tmp_3.o)
-  400Eh - 400Fh		(/tmp/xcXljkMBD/driver_tmp_3.o)
+  0h - 5h		(/tmp/xcXGIPHFP/driver_tmp_3.o)
+  8h - 1FDh		(/tmp/xcXGIPHFP/driver_tmp_3.o)
+  200h - 2FFFh		(/tmp/xcXGIPHFP/driver_tmp_3.o)
+  346Ah - 3FFFh		(/tmp/xcXGIPHFP/driver_tmp_3.o)
+  400Eh - 400Fh		(/tmp/xcXGIPHFP/driver_tmp_3.o)
  Unused ranges:
   6h - 7h
-  2000h - 2001h
-  3000h - 354Bh
+  1FEh - 1FFh
+  3000h - 3469h
   4000h - 400Dh
 
 ### Hex Memory Map ###
  Legend:
   -- = Unused memory
-  H1 = Input file             (/tmp/xcXljkMBD/driver_tmp_3.o)
+  H1 = Input file             (/tmp/xcXGIPHFP/driver_tmp_3.o)
 ----------------------------------------------------------
          | 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F
 ----------------------------------------------------------
@@ -57,7 +57,7 @@
 000001C0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
 000001D0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
 000001E0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
-000001F0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+000001F0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 -- --
 00000200 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
 00000210 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
 00000220 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
@@ -538,7 +538,7 @@
 00001FD0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
 00001FE0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
 00001FF0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
-00002000 | -- -- H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+00002000 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
 00002010 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
 00002020 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
 00002030 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
@@ -795,7 +795,21 @@
 00002FE0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
 00002FF0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
 ----------------------------------------------------------
-00003540 | -- -- -- -- -- -- -- -- -- -- -- -- H1 H1 H1 H1
+00003460 | -- -- -- -- -- -- -- -- -- -- H1 H1 H1 H1 H1 H1
+00003470 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+00003480 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+00003490 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+000034A0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+000034B0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+000034C0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+000034D0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+000034E0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+000034F0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+00003500 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+00003510 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+00003520 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+00003530 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
+00003540 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
 00003550 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
 00003560 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
 00003570 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1

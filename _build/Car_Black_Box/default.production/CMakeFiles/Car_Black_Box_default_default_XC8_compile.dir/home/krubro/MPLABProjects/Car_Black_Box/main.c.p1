@@ -39,10 +39,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 "14 /home/krubro/MPLABProjects/Car_Black_Box/menu.h
 [v _menu_reset `(v ~T0 @X0 0 ef ]
 "70 /home/krubro/MPLABProjects/Car_Black_Box/main.c
-[c E1095 0 1 2 3 4 5 6 7 .. ]
-[n E1095 . DASHBOARD LOGIN MENU VIEW_LOGS CLEAR_LOGS DOWNLOAD_LOGS SET_TIME CHANGE_PASSWORD  ]
+[c E1096 0 1 2 3 4 5 6 7 .. ]
+[n E1096 . DASHBOARD LOGIN MENU VIEW_LOGS CLEAR_LOGS DOWNLOAD_LOGS SET_TIME CHANGE_PASSWORD  ]
 "23 /home/krubro/MPLABProjects/Car_Black_Box/state.h
-[v _set_status `(v ~T0 @X0 0 ef1`E1095 ]
+[v _set_status `(v ~T0 @X0 0 ef1`E1096 ]
 "25 /home/krubro/MPLABProjects/Car_Black_Box/login.h
 [v _login_reset `(v ~T0 @X0 0 ef ]
 "17 /home/krubro/MPLABProjects/Car_Black_Box/dashboard.h
@@ -60,7 +60,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "36 /home/krubro/MPLABProjects/Car_Black_Box/set_time.h
 [v _set_time_update `(v ~T0 @X0 0 ef1`E1067 ]
 "24 /home/krubro/MPLABProjects/Car_Black_Box/state.h
-[v _get_status `(E1095 ~T0 @X0 0 ef ]
+[v _get_status `(E1096 ~T0 @X0 0 ef ]
 "20 /home/krubro/MPLABProjects/Car_Black_Box/dashboard.h
 [v _dashboard_render `(v ~T0 @X0 0 ef ]
 "24 /home/krubro/MPLABProjects/Car_Black_Box/login.h
@@ -313,7 +313,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "69
 [e ( _menu_reset ..  ]
 "70
-[e ( _set_status (1 . `E1095 2 ]
+[e ( _set_status (1 . `E1096 2 ]
 "71
 }
 [e $U 112  ]
@@ -324,7 +324,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "74
 [e ( _login_reset ..  ]
 "75
-[e ( _set_status (1 . `E1095 1 ]
+[e ( _set_status (1 . `E1096 1 ]
 "76
 }
 [e :U 112 ]
@@ -357,7 +357,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "90
 [e ( _invalidate_dashboard_cache ..  ]
 "91
-[e ( _set_status (1 . `E1095 0 ]
+[e ( _set_status (1 . `E1096 0 ]
 "92
 [e = _evt . `E1067 0 ]
 "93
@@ -408,14 +408,14 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e $U 107  ]
 [e :U 108 ]
-[e [\ -> ( _get_status ..  `ui , $ -> . `E1095 0 `ui 109
- , $ -> . `E1095 1 `ui 114
- , $ -> . `E1095 2 `ui 117
- , $ -> . `E1095 3 `ui 118
- , $ -> . `E1095 7 `ui 119
- , $ -> . `E1095 6 `ui 120
- , $ -> . `E1095 4 `ui 121
- , $ -> . `E1095 5 `ui 122
+[e [\ -> ( _get_status ..  `ui , $ -> . `E1096 0 `ui 109
+ , $ -> . `E1096 1 `ui 114
+ , $ -> . `E1096 2 `ui 117
+ , $ -> . `E1096 3 `ui 118
+ , $ -> . `E1096 7 `ui 119
+ , $ -> . `E1096 6 `ui 120
+ , $ -> . `E1096 4 `ui 121
+ , $ -> . `E1096 5 `ui 122
  107 ]
 [e :U 107 ]
 "122
@@ -465,7 +465,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "150
 [e ( _menu_reset ..  ]
 "151
-[e ( _set_status (1 . `E1095 2 ]
+[e ( _set_status (1 . `E1096 2 ]
 "152
 [e $U 123  ]
 "154
@@ -478,14 +478,14 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e $U 123  ]
 [e :U 124 ]
-[e [\ -> ( _get_status ..  `ui , $ -> . `E1095 0 `ui 125
- , $ -> . `E1095 1 `ui 126
- , $ -> . `E1095 2 `ui 127
- , $ -> . `E1095 3 `ui 128
- , $ -> . `E1095 7 `ui 129
- , $ -> . `E1095 6 `ui 130
- , $ -> . `E1095 4 `ui 131
- , $ -> . `E1095 5 `ui 132
+[e [\ -> ( _get_status ..  `ui , $ -> . `E1096 0 `ui 125
+ , $ -> . `E1096 1 `ui 126
+ , $ -> . `E1096 2 `ui 127
+ , $ -> . `E1096 3 `ui 128
+ , $ -> . `E1096 7 `ui 129
+ , $ -> . `E1096 6 `ui 130
+ , $ -> . `E1096 4 `ui 131
+ , $ -> . `E1096 5 `ui 132
  123 ]
 [e :U 123 ]
 "160

@@ -202,63 +202,84 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 "53
 [v _reset_blink_tick `(v ~T0 @X0 1 ef ]
-"54
 {
 [e :U _reset_blink_tick ]
 [f ]
-"55
 [e = _blink_tick -> -> 0 `i `uc ]
-"56
 [e :UE 102 ]
 }
-"58
+"56
 [v _reset_timeout_tick `(v ~T0 @X0 1 ef ]
-"59
+"57
 {
 [e :U _reset_timeout_tick ]
 [f ]
-"60
+"58
+[e = _GIE -> -> 0 `i `b ]
+"59
 [e = _timeout_tick -> -> 0 `i `ui ]
+"60
+[e = _GIE -> -> 1 `i `b ]
 "61
 [e :UE 103 ]
 }
-[v $root$_isr `(v ~T0 @X0 0 e ]
+"64
+[v _get_timeout_tick `(ui ~T0 @X0 1 ef ]
+"65
+{
+[e :U _get_timeout_tick ]
+[f ]
 "66
-[v _isr `(v ~T1 @X0 1 ef ]
+[v _t `ui ~T0 @X0 1 a ]
 "67
+[e = _GIE -> -> 0 `i `b ]
+"68
+[e = _t _timeout_tick ]
+"69
+[e = _GIE -> -> 1 `i `b ]
+"70
+[e ) _t ]
+[e $UE 104  ]
+"71
+[e :UE 104 ]
+}
+[v $root$_isr `(v ~T0 @X0 0 e ]
+"76
+[v _isr `(v ~T1 @X0 1 ef ]
+"77
 {
 [e :U _isr ]
 [f ]
-"68
-[e $ ! _TMR0IF 105  ]
-"69
-{
-"70
-[e = _TMR0 -> -> 61 `ui `uc ]
-"71
-[e = _TMR0IF -> -> 0 `i `b ]
-"72
-[e ++ _blink_tick -> -> 1 `i `Vuc ]
-"73
-}
-[e :U 105 ]
-"75
-[e $ ! _TMR1IF 106  ]
-"76
-{
-"77
-[e = _TMR1H -> >> -> 3036 `ui -> 8 `i `uc ]
 "78
-[e = _TMR1L -> & -> 3036 `ui -> 255 `ui `uc ]
+[e $ ! _TMR0IF 106  ]
 "79
-[e = _TMR1IF -> -> 0 `i `b ]
+{
 "80
-[e $ ! < _timeout_tick -> 65535 `ui 107  ]
-[e ++ _timeout_tick -> -> 1 `i `Vui ]
-[e :U 107 ]
+[e = _TMR0 -> -> 61 `ui `uc ]
 "81
+[e = _TMR0IF -> -> 0 `i `b ]
+"82
+[e ++ _blink_tick -> -> 1 `i `Vuc ]
+"83
 }
 [e :U 106 ]
-"82
-[e :UE 104 ]
+"85
+[e $ ! _TMR1IF 107  ]
+"86
+{
+"87
+[e = _TMR1H -> >> -> 3036 `ui -> 8 `i `uc ]
+"88
+[e = _TMR1L -> & -> 3036 `ui -> 255 `ui `uc ]
+"89
+[e = _TMR1IF -> -> 0 `i `b ]
+"90
+[e $ ! < _timeout_tick -> 65535 `ui 108  ]
+[e ++ _timeout_tick -> -> 1 `i `Vui ]
+[e :U 108 ]
+"91
+}
+[e :U 107 ]
+"92
+[e :UE 105 ]
 }

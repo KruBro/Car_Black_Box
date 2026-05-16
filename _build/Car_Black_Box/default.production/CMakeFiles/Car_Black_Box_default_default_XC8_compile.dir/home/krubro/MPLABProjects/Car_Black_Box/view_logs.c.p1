@@ -9,10 +9,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 "24 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
 [v _uart_puts `(v ~T0 @X0 0 ef1`*Cuc ]
 "76 /home/krubro/MPLABProjects/Car_Black_Box/view_logs.c
-[c E1095 0 1 2 3 4 5 6 7 .. ]
-[n E1095 . DASHBOARD LOGIN MENU VIEW_LOGS CLEAR_LOGS DOWNLOAD_LOGS SET_TIME CHANGE_PASSWORD  ]
+[c E1096 0 1 2 3 4 5 6 7 .. ]
+[n E1096 . DASHBOARD LOGIN MENU VIEW_LOGS CLEAR_LOGS DOWNLOAD_LOGS SET_TIME CHANGE_PASSWORD  ]
 "23 /home/krubro/MPLABProjects/Car_Black_Box/state.h
-[v _set_status `(v ~T0 @X0 0 ef1`E1095 ]
+[v _set_status `(v ~T0 @X0 0 ef1`E1096 ]
 "65 /home/krubro/MPLABProjects/Car_Black_Box/blackbox_drivers.h
 [v _clcd_clear `(v ~T0 @X0 0 ef ]
 "64
@@ -296,7 +296,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "75
 [e ( _view_logs_reset ..  ]
 "76
-[e ( _set_status (1 . `E1095 2 ]
+[e ( _set_status (1 . `E1096 2 ]
 "77
 }
 [e :U 116 ]
@@ -342,7 +342,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "96
 [e ( _view_logs_reset ..  ]
 "97
-[e ( _set_status (1 . `E1095 2 ]
+[e ( _set_status (1 . `E1096 2 ]
 "98
 }
 [e :U 121 ]
@@ -547,7 +547,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "207
 [e ( __delay (1 -> * -> -> 1500 `i `d / -> -> 20000000 `ul `d .4000.0 `ul ]
 "208
-[e ( _set_status (1 . `E1095 2 ]
+[e ( _set_status (1 . `E1096 2 ]
 "209
 [e :UE 126 ]
 }

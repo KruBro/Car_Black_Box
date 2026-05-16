@@ -32,6 +32,7 @@
  */
 
 #include "main_config.h"
+#include <builtins.h>
 
 #define ST_BLINK_THRESHOLD 25U   /* ~250 ms per blink toggle (Timer0, ~10 ms tick) */
 
@@ -49,62 +50,30 @@ static unsigned char active_field  = FIELD_HH;
 static unsigned char blink_state   = 1;     /* 1 = field visible, 0 = blanked */
 static unsigned char screen_ready  = 0;
 
-/* =========================================================================
- * Private — BCD helpers
- * =========================================================================
- *
- * FIX [2026-05-09] — Dead Code Removal
- * ─────────────────────────────────────────────────────────────────────────
- * bcd_to_dec() is static and was only called from set_time_reset(). Since
- * set_time_reset() is also removed (never called in main.c), bcd_to_dec()
- * becomes unreachable dead code. Leaving a static function defined but
- * uncalled produces XC8 warning (359); it also wastes ROM at -O0.
- *
- * dec_to_bcd() IS still called from set_time_update() on EVENT_SW2, so it
- * is kept below.
- *
- * static unsigned char bcd_to_dec(unsigned char bcd)
- * {
- *     // DS1307 stores time as BCD (e.g. 0x23 = 23 decimal)
- *     return (unsigned char)(((bcd >> 4) & 0x0FU) * 10U + (bcd & 0x0FU));
- * }
- */
+
+static unsigned char bcd_to_dec(unsigned char bcd)
+{
+    // DS1307 stores time as BCD (e.g. 0x23 = 23 decimal)
+    return (unsigned char)(((bcd >> 4) & 0x0FU) * 10U + (bcd & 0x0FU));
+}
 
 static unsigned char dec_to_bcd(unsigned char dec)
 {
     return (unsigned char)(((dec / 10U) << 4) | (dec % 10U));
 }
 
-/* =========================================================================
- * set_time_reset — COMMENTED OUT (dead code, compiler warning: unused)
- * =========================================================================
- *
- * FIX [2026-05-09] — Dead Code Removal
- * ─────────────────────────────────────────────────────────────────────────
- * set_time_reset() initialises time_copy[] from sys and resets internal
- * render flags. It is the correct entry-point for the SET_TIME state.
- * However, main.c never calls it before transitioning to SET_TIME, so XC8
- * reports it as unused at every optimisation level.
- *
- * Consequence of not calling set_time_reset():
- *   time_copy[] retains whatever values it held from static initialisation
- *   (all zeros on first boot). The render function will display "00:00:00"
- *   rather than the current DS1307 time when SET_TIME is entered. This is a
- *   functional regression — see set_time.h for the one-line fix in main.c.
- *
- * void set_time_reset(void)
- * {
- *     // Copy and decode current sys time — edits stay local until SW2
- *     time_copy[FIELD_HH] = bcd_to_dec(sys.hours);
- *     time_copy[FIELD_MM] = bcd_to_dec(sys.minutes);
- *     time_copy[FIELD_SS] = bcd_to_dec(sys.seconds);
- *
- *     active_field = FIELD_HH;
- *     blink_state  = 1;
- *     screen_ready = 0;
- *     reset_blink_tick();
- * }
- */
+void set_time_reset(void)
+{
+    // Copy and decode current sys time — edits stay local until SW2
+    time_copy[FIELD_HH] = bcd_to_dec(sys.hours);
+    time_copy[FIELD_MM] = bcd_to_dec(sys.minutes);
+    time_copy[FIELD_SS] = bcd_to_dec(sys.seconds);
+
+    active_field = FIELD_HH;
+    blink_state  = 1;
+    screen_ready = 0;
+    reset_blink_tick();
+}
 
 /* =========================================================================
  * UPDATE — field navigation and value editing. Zero LCD writes.
@@ -126,6 +95,7 @@ void set_time_update(EVENT evt)
     if (evt == EVENT_SW1)
     {
         uart_puts("[SET_TIME] DISCARDED — RTC unchanged\r\n");
+        set_time_reset();
         menu_reset();
         set_status(MENU);
         return;
@@ -134,6 +104,7 @@ void set_time_update(EVENT evt)
     /* SW2: commit local copy to DS1307 (re-encode decimal → BCD) */
     if (evt == EVENT_SW2)
     {
+        unsigned long wait = 0;
         ds1307_i2c_write(dec_to_bcd(time_copy[FIELD_SS]), SEC_ADDRESS);
         ds1307_i2c_write(dec_to_bcd(time_copy[FIELD_MM]), MIN_ADDRESS);
         ds1307_i2c_write(dec_to_bcd(time_copy[FIELD_HH]), HOUR_ADDRESS);
@@ -143,7 +114,14 @@ void set_time_update(EVENT evt)
         sys.minutes = dec_to_bcd(time_copy[FIELD_MM]);
         sys.seconds = dec_to_bcd(time_copy[FIELD_SS]);
 
+        clcd_clear();
+        clcd_print("TIME CHANGED", LINE1(0));
+
+        // Non-Blocking Delay
+        __delay_ms(1500);
+
         uart_puts("[SET_TIME] SAVED to DS1307\r\n");
+        set_time_reset();
         menu_reset();
         set_status(MENU);
         return;
